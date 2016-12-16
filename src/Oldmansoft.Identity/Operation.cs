@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity
 {
-    [Flags]
     /// <summary>
     /// 操作
     /// </summary>
+    [Flags]
     public enum Operation
     {
         /// <summary>

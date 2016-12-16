@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity
 {
+    /// <summary>
+    /// 扩展类
+    /// </summary>
     public static class Extends
     {
         /// <summary>

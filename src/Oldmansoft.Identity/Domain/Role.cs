@@ -63,6 +63,11 @@ namespace Oldmansoft.Identity.Domain
             return false;
         }
 
+        /// <summary>
+        /// 是否帐号有此角色
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public abstract bool HasAccountSetIt(IQueryable<Account> query);
     }
 }

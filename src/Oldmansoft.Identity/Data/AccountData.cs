@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity.Data
 {
+    /// <summary>
+    /// 帐号数据
+    /// </summary>
     public class AccountData
     {
         /// <summary>
@@ -33,6 +36,9 @@ namespace Oldmansoft.Identity.Data
         /// </summary>
         public List<RoleData> Roles { get; set; }
 
+        /// <summary>
+        /// 创建帐号数据
+        /// </summary>
         public AccountData()
         {
             Roles = new List<RoleData>();

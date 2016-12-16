@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity.Domain
 {
+    /// <summary>
+    /// 帐号
+    /// </summary>
     public abstract class Account
     {
         /// <summary>
@@ -41,12 +44,28 @@ namespace Oldmansoft.Identity.Domain
             CreatedTime = DateTime.Now;
         }
 
+        /// <summary>
+        /// 获取密码哈希
+        /// </summary>
+        /// <returns></returns>
         protected abstract byte[] GetPasswordHash();
 
+        /// <summary>
+        /// 设置密码哈希
+        /// </summary>
+        /// <param name="hash"></param>
         protected abstract void SetPasswordHash(byte[] hash);
 
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <returns></returns>
         public abstract List<Guid> GetRoleIds();
 
+        /// <summary>
+        /// 设置角色列表
+        /// </summary>
+        /// <param name="roleIds"></param>
         public abstract void SetRoleIds(Guid[] roleIds);
 
         /// <summary>
