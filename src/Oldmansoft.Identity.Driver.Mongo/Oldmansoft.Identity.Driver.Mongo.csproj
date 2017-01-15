@@ -31,12 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Oldmansoft.ClassicDomain, Version=2.1.6182.19017, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Domain.Net.2.1\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain, Version=2.2.6224.24675, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Domain.Net.2.2\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.ClassicDomain.Driver.Mongo, Version=2.1.6183.31915, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.ClassicDomain.Driver.Mongo.2.1\lib\net45\Oldmansoft.ClassicDomain.Driver.Mongo.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain.Driver.Mongo, Version=2.2.6224.24676, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.ClassicDomain.Driver.Mongo.2.2\lib\net45\Oldmansoft.ClassicDomain.Driver.Mongo.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
