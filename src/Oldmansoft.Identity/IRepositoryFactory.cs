@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.ClassicDomain;
+using Oldmansoft.Identity.Domain;
 
 namespace Oldmansoft.Identity
 {
@@ -22,24 +23,24 @@ namespace Oldmansoft.Identity
         /// 创建帐号对象
         /// </summary>
         /// <returns></returns>
-        Domain.Account CreateAccountObject();
+        Account CreateAccountObject();
 
         /// <summary>
         /// 创建角色对象
         /// </summary>
         /// <returns></returns>
-        Domain.Role CreateRoleObject();
+        Role CreateRoleObject();
 
         /// <summary>
         /// 创建帐号仓储
         /// </summary>
         /// <returns></returns>
-        IRepository<Domain.Account, Guid> CreateAccountRepository();
+        IAccountRepository CreateAccountRepository();
 
         /// <summary>
         /// 创建角色仓储
         /// </summary>
         /// <returns></returns>
-        IRepository<Domain.Role, Guid> CreateRoleRepository();
+        IRoleRepository CreateRoleRepository();
     }
 }

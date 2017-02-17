@@ -16,7 +16,7 @@ namespace Oldmansoft.Identity.Driver.Mongo
                 .SetIndex(domain => domain.RoleIds)
                 .SetIndex(domain => domain.CreatedTime);
             Add<Role, Guid>(domain => domain.Id)
-                .SetIndex(domain => domain.PartitionResourceId);
+                .SetIndex(domain => domain.PartitionResourceId, domain => domain.Name);
         }
     }
 }

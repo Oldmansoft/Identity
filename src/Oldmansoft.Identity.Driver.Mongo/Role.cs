@@ -8,10 +8,9 @@ namespace Oldmansoft.Identity.Driver.Mongo
 {
     class Role : Domain.Role
     {
-        public override bool HasAccountSetIt(IQueryable<Domain.Account> query)
+        public override bool HasAccountSetIt(Domain.IAccountRepository accountRepository)
         {
-            var q = query as IQueryable<Account>;
-            return q.Where(o => o.RoleIds.Contains(Id)).FirstOrDefault() != null;
+            return accountRepository.ContainsRoleId(Id);
         }
     }
 }

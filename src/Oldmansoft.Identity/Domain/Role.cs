@@ -66,8 +66,8 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 是否帐号有此角色
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="accountRepository"></param>
         /// <returns></returns>
-        public abstract bool HasAccountSetIt(IQueryable<Account> query);
+        public abstract bool HasAccountSetIt(IAccountRepository accountRepository);
     }
 }

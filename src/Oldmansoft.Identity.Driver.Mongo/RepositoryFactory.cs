@@ -54,18 +54,18 @@ namespace Oldmansoft.Identity.Driver.Mongo
         /// 创建帐号仓储
         /// </summary>
         /// <returns></returns>
-        public IRepository<Domain.Account, Guid> CreateAccountRepository()
+        public Domain.IAccountRepository CreateAccountRepository()
         {
-            return new RepositoryDefinedSuperClass<Account, Domain.Account, Guid, Mapping>(Uow);
+            return new AccountRepository(Uow);
         }
 
         /// <summary>
         /// 创建角色仓储
         /// </summary>
         /// <returns></returns>
-        public IRepository<Domain.Role, Guid> CreateRoleRepository()
+        public Domain.IRoleRepository CreateRoleRepository()
         {
-            return new RepositoryDefinedSuperClass<Role, Domain.Role, Guid, Mapping>(Uow);
+            return new RoleRepository(Uow);
         }
     }
 }
