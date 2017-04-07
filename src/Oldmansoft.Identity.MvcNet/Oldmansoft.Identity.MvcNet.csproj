@@ -75,6 +75,7 @@
     </Compile>
     <Compile Include="AuthAttribute.cs" />
     <Compile Include="AuthController.cs" />
+    <Compile Include="CrossSiteRequestAttribute.cs" />
     <Compile Include="CsrfDefendAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

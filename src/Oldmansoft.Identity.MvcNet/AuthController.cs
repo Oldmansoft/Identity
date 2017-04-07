@@ -89,7 +89,8 @@ namespace Oldmansoft.Identity
         /// <param name="filterContext"></param>
         protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
         {
-            if (filterContext.ActionDescriptor.GetCustomAttributes(typeof(System.Web.Mvc.HttpPostAttribute), false).Length > 0)
+            var action = filterContext.ActionDescriptor;
+            if (action.GetCustomAttributes(typeof(System.Web.Mvc.HttpPostAttribute), false).Length > 0 && action.GetCustomAttributes(typeof(CrossSiteRequestAttribute), false).Length == 0)
             {
                 new CsrfDefendAttribute().OnActionExecuting(filterContext);
             }
