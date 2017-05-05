@@ -81,7 +81,7 @@ namespace Oldmansoft.Identity
 
             var result = new Domain.Resource();
             result.Id = CreateGuid(type, string.Empty);
-            result.Name = summary.GetSummary(type.FullName);
+            result.Name = summary.GetSummary(type.GetFullName());
             if (result.Name == null) result.Name = type.Name;
 
             foreach (var property in type.GetProperties())

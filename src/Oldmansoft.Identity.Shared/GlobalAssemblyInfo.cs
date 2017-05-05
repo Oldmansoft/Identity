@@ -4,4 +4,4 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
-[assembly: AssemblyVersion("1.1.3.0")]
+[assembly: AssemblyVersion("1.1.4.0")]

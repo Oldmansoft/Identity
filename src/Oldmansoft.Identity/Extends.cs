@@ -47,5 +47,15 @@ namespace Oldmansoft.Identity
             if (password == null) throw new ArgumentNullException("password");
             return (source.ToLower() + password).GetSHA256Hash();
         }
+
+        /// <summary>
+        /// 获取全名
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        internal static string GetFullName(this Type source)
+        {
+            return source.FullName.Replace("+", ".");
+        }
     }
 }

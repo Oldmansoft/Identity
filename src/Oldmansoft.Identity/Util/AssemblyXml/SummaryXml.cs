@@ -87,7 +87,7 @@ namespace Oldmansoft.Identity.Util.AssemblyXml
         /// <returns></returns>
         internal SummaryTypeInfo GetTypeInfo(Type type)
         {
-            string name = type.FullName;
+            string name = type.GetFullName();
             if (Members.ContainsKey(name))
             {
                 return Members[name];

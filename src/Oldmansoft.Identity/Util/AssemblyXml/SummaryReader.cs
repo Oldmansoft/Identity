@@ -26,7 +26,7 @@ namespace Oldmansoft.Identity.Util.AssemblyXml
         /// <returns></returns>
         public static SummaryXml GetXmlInfo(Type type)
         {
-            var key = type.FullName;
+            var key = type.GetFullName();
             SummaryXml result;
             if (Xmls.TryGetValue(key, out result)) return result;
             result = new SummaryXml(type);
@@ -42,7 +42,7 @@ namespace Oldmansoft.Identity.Util.AssemblyXml
         /// <returns></returns>
         public static SummaryXml GetXmlInfo(Type type, string extension)
         {
-            var key = string.Format("{0}:{1}", extension, type.FullName);
+            var key = string.Format("{0}:{1}", extension, type.GetFullName());
             SummaryXml result;
             if (Xmls.TryGetValue(key, out result)) return result;
             result = new SummaryXml(type);
