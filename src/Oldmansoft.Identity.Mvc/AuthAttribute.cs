@@ -20,7 +20,7 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 当前方法操作符
         /// </summary>
-        protected Operation Operation { get; set; }
+        public Operation Operation { get; protected set; }
 
         /// <summary>
         /// 创建访问特性
