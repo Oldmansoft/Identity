@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Identity", "Oldm
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Identity.Driver.Mongo", "Oldmansoft.Identity.Driver.Mongo\Oldmansoft.Identity.Driver.Mongo.csproj", "{AA989D80-28D7-40A1-8553-95AFF1D2F41F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Identity.MvcNet", "Oldmansoft.Identity.MvcNet\Oldmansoft.Identity.MvcNet.csproj", "{6B637D52-233C-4852-8D84-8D481C1080DB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Identity.Mvc", "Oldmansoft.Identity.Mvc\Oldmansoft.Identity.Mvc.csproj", "{6B637D52-233C-4852-8D84-8D481C1080DB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

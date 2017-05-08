@@ -7,8 +7,8 @@
     <ProjectGuid>{6B637D52-233C-4852-8D84-8D481C1080DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Oldmansoft.Identity.MvcNet</RootNamespace>
-    <AssemblyName>Oldmansoft.Identity.MvcNet</AssemblyName>
+    <RootNamespace>Oldmansoft.Identity.Mvc</RootNamespace>
+    <AssemblyName>Oldmansoft.Identity.Mvc</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Oldmansoft.Identity.MvcNet.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Oldmansoft.Identity.Mvc.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
