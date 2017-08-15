@@ -293,7 +293,7 @@ namespace Oldmansoft.Identity
             return Factory.CreateAccountRepository()
                 .Paging()
                 .Size(size)
-                .GetResult(out totalCount, index)
+                .ToList(index, out totalCount)
                 .CopyTo(new List<Data.AccountData>());
         }
 
@@ -421,7 +421,9 @@ namespace Oldmansoft.Identity
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var repository = Factory.CreateRoleRepository();
-            var list = repository.PagingByPartitionResourceId(partitionResourceId).Size(size).GetResult(out totalCount, index);
+            var list = repository.PagingByPartitionResourceId(partitionResourceId)
+                .Size(size)
+                .ToList(index, out totalCount);
             return list.CopyTo(new List<Data.RoleData>());
         }
         

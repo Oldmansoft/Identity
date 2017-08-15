@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Identity.Driver.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Oldmansoft.Identity.Mvc", "Oldmansoft.Identity.Mvc\Oldmansoft.Identity.Mvc.csproj", "{6B637D52-233C-4852-8D84-8D481C1080DB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{1F68B579-28AE-4E14-8215-B95B7F81F85A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebManApplication", "WebManApplication\WebManApplication.csproj", "{6AC74D01-7D80-499E-9A8D-D2C6A721F0BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebManApplication.WebDefinition", "WebManApplication.WebDefinition\WebManApplication.WebDefinition.csproj", "{F59DF80B-890E-4F24-AA75-CB64A27FBAD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,8 +33,20 @@ Global
 		{6B637D52-233C-4852-8D84-8D481C1080DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B637D52-233C-4852-8D84-8D481C1080DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B637D52-233C-4852-8D84-8D481C1080DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AC74D01-7D80-499E-9A8D-D2C6A721F0BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AC74D01-7D80-499E-9A8D-D2C6A721F0BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AC74D01-7D80-499E-9A8D-D2C6A721F0BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AC74D01-7D80-499E-9A8D-D2C6A721F0BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F59DF80B-890E-4F24-AA75-CB64A27FBAD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F59DF80B-890E-4F24-AA75-CB64A27FBAD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F59DF80B-890E-4F24-AA75-CB64A27FBAD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F59DF80B-890E-4F24-AA75-CB64A27FBAD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6AC74D01-7D80-499E-9A8D-D2C6A721F0BF} = {1F68B579-28AE-4E14-8215-B95B7F81F85A}
+		{F59DF80B-890E-4F24-AA75-CB64A27FBAD5} = {1F68B579-28AE-4E14-8215-B95B7F81F85A}
 	EndGlobalSection
 EndGlobal
