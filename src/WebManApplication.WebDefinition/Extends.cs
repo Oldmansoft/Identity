@@ -89,7 +89,7 @@ namespace WebManApplication
         /// <param name="location"></param>
         /// <param name="account"></param>
         /// <returns></returns>
-        public static IItemAction AddActionItem<TModel>(this DataTableDefinition<TModel> source, ILocation location, AccountData account) where TModel : class
+        public static IDataTableItemAction AddActionItem<TModel>(this DataTableDefinition<TModel> source, ILocation location, AccountData account) where TModel : class
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");

@@ -500,12 +500,16 @@ header .dropdown-menu a {
     overflow: auto;
 }
 
-.dataTables_wrapper td,
-.dataTables_wrapper th {
+.dataTables_wrapper .dataTables_info {
+    padding-bottom: 0.755em;
+}
+
+.dataTable td,
+.dataTable th {
     white-space: nowrap;
 }
 
-.dataTables_wrapper td img {
+.dataTable td img {
     width: 40px;
     border-radius: 6px;
 }

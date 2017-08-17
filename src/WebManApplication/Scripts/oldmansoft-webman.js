@@ -1,5 +1,5 @@
 ﻿/*
-* v0.9.65
+* v0.10.66
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 if (!window.oldmansoft) window.oldmansoft = {};
@@ -269,6 +269,36 @@ window.oldmansoft.webman = new (function () {
         return true;
     }
 
+    function computeElementWidth(item) {
+        var width = 0;
+        item.children().each(function () {
+            width += $(this).outerWidth(true)
+        });
+        return width;
+    }
+
+    function fixedTableFirstAndLastColumnWidth(view, className) {
+        var table = view.node.find("." + className);
+
+        var maxWidth = 0;
+        table.find("tbody tr td:first-child").each(function () {
+            var width = computeElementWidth($(this));
+            if (width > maxWidth) maxWidth = width;
+        })
+        if (maxWidth > 0) {
+            table.find("thead tr th:first-child").width(maxWidth);
+        }
+
+        maxWidth = 0;
+        table.find("tbody tr td:last-child").each(function () {
+            var width = computeElementWidth($(this).children());
+            if (width > maxWidth) maxWidth = width;
+        })
+        if (maxWidth > 0) {
+            table.find("thead tr th:last-child").width(maxWidth);
+        }
+    }
+
     this.configText = function (fn) {
         if (typeof fn == "function") fn(text);
     }
@@ -384,13 +414,6 @@ window.oldmansoft.webman = new (function () {
     }
 
     this.setDataTable = function (view, className, source, option) {
-        function computeElementWidth(item) {
-            var width = 0;
-            item.children().each(function () {
-                width += $(this).outerWidth(true)
-            });
-            return width;
-        }
         var tableOption = {
             processing: true,
             serverSide: true,
@@ -407,25 +430,7 @@ window.oldmansoft.webman = new (function () {
             language: text.dataTable,
             dom: "<'table-content'<'col-sm-6'f><'col-sm-6 text-right'l>>rt<'table-content'<'col-sm-6'i><'col-sm-6 text-right'p>>",
             drawCallback: function () {
-                var table = view.node.find("." + className);
-
-                var maxWidth = 0;
-                table.find("tbody tr td:first-child").each(function () {
-                    var width = computeElementWidth($(this));
-                    if (width > maxWidth) maxWidth = width;
-                })
-                if (maxWidth > 0) {
-                    table.find("thead tr th:first-child").width(maxWidth);
-                }
-
-                maxWidth = 0;
-                table.find("tbody tr td:last-child").each(function () {
-                    var width = computeElementWidth($(this).children());
-                    if (width > maxWidth) maxWidth = width;
-                })
-                if (maxWidth > 0) {
-                    table.find("thead tr th:last-child").width(maxWidth);
-                }
+                fixedTableFirstAndLastColumnWidth(view, className);
             }
         },
             node;
@@ -437,6 +442,18 @@ window.oldmansoft.webman = new (function () {
         }
         node = view.node.find("." + className);
         node.data("datatable", node.DataTable(tableOption));
+        node.data("table-actions", option.tableActions);
+        node.data("item-actions", option.itemActions);
+    }
+
+    this.setStaticTable = function (view, className, option) {
+        this.draw = function () {
+            $app.reload();
+        }
+        fixedTableFirstAndLastColumnWidth(view, className);
+        var node;
+        node = view.node.find("." + className);
+        node.data("datatable", this);
         node.data("table-actions", option.tableActions);
         node.data("item-actions", option.itemActions);
     }

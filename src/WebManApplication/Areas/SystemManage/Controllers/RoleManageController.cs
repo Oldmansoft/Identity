@@ -31,7 +31,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Location("角色管理", Icon = FontAwesome.User)]
         public ActionResult Index()
         {
-            var table = DataTable.Definition<Models.RoleManageListModel>(o => o.Id, Url.Location(IndexDataSource));
+            var table = DataTable.Definition<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource));
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location(Edit), Account);
             table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色");

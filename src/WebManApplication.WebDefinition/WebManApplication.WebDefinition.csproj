@@ -35,16 +35,16 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html, Version=0.7.63.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.0.7.63\lib\net45\Oldmansoft.Html.dll</HintPath>
+    <Reference Include="Oldmansoft.Html, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.0.10.66\lib\net45\Oldmansoft.Html.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=0.9.65.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.9.65\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.10.66\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.9.65.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.9.65\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.10.66\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
