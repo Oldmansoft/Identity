@@ -15,14 +15,14 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 从名字获取
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">帐号</param>
         /// <returns></returns>
         Account GetByName(string name);
 
         /// <summary>
         /// 从会员序号获取
         /// </summary>
-        /// <param name="memberId"></param>
+        /// <param name="memberId">成员序号</param>
         /// <returns></returns>
         Account GetByMemberId(Guid memberId);
 
@@ -36,8 +36,19 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 是否包含角色序号
         /// </summary>
-        /// <param name="roleId"></param>
+        /// <param name="roleId">角色序号</param>
         /// <returns></returns>
         bool ContainsRoleId(Guid roleId);
+
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="index">页码</param>
+        /// <param name="size">页大小</param>
+        /// <param name="totalCount">总记录数</param>
+        /// <param name="roleId">角色序号</param>
+        /// <param name="key">查询内容</param>
+        /// <returns></returns>
+        IList<Account> Paging(int index, int size, out int totalCount, Guid roleId, string key);
     }
 }

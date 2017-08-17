@@ -42,5 +42,25 @@ namespace Oldmansoft.Identity.Driver.Mongo
                 return query.Paging().Where(o => o.Name.StartsWith(key.Trim())).OrderByDescending(o => o.Id);
             }
         }
+        
+        public IList<Domain.Account> Paging(int index, int size, out int totalCount, Guid roleId, string key)
+        {
+            IPagingCondition<Account> condition;
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                condition = Query().Paging().Where(o => o.RoleIds.Contains(roleId));
+            }
+            else
+            {
+                condition = Query().Paging().Where(o => o.RoleIds.Contains(roleId) && o.Name.StartsWith(key.Trim()));
+            }
+
+            var result = new List<Domain.Account>();
+            foreach(var item in condition.OrderByDescending(o => o.Id).Size(size).ToList(index, out totalCount))
+            {
+                result.Add(item);
+            }
+            return result;
+        }
     }
 }

@@ -301,6 +301,22 @@ namespace Oldmansoft.Identity
         }
 
         /// <summary>
+        /// 获取帐号分页列表
+        /// </summary>
+        /// <param name="index">页码</param>
+        /// <param name="size">页大小</param>
+        /// <param name="totalCount">总记录数</param>
+        /// <param name="roleId">角色序号</param>
+        /// <param name="key">查询内容</param>
+        /// <returns></returns>
+        public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount, Guid roleId, string key = null)
+        {
+            return Factory.CreateAccountRepository()
+                .Paging(index, size, out totalCount, roleId, key)
+                .CopyTo(new List<Data.AccountData>());
+        }
+        
+        /// <summary>
         /// 设置密码
         /// </summary>
         /// <param name="accountId">帐号序号</param>

@@ -33,6 +33,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         {
             var table = DataTable.Definition<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
+            table.AddActionItem(Url.Location<SystemRoleAccountController>(o => o.Index));
             table.AddActionItem(Url.Location(Edit), Account);
             table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色");
             table.AddSearchPanel(Url.Location(Index), "key", key, "名称");
