@@ -517,6 +517,16 @@ namespace Oldmansoft.Identity
             Factory.GetUnitOfWork().Commit();
             return true;
         }
+
+        /// <summary>
+        /// 角色拥有帐号
+        /// </summary>
+        /// <param name="roleId">角色序号</param>
+        /// <returns></returns>
+        public bool RoleHasAccount(Guid roleId)
+        {
+            return Factory.CreateAccountRepository().ContainsRoleId(roleId);
+        }
         #endregion
     }
 }

@@ -35,7 +35,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location<SystemRoleAccountController>(o => o.Index));
             table.AddActionItem(Url.Location(Edit), Account);
-            table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色");
+            table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色").OnClientCondition(ItemActionClient.Disable, "data.HasAccount == '是'");
             table.AddSearchPanel(Url.Location(Index), "key", key, "名称");
 
             var panel = new Panel();
@@ -48,7 +48,13 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         public JsonResult IndexDataSource(string key, DataTableRequest request)
         {
             int totalCount;
-            var list = CreateIdentity().GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key);
+            var list = new List<Models.RoleManageListMoreModel>();
+            foreach (var item in CreateIdentity().GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key))
+            {
+                var model = item.CopyTo(new Models.RoleManageListMoreModel());
+                model.HasAccount = CreateIdentity().RoleHasAccount(item.Id);
+                list.Add(model);
+            }
             return Json(DataTable.Source(list, request, totalCount));
         }
 

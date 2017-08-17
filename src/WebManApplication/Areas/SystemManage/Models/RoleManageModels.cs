@@ -17,6 +17,11 @@ namespace WebManApplication.Areas.SystemManage.Models
         public string Description { get; set; }
     }
 
+    public class RoleManageListMoreModel : RoleManageListModel
+    {
+        public bool HasAccount { get; set; }
+    }
+
     public class RoleManageEditModel
     {
         [Display(Name = "序号")]
