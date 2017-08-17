@@ -29,8 +29,9 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 分页
         /// </summary>
+        /// <param name="key">查找内容</param>
         /// <returns></returns>
-        IPagingOrdered<Account> Paging();
+        IPagingOrdered<Account> Paging(string key);
 
         /// <summary>
         /// 是否包含角色序号

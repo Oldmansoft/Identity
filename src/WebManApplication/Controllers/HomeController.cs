@@ -40,8 +40,8 @@ namespace WebManApplication.Controllers
             
             document.Menu.Add(
                 new TreeListItem("系统管理", FontAwesome.Shield)
-                    .Add(new TreeListItem(Url.Location<Areas.SystemManage.Controllers.AccountManageController>(o => o.Index)), Account)
-                    .Add(new TreeListItem(Url.Location<Areas.SystemManage.Controllers.RoleManageController>(o => o.Index)), Account)
+                    .Add(new TreeListItem(Url.Location<Areas.SystemManage.Controllers.SystemAccountManageController>(o => o.Index)), Account)
+                    .Add(new TreeListItem(Url.Location<Areas.SystemManage.Controllers.SystemRoleManageController>(o => o.Index)), Account)
             );
 
             document.Quick.Avatar.Display = Account.Name;
@@ -80,7 +80,7 @@ namespace WebManApplication.Controllers
             document.Resources.JQuery.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/jquery/1.12.4/jquery.min.js");
             document.Resources.Sha256.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/js-sha256/0.5.0/sha256.min.js");
             document.Resources.JQueryForm.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js");
-            document.Title = "淘小虎办公平台";
+            document.Title = "登录示例";
             return Content(document);
         }
 

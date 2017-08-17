@@ -13,8 +13,7 @@ namespace Oldmansoft.Identity.Driver.Mongo
             Add<Account, Guid>(domain => domain.Id)
                 .SetUnique(domain => domain.Name)
                 .SetIndex(domain => domain.MemberId)
-                .SetIndex(domain => domain.RoleIds)
-                .SetIndex(domain => domain.CreatedTime);
+                .SetIndex(domain => domain.RoleIds);
             Add<Role, Guid>(domain => domain.Id)
                 .SetIndex(domain => domain.PartitionResourceId, domain => domain.Name);
         }

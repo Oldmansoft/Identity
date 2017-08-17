@@ -216,8 +216,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\AccountManageController.cs" />
-    <Compile Include="Areas\SystemManage\Controllers\RoleManageController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\SystemAccountManageController.cs" />
+    <Compile Include="Areas\SystemManage\Controllers\SystemRoleManageController.cs" />
     <Compile Include="Areas\SystemManage\Models\AccountManageModels.cs" />
     <Compile Include="Areas\SystemManage\Models\RoleManageModels.cs" />
     <Compile Include="Areas\SystemManage\SystemManageAreaRegistration.cs" />

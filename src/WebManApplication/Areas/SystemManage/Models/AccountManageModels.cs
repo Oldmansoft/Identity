@@ -65,6 +65,7 @@ namespace WebManApplication.Areas.SystemManage.Models
         public string Name { get; set; }
 
         [Display(Name = "角色")]
+        [Oldmansoft.Html.WebMan.Annotations.CustomInput(typeof(Oldmansoft.Html.WebMan.Input.Select2))]
         public List<Guid> RoleId { get; set; }
     }
 }

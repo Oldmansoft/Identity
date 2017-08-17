@@ -83,16 +83,18 @@ namespace Oldmansoft.Identity
             return ResourceProvider.GetResource<TOperateResource>().CopyTo(new Data.ResourceData());
         }
         #endregion
-        
+
         #region 帐号方法
         /// <summary>
         /// 初始化超级管理员帐号
         /// </summary>
-        /// <typeparam name="TOperateResource"></typeparam>
-        /// <param name="name"></param>
-        /// <param name="passwordSHA256Hash"></param>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="name">帐号</param>
+        /// <param name="passwordSHA256Hash">密码十六进制散列</param>
+        /// <param name="roleName">角色名称</param>
+        /// <param name="roleDescription">角色描述</param>
         /// <returns></returns>
-        public bool InitAdminAccount<TOperateResource>(string name, string passwordSHA256Hash)
+        public bool InitAdminAccount<TOperateResource>(string name, string passwordSHA256Hash, string roleName = "Admin", string roleDescription = "Administrator")
             where TOperateResource : class, IOperateResource, new()
         {
             var roles = GetRoles<TOperateResource>();
@@ -101,8 +103,8 @@ namespace Oldmansoft.Identity
             var adminResource = GetResource<TOperateResource>();
 
             var role = new Data.RoleData();
-            role.Name = "Admin";
-            role.Description = "Administrator";
+            role.Name = roleName;
+            role.Description = roleDescription;
 
             var allOperators = new Operation[]
             {
@@ -126,7 +128,7 @@ namespace Oldmansoft.Identity
             }
 
             Guid accountId;
-            if (!CreateAccount(name, passwordSHA256Hash, null, -1, out accountId)) return false;
+            if (!CreateAccount(name, passwordSHA256Hash, null, DataDefinition.MemberType.System, out accountId)) return false;
             if (!CreateRole<TOperateResource>(role)) return false;
 
             AccountSetRole(accountId, new Guid[] { role.Id });
@@ -142,7 +144,7 @@ namespace Oldmansoft.Identity
         public bool CreateAccount(string name, string passwordSHA256Hash)
         {
             Guid accountId;
-            return CreateAccount(name, passwordSHA256Hash, null, 0, out accountId);
+            return CreateAccount(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
         }
 
         /// <summary>
@@ -154,7 +156,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool CreateAccount(string name, string passwordSHA256Hash, out Guid accountId)
         {
-            return CreateAccount(name, passwordSHA256Hash, null, 0, out accountId);
+            return CreateAccount(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
         }
 
         /// <summary>
@@ -251,8 +253,8 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 获取帐号
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="passwordSHA256Hash"></param>
+        /// <param name="name">帐号</param>
+        /// <param name="passwordSHA256Hash">密码十六进制散列</param>
         /// <returns></returns>
         public Data.AccountData GetAccount(string name, string passwordSHA256Hash)
         {
@@ -267,9 +269,9 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 获取帐号
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="doubleSHA256Hash"></param>
-        /// <param name="seed"></param>
+        /// <param name="name">帐号</param>
+        /// <param name="doubleSHA256Hash">密码十六进制双散列</param>
+        /// <param name="seed">哈希盐</param>
         /// <returns></returns>
         public Data.AccountData GetAccount(string name, string doubleSHA256Hash, string seed)
         {
@@ -284,14 +286,15 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 获取帐号分页列表
         /// </summary>
-        /// <param name="index"></param>
-        /// <param name="size"></param>
-        /// <param name="totalCount"></param>
+        /// <param name="index">页码</param>
+        /// <param name="size">页大小</param>
+        /// <param name="totalCount">总记录数</param>
+        /// <param name="key">查询内容</param>
         /// <returns></returns>
-        public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount)
+        public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount, string key = null)
         {
             return Factory.CreateAccountRepository()
-                .Paging()
+                .Paging(key)
                 .Size(size)
                 .ToList(index, out totalCount)
                 .CopyTo(new List<Data.AccountData>());
@@ -362,8 +365,8 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 帐号设置角色
         /// </summary>
-        /// <param name="accountId"></param>
-        /// <param name="roleIds"></param>
+        /// <param name="accountId">帐号序号</param>
+        /// <param name="roleIds">角色序号组</param>
         /// <returns></returns>
         public bool AccountSetRole(Guid accountId, Guid[] roleIds)
         {
@@ -384,7 +387,8 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 获取角色
         /// </summary>
-        /// <param name="id"></param>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="id">角色序号</param>
         /// <returns></returns>
         public Data.RoleData GetRole<TOperateResource>(Guid id)
             where TOperateResource : class, IOperateResource, new()
@@ -394,11 +398,11 @@ namespace Oldmansoft.Identity
             if (domain.PartitionResourceId != ResourceProvider.GetResource<TOperateResource>().Id) return null;
             return domain.CopyTo(new Data.RoleData());
         }
-        
+
         /// <summary>
         /// 获取角色列表
         /// </summary>
-        /// <typeparam name="TOperateResource"></typeparam>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
         /// <returns></returns>
         public IList<Data.RoleData> GetRoles<TOperateResource>()
             where TOperateResource : class, IOperateResource, new()
@@ -407,31 +411,32 @@ namespace Oldmansoft.Identity
             var list = Factory.CreateRoleRepository().ListByPartitionResourceId(partitionResourceId);
             return list.CopyTo(new List<Data.RoleData>());
         }
-        
+
         /// <summary>
         /// 获取角色分页列表
         /// </summary>
-        /// <typeparam name="TOperateResource"></typeparam>
-        /// <param name="index"></param>
-        /// <param name="size"></param>
-        /// <param name="totalCount"></param>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="index">页码</param>
+        /// <param name="size">页大小</param>
+        /// <param name="totalCount">总记录数</param>
+        /// <param name="key">查询内容</param>
         /// <returns></returns>
-        public IList<Data.RoleData> GetRoles<TOperateResource>(int index, int size, out int totalCount)
+        public IList<Data.RoleData> GetRoles<TOperateResource>(int index, int size, out int totalCount, string key = null)
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var repository = Factory.CreateRoleRepository();
-            var list = repository.PagingByPartitionResourceId(partitionResourceId)
+            var list = repository.PagingByPartitionResourceId(partitionResourceId, key)
                 .Size(size)
                 .ToList(index, out totalCount);
             return list.CopyTo(new List<Data.RoleData>());
         }
-        
+
         /// <summary>
         /// 创建角色
         /// </summary>
-        /// <typeparam name="TOperateResource"></typeparam>
-        /// <param name="data"></param>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="data">角色数据</param>
         /// <returns></returns>
         public bool CreateRole<TOperateResource>(Data.RoleData data)
             where TOperateResource : class, IOperateResource, new()
@@ -452,12 +457,12 @@ namespace Oldmansoft.Identity
                 return false;
             }
         }
-        
+
         /// <summary>
         /// 修改角色
         /// </summary>
-        /// <typeparam name="TOperateResource"></typeparam>
-        /// <param name="data"></param>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="data">角色数据</param>
         /// <returns></returns>
         public bool ReplaceRole<TOperateResource>(Data.RoleData data)
             where TOperateResource : class, IOperateResource, new()
@@ -474,12 +479,12 @@ namespace Oldmansoft.Identity
             Factory.GetUnitOfWork().Commit();
             return true;
         }
-        
+
         /// <summary>
         /// 移除角色
         /// </summary>
-        /// <typeparam name="TOperateResource"></typeparam>
-        /// <param name="roleId"></param>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="roleId">角色序号</param>
         /// <returns></returns>
         public bool RemoveRole<TOperateResource>(Guid roleId)
             where TOperateResource : class, IOperateResource, new()

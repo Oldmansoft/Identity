@@ -21,11 +21,18 @@ namespace Oldmansoft.Identity.Driver.Mongo
             return query.Where(o => o.PartitionResourceId == partitionResourceId).OrderBy(o => o.Name).ToList();
         }
 
-        public IPagingOrdered<Domain.Role> PagingByPartitionResourceId(Guid partitionResourceId)
+        public IPagingOrdered<Domain.Role> PagingByPartitionResourceId(Guid partitionResourceId, string key)
         {
             IQuerySupport<Domain.Role> repository = this;
             var query = repository.Query();
-            return query.Paging().Where(o => o.PartitionResourceId == partitionResourceId).OrderBy(o => o.Name);
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return query.Paging().Where(o => o.PartitionResourceId == partitionResourceId).OrderByDescending(o => o.Id);
+            }
+            else
+            {
+                return query.Paging().Where(o => o.PartitionResourceId == partitionResourceId && o.Name.StartsWith(key.Trim())).OrderByDescending(o => o.Id);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace WebManApplication.Areas.SystemManage.Controllers
 {
-    public class RoleManageController : AuthController
+    public class SystemRoleManageController : AuthController
     {
         public override Guid OperateResource
         {
@@ -28,13 +28,14 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         }
 
         [Auth(Operation.List)]
-        [Location("角色管理", Icon = FontAwesome.User)]
-        public ActionResult Index()
+        [Location("系统角色", Icon = FontAwesome.User)]
+        public ActionResult Index(string key)
         {
-            var table = DataTable.Definition<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource));
+            var table = DataTable.Definition<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location(Edit), Account);
             table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色");
+            table.AddSearchPanel(Url.Location(Index), "key", key, "名称");
 
             var panel = new Panel();
             panel.ConfigLocation();
@@ -43,10 +44,10 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         }
 
         [Auth(Operation.List)]
-        public JsonResult IndexDataSource(DataTableRequest request)
+        public JsonResult IndexDataSource(string key, DataTableRequest request)
         {
             int totalCount;
-            var list = CreateIdentity().GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount);
+            var list = CreateIdentity().GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key);
             return Json(DataTable.Source(list, request, totalCount));
         }
 
@@ -59,34 +60,18 @@ namespace WebManApplication.Areas.SystemManage.Controllers
                 if (permissions != null) permissions.TryGetValue(item.Id, out value);
 
                 var input = new Oldmansoft.Html.WebMan.FormInputCreator.Inputs.CheckBoxList();
-                input.Init("Operation" + item.Id, typeof(string), value, GetDataSourceList());
+                input.Init("Operation" + item.Id, typeof(string), value, Extends.GetOperationDataSourceList());
                 input.SetInputMode(false, false, null);
 
-                input.Prepend(new Oldmansoft.Html.HtmlElement(Oldmansoft.Html.HtmlTag.Label).Text(item.Name).AddClass("checkbox-list-head"));
+                var inputHead = new Oldmansoft.Html.HtmlElement(Oldmansoft.Html.HtmlTag.Label);
+                inputHead.Text(item.Name);
+                inputHead.Css("margin-bottom", "2px").Css("vertical-align", "middle").Css("padding-top", "7px").Css("padding-right", "7px");
+                input.Prepend(inputHead);
                 div.Append(input);
             }
             form.Add(resource.Name, div.CreateGrid(Column.Sm9 | Column.Md10));
         }
-
-        private static List<ListDataItem> GetDataSourceList()
-        {
-            var cn = new Dictionary<string, string>();
-            cn.Add("List", "列表");
-            cn.Add("Execute", "执行");
-            cn.Add("View", "查看");
-            cn.Add("Append", "添加");
-            cn.Add("Modify", "修改");
-            cn.Add("Remove", "移除");
-
-            var list = new List<ListDataItem>();
-            foreach (var item in Enum.GetValues(typeof(Operation)))
-            {
-                list.Add(new ListDataItem(cn[Enum.GetName(typeof(Operation), item)], ((int)item).ToString()));
-            }
-
-            return list;
-        }
-
+        
         private void GetPermissionsFromResource(List<Oldmansoft.Identity.Data.PermissionData> result, Oldmansoft.Identity.Data.ResourceData resource)
         {
             foreach (var child in resource.Children)

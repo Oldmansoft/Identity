@@ -49,6 +49,7 @@
     <Compile Include="..\Oldmansoft.Identity.Shared\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="DataDefinition\MemberType.cs" />
     <Compile Include="Data\ResourceData.cs" />
     <Compile Include="Domain\Account.cs" />
     <Compile Include="Data\AccountData.cs" />

@@ -23,7 +23,8 @@ namespace Oldmansoft.Identity.Domain
         /// 根据分区资源分页列出角色
         /// </summary>
         /// <param name="partitionResourceId"></param>
+        /// <param name="key"></param>
         /// <returns></returns>
-        IPagingOrdered<Role> PagingByPartitionResourceId(Guid partitionResourceId);
+        IPagingOrdered<Role> PagingByPartitionResourceId(Guid partitionResourceId, string key);
     }
 }

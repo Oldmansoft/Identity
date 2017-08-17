@@ -148,7 +148,7 @@ namespace Oldmansoft.Identity.Domain
             if (MemberId == memberId)
             {
                 MemberId = null;
-                MemberType = 0;
+                MemberType = DataDefinition.MemberType.Unknown;
                 return true;
             }
             return false;
@@ -160,7 +160,7 @@ namespace Oldmansoft.Identity.Domain
         /// <returns></returns>
         public bool IsSystem()
         {
-            return MemberType == -1;
+            return MemberType == DataDefinition.MemberType.System;
         }
     }
 }

@@ -9,7 +9,7 @@ using Oldmansoft.Identity;
 
 namespace WebManApplication.Areas.SystemManage.Controllers
 {
-    public class AccountManageController : AuthController
+    public class SystemAccountManageController : AuthController
     {
         public override Guid OperateResource
         {
@@ -21,14 +21,15 @@ namespace WebManApplication.Areas.SystemManage.Controllers
 
         [Auth(Operation.List)]
         [Location("帐号管理", Icon = FontAwesome.User)]
-        public ActionResult Index()
+        public ActionResult Index(string key)
         {
-            var table = DataTable.Definition<Models.AccountManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource));
+            var table = DataTable.Definition<Models.AccountManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location(SetPassword), Account);
             table.AddActionItem(Url.Location(SetRole), Account);
-            table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除帐号");
-
+            table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除帐号").OnClientCondition(ItemActionClient.Disable, "data.MemberType == -1");
+            table.AddSearchPanel(Url.Location(Index), "key", key, "帐号");
+            
             var panel = new Panel();
             panel.ConfigLocation();
             panel.Append(table);
@@ -36,10 +37,10 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         }
 
         [Auth(Operation.List)]
-        public JsonResult IndexDataSource(DataTableRequest request)
+        public JsonResult IndexDataSource(string key, DataTableRequest request)
         {
             int totalCount;
-            var list = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount);
+            var list = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, key);
             return Json(DataTable.Source(list, request, totalCount));
         }
 

@@ -29,11 +29,18 @@ namespace Oldmansoft.Identity.Driver.Mongo
             return Query().Where(o => o.Name == name).FirstOrDefault();
         }
 
-        public IPagingOrdered<Domain.Account> Paging()
+        public IPagingOrdered<Domain.Account> Paging(string key)
         {
             IQuerySupport<Domain.Account> repository = this;
             var query = repository.Query();
-            return query.Paging().OrderByDescending(o => o.CreatedTime);
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return query.Paging().OrderByDescending(o => o.Id);
+            }
+            else
+            {
+                return query.Paging().Where(o => o.Name.StartsWith(key.Trim())).OrderByDescending(o => o.Id);
+            }
         }
     }
 }
