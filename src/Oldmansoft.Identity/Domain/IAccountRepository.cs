@@ -34,6 +34,14 @@ namespace Oldmansoft.Identity.Domain
         IPagingOrdered<Account> Paging(string key);
 
         /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="partitionResourceId">分区资源号</param>
+        /// <param name="key">查找内容</param>
+        /// <returns></returns>
+        IPagingOrdered<Account> Paging(Guid partitionResourceId, string key);
+
+        /// <summary>
         /// 是否包含角色序号
         /// </summary>
         /// <param name="roleId">角色序号</param>

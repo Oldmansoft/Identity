@@ -7,15 +7,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace WebManApplication.Areas.SystemManage.Controllers
+namespace WebManApplication.Areas.BusinessManage.Controllers
 {
-    public class SystemRoleAccountController : AuthController
+    public class BusinessRoleAccountController : AuthController
     {
         public override Guid OperateResource
         {
             get
             {
-                return ResourceProvider.Get<Resource.System>().Account;
+                return ResourceProvider.Get<Resource.Business>().Account;
             }
         }
 
@@ -30,7 +30,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Location("帐号列表", Icon = FontAwesome.User)]
         public ActionResult Search(Guid roleId, string key)
         {
-            var role = CreateIdentity().GetRole<Resource.System>(roleId);
+            var role = CreateIdentity().GetRole<Resource.Business>(roleId);
             if (role == null) return HttpNotFound();
 
             var sourceLocation = Url.Location(new Func<Guid, string, DataTableRequest, JsonResult>(IndexDataSource));
@@ -70,7 +70,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
                     if (role.Id == roleId) continue;
                     roleIds.Add(role.Id);
                 }
-                CreateIdentity().AccountSetRole<Resource.System>(account.Id, roleIds.ToArray());
+                CreateIdentity().AccountSetRole<Resource.Business>(account.Id, roleIds.ToArray());
             }
             return Json(DealResult.Refresh());
         }

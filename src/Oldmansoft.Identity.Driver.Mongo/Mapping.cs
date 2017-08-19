@@ -11,6 +11,7 @@ namespace Oldmansoft.Identity.Driver.Mongo
         protected override void OnModelCreating()
         {
             Add<Account, Guid>(domain => domain.Id)
+                .SetIndex(domain => domain.PartitionResourceId)
                 .SetUnique(domain => domain.Name)
                 .SetIndex(domain => domain.MemberId)
                 .SetIndex(domain => domain.RoleIds);

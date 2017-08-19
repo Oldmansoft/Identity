@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace WebManApplication.Areas.SystemManage.Models
+namespace WebManApplication.Areas.BusinessManage.Models
 {
     public class AccountManageListModel
     {
@@ -64,7 +64,7 @@ namespace WebManApplication.Areas.SystemManage.Models
         [System.ComponentModel.ReadOnly(true)]
         public string Name { get; set; }
 
-        [Display(Name = "系统角色")]
+        [Display(Name = "业务角色")]
         [Oldmansoft.Html.WebMan.Annotations.CustomInput(typeof(Oldmansoft.Html.WebMan.Input.Select2))]
         public List<Guid> RoleId { get; set; }
     }

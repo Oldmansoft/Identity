@@ -7,15 +7,15 @@ using Oldmansoft.ClassicDomain.Util;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 
-namespace WebManApplication.Areas.SystemManage.Controllers
+namespace WebManApplication.Areas.BusinessManage.Controllers
 {
-    public class SystemAccountManageController : AuthController
+    public class BusinessAccountManageController : AuthController
     {
         public override Guid OperateResource
         {
             get
             {
-                return ResourceProvider.Get<Resource.System>().Account;
+                return ResourceProvider.Get<Resource.Business>().Account;
             }
         }
 
@@ -40,7 +40,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         public JsonResult IndexDataSource(string key, DataTableRequest request)
         {
             int totalCount;
-            var list = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, key);
+            var list = CreateIdentity().GetAccounts<Resource.Business>(request.PageIndex, request.PageSize, out totalCount, key);
             return Json(DataTable.Source(list, request, totalCount));
         }
 
@@ -65,7 +65,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             }
 
             model.Name = model.Name.Trim();
-            if (CreateIdentity().CreateAccount<Resource.System>(model.Name, model.Name.CreatePasswordSHA256Hash(model.Password)))
+            if (CreateIdentity().CreateAccount<Resource.Business>(model.Name, model.Name.CreatePasswordSHA256Hash(model.Password)))
             {
                 return Json(DealResult.Refresh());
             }
@@ -116,7 +116,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             }
             var dataSource = new ListDataSource();
             var list = dataSource["RoleId"];
-            foreach (var item in CreateIdentity().GetRoles<Resource.System>())
+            foreach (var item in CreateIdentity().GetRoles<Resource.Business>())
             {
                 dataSource["RoleId"].Add(new ListDataItem(item.Name, item.Id.ToString()));
             }
@@ -130,7 +130,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Auth(Operation.Modify)]
         public JsonResult SetRoleResult(Models.AccountManageSetRoleModel model)
         {
-            CreateIdentity().AccountSetRole<Resource.System>(model.Id, model.RoleId.ToArray());
+            CreateIdentity().AccountSetRole<Resource.Business>(model.Id, model.RoleId.ToArray());
             return Json(DealResult.Refresh());
         }
 

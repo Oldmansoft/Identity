@@ -37,7 +37,13 @@ namespace WebManApplication.Controllers
             document.Resources.Sha256.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/js-sha256/0.5.0/sha256.min.js");
             document.Resources.JQueryForm.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/jquery.form/4.2.1/jquery.form.min.js");
             document.Title = "示例";
-            
+
+            document.Menu.Add(
+                new TreeListItem("业务", FontAwesome.Suitcase)
+                    .Add(new TreeListItem(Url.Location<Areas.BusinessManage.Controllers.BusinessAccountManageController>(o => o.Index)), Account)
+                    .Add(new TreeListItem(Url.Location<Areas.BusinessManage.Controllers.BusinessRoleManageController>(o => o.Index)), Account)
+            );
+
             document.Menu.Add(
                 new TreeListItem("系统管理", FontAwesome.Shield)
                     .Add(new TreeListItem(Url.Location<Areas.SystemManage.Controllers.SystemAccountManageController>(o => o.Index)), Account)

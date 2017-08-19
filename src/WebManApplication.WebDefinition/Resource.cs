@@ -23,7 +23,7 @@ namespace WebManApplication
             public Guid Account { get; set; }
 
             /// <summary>
-            /// 角色管理
+            /// 系统角色
             /// </summary>
             public Guid Role { get; set; }
         }
@@ -33,7 +33,15 @@ namespace WebManApplication
         /// </summary>
         public class Business : IOperateResource
         {
+            /// <summary>
+            /// 帐号管理
+            /// </summary>
+            public Guid Account { get; set; }
 
+            /// <summary>
+            /// 业务角色
+            /// </summary>
+            public Guid Role { get; set; }
         }
     }
 }

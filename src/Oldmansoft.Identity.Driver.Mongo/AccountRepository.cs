@@ -43,6 +43,20 @@ namespace Oldmansoft.Identity.Driver.Mongo
             }
         }
         
+        public IPagingOrdered<Domain.Account> Paging(Guid partitionResourceId, string key)
+        {
+            IQuerySupport<Domain.Account> repository = this;
+            var query = repository.Query();
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return query.Paging().Where(o => o.PartitionResourceId == partitionResourceId).OrderByDescending(o => o.Id);
+            }
+            else
+            {
+                return query.Paging().Where(o => o.PartitionResourceId == partitionResourceId && o.Name.StartsWith(key.Trim())).OrderByDescending(o => o.Id);
+            }
+        }
+
         public IList<Domain.Account> Paging(int index, int size, out int totalCount, Guid roleId, string key)
         {
             IPagingCondition<Account> condition;

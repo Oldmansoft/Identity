@@ -25,7 +25,8 @@ namespace Oldmansoft.Identity
         }
 
         #region 私有方法
-        private bool CreateAccount(string name, string passwordSHA256Hash, Guid? memberId, int memberType, out Guid accountId)
+        private bool CreateAccount<TOperateResource>(string name, string passwordSHA256Hash, Guid? memberId, int memberType, out Guid accountId)
+            where TOperateResource : class, IOperateResource, new()
         {
             var repository = Factory.CreateAccountRepository();
             accountId = Guid.Empty;
@@ -33,6 +34,7 @@ namespace Oldmansoft.Identity
             if (repository.GetByName(name) != null) return false;
 
             var domain = Factory.CreateAccountObject();
+            domain.PartitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             domain.Name = name;
             domain.SetPasswordHash(passwordSHA256Hash);
             domain.MemberId = memberId;
@@ -128,49 +130,55 @@ namespace Oldmansoft.Identity
             }
 
             Guid accountId;
-            if (!CreateAccount(name, passwordSHA256Hash, null, DataDefinition.MemberType.System, out accountId)) return false;
+            if (!CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.System, out accountId)) return false;
             if (!CreateRole<TOperateResource>(role)) return false;
 
-            AccountSetRole(accountId, new Guid[] { role.Id });
+            AccountSetRole<TOperateResource>(accountId, new Guid[] { role.Id });
             return true;
         }
 
         /// <summary>
         /// 创建帐号
         /// </summary>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
         /// <param name="name">名称</param>
         /// <param name="passwordSHA256Hash">密码十六进制散列</param>
         /// <returns></returns>
-        public bool CreateAccount(string name, string passwordSHA256Hash)
+        public bool CreateAccount<TOperateResource>(string name, string passwordSHA256Hash)
+            where TOperateResource : class, IOperateResource, new()
         {
             Guid accountId;
-            return CreateAccount(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
+            return CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
         }
 
         /// <summary>
         /// 创建帐号
         /// </summary>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
         /// <param name="name">名称</param>
         /// <param name="passwordSHA256Hash">密码十六进制散列</param>
         /// <param name="accountId">返回帐号序号</param>
         /// <returns></returns>
-        public bool CreateAccount(string name, string passwordSHA256Hash, out Guid accountId)
+        public bool CreateAccount<TOperateResource>(string name, string passwordSHA256Hash, out Guid accountId)
+            where TOperateResource : class, IOperateResource, new()
         {
-            return CreateAccount(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
+            return CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
         }
 
         /// <summary>
         /// 创建帐号并绑定会员序号
         /// </summary>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
         /// <param name="name">名称</param>
         /// <param name="passwordSHA256Hash">密码十六进制散列</param>
         /// <param name="memberId">会员序号</param>
         /// <param name="memberType">会员类型</param>
         /// <param name="accountId">返回帐号序号</param>
         /// <returns></returns>
-        public bool CreateAccount(string name, string passwordSHA256Hash, Guid memberId, uint memberType, out Guid accountId)
+        public bool CreateAccount<TOperateResource>(string name, string passwordSHA256Hash, Guid memberId, uint memberType, out Guid accountId)
+            where TOperateResource : class, IOperateResource, new()
         {
-            return CreateAccount(name, passwordSHA256Hash, memberId, (int)memberType, out accountId);
+            return CreateAccount<TOperateResource>(name, passwordSHA256Hash, memberId, (int)memberType, out accountId);
         }
 
         /// <summary>
@@ -301,6 +309,26 @@ namespace Oldmansoft.Identity
         }
 
         /// <summary>
+        /// 获取资源区的帐号分页列表
+        /// </summary>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="index">页码</param>
+        /// <param name="size">页大小</param>
+        /// <param name="totalCount">总记录数</param>
+        /// <param name="key">查询内容</param>
+        /// <returns></returns>
+        public IList<Data.AccountData> GetAccounts<TOperateResource>(int index, int size, out int totalCount, string key = null)
+            where TOperateResource : class, IOperateResource, new()
+        {
+            var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
+            return Factory.CreateAccountRepository()
+                .Paging(partitionResourceId, key)
+                .Size(size)
+                .ToList(index, out totalCount)
+                .CopyTo(new List<Data.AccountData>());
+        }
+
+        /// <summary>
         /// 获取帐号分页列表
         /// </summary>
         /// <param name="index">页码</param>
@@ -381,17 +409,36 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 帐号设置角色
         /// </summary>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
         /// <param name="accountId">帐号序号</param>
         /// <param name="roleIds">角色序号组</param>
         /// <returns></returns>
-        public bool AccountSetRole(Guid accountId, Guid[] roleIds)
+        public bool AccountSetRole<TOperateResource>(Guid accountId, Guid[] roleIds)
+            where TOperateResource : class, IOperateResource, new()
         {
             var repository = Factory.CreateAccountRepository();
+            var roleRepository = Factory.CreateRoleRepository();
+
+            var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
 
             var domain = repository.Get(accountId);
             if (domain == null) return false;
 
-            domain.SetRoleIds(roleIds);
+            var list = new List<Guid>();
+            foreach (var roleId in domain.GetRoleIds())
+            {
+                var role = roleRepository.Get(roleId);
+                if (role.PartitionResourceId == partitionResourceId) continue;
+                list.Add(roleId);
+            }
+            foreach (var roleId in roleIds)
+            {
+                var role = roleRepository.Get(roleId);
+                if (role.PartitionResourceId != partitionResourceId) continue;
+                list.Add(roleId);
+            }
+
+            domain.SetRoleIds(list.ToArray());
             
             repository.Replace(domain);
             Factory.GetUnitOfWork().Commit();
