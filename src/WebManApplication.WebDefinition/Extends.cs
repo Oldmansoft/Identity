@@ -133,11 +133,17 @@ namespace WebManApplication
 
             var connector = "?";
             if (location.Path.IndexOf("?") > -1) connector = "&";
-            var script = string.Format("$app.sameHash('{0}{1}{2}=' + encodeURIComponent($.trim($(this).parent().parent().find('input[name={2}]').val())))", location.Path, connector, key);
+            var script = string.Format("$app.sameHash('{0}{1}{2}=' + encodeURIComponent($.trim($(this).find('input[name={2}]').val()))); return false;", location.Path, connector, key);
+
+            var form = new HtmlElement(HtmlTag.Form);
+            form.AddClass("bv-form");
+            form.OnClient(HtmlEvent.Submit, script);
+            form.PrependTo(source);
 
             var search = new HtmlElement(HtmlTag.Div);
-            search.PrependTo(source);
             search.AddClass("form-group");
+            search.AppendTo(form);
+
             var group = new HtmlElement(HtmlTag.Div);
             group.AppendTo(search);
             group.AddClass(Column.Sm5);
@@ -154,8 +160,7 @@ namespace WebManApplication
             var button = new HtmlElement(HtmlTag.Input);
             button.AppendTo(span);
             button.Attribute(HtmlAttribute.Value, "查找");
-            button.Attribute(HtmlAttribute.Type, "button");
-            button.OnClient(HtmlEvent.Click, script);
+            button.Attribute(HtmlAttribute.Type, "submit");
         }
 
         /// <summary>

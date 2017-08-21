@@ -23,11 +23,15 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Location("帐号管理", Icon = FontAwesome.User)]
         public ActionResult Index(string key)
         {
-            var table = DataTable.Definition<Models.AccountManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
+            var table = DataTable.Definition<Models.AccountManageListModel>(o => o.Id)
+                .Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location(SetPassword), Account);
             table.AddActionItem(Url.Location(SetRole), Account);
-            table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除帐号").OnClientCondition(ItemActionClient.Disable, "data.MemberType == -1");
+            table.AddActionItem(Url.Location(Delete), Account)
+                .Confirm("是否删除帐号")
+                .OnClientCondition(ItemActionClient.Hide, "data.MemberType == -1")
+                .OnClientCondition(ItemActionClient.Disable, "data.MemberId != ''");
             table.AddSearchPanel(Url.Location(Index), "key", key, "帐号");
             
             var panel = new Panel();
