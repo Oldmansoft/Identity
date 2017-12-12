@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Oldmansoft.ClassicDomain.Util;
+using Oldmansoft.ClassicDomain;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 
@@ -83,7 +83,7 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             var data = CreateIdentity().GetAccount(selectedId);
             if (data == null) return HttpNotFound();
 
-            var model = data.CopyTo(new Models.AccountManageEditModel());
+            var model = data.MapTo(new Models.AccountManageEditModel());
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.AccountManageEditModel, JsonResult>(SetPasswordResult)));
             var panel = new Panel();
             panel.ConfigLocation();
@@ -112,7 +112,7 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             var data = CreateIdentity().GetAccount(selectedId);
             if (data == null) return HttpNotFound();
 
-            var model = data.CopyTo(new Models.AccountManageSetRoleModel());
+            var model = data.MapTo(new Models.AccountManageSetRoleModel());
             model.RoleId = new List<Guid>();
             foreach (var item in data.Roles)
             {

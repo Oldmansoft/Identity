@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Oldmansoft.ClassicDomain.Driver.Mongo;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
@@ -16,7 +17,7 @@ namespace Oldmansoft.Identity.Driver.Mongo
                 .SetIndex(domain => domain.MemberId)
                 .SetIndex(domain => domain.RoleIds);
             Add<Role, Guid>(domain => domain.Id)
-                .SetIndex(domain => domain.PartitionResourceId, domain => domain.Name);
+                .SetIndex(g => g.CreateGroup(domain => domain.PartitionResourceId).Add(domain => domain.Name));
         }
     }
 }

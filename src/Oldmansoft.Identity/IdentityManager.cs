@@ -55,7 +55,7 @@ namespace Oldmansoft.Identity
 
         private Data.AccountData FillRoles(IRepositoryFactory factory, Domain.Account domain)
         {
-            var data = domain.CopyTo(new Data.AccountData());
+            var data = domain.MapTo(new Data.AccountData());
 
             var roleIds = domain.GetRoleIds();
             if (roleIds.Count > 0)
@@ -65,7 +65,7 @@ namespace Oldmansoft.Identity
                 {
                     var role = roles.Get(roleId);
                     if (role == null) continue;
-                    data.Roles.Add(role.CopyTo(new Data.RoleData()));
+                    data.Roles.Add(role.MapTo(new Data.RoleData()));
                 }
             }
 
@@ -82,7 +82,7 @@ namespace Oldmansoft.Identity
         public Data.ResourceData GetResource<TOperateResource>()
             where TOperateResource : class, IOperateResource, new()
         {
-            return ResourceProvider.GetResource<TOperateResource>().CopyTo(new Data.ResourceData());
+            return ResourceProvider.GetResource<TOperateResource>().MapTo(new Data.ResourceData());
         }
         #endregion
 
@@ -305,7 +305,7 @@ namespace Oldmansoft.Identity
                 .Paging(key)
                 .Size(size)
                 .ToList(index, out totalCount)
-                .CopyTo(new List<Data.AccountData>());
+                .MapTo(new List<Data.AccountData>());
         }
 
         /// <summary>
@@ -325,7 +325,7 @@ namespace Oldmansoft.Identity
                 .Paging(partitionResourceId, key)
                 .Size(size)
                 .ToList(index, out totalCount)
-                .CopyTo(new List<Data.AccountData>());
+                .MapTo(new List<Data.AccountData>());
         }
 
         /// <summary>
@@ -341,7 +341,7 @@ namespace Oldmansoft.Identity
         {
             return Factory.CreateAccountRepository()
                 .Paging(index, size, out totalCount, roleId, key)
-                .CopyTo(new List<Data.AccountData>());
+                .MapTo(new List<Data.AccountData>());
         }
         
         /// <summary>
@@ -459,7 +459,7 @@ namespace Oldmansoft.Identity
             var domain = Factory.CreateRoleRepository().Get(id);
             if (domain == null) return null;
             if (domain.PartitionResourceId != ResourceProvider.GetResource<TOperateResource>().Id) return null;
-            return domain.CopyTo(new Data.RoleData());
+            return domain.MapTo(new Data.RoleData());
         }
 
         /// <summary>
@@ -472,7 +472,7 @@ namespace Oldmansoft.Identity
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var list = Factory.CreateRoleRepository().ListByPartitionResourceId(partitionResourceId);
-            return list.CopyTo(new List<Data.RoleData>());
+            return list.MapTo(new List<Data.RoleData>());
         }
 
         /// <summary>
@@ -492,7 +492,7 @@ namespace Oldmansoft.Identity
             var list = repository.PagingByPartitionResourceId(partitionResourceId, key)
                 .Size(size)
                 .ToList(index, out totalCount);
-            return list.CopyTo(new List<Data.RoleData>());
+            return list.MapTo(new List<Data.RoleData>());
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace Oldmansoft.Identity
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var repository = Factory.CreateRoleRepository();
-            var domain = data.CopyTo(Factory.CreateRoleObject());
+            var domain = data.MapTo(Factory.CreateRoleObject());
             domain.PartitionResourceId = partitionResourceId;
             repository.Add(domain);
             try
@@ -537,7 +537,7 @@ namespace Oldmansoft.Identity
             if (domain == null) return false;
             if (domain.PartitionResourceId != partitionResourceId) return false;
 
-            data.CopyTo(domain);
+            data.MapTo(domain);
             repository.Replace(domain);
             Factory.GetUnitOfWork().Commit();
             return true;

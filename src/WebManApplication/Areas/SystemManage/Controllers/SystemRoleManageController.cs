@@ -1,4 +1,4 @@
-﻿using Oldmansoft.ClassicDomain.Util;
+﻿using Oldmansoft.ClassicDomain;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
@@ -51,7 +51,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             var list = new List<Models.RoleManageListMoreModel>();
             foreach (var item in CreateIdentity().GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key))
             {
-                var model = item.CopyTo(new Models.RoleManageListMoreModel());
+                var model = item.MapTo(new Models.RoleManageListMoreModel());
                 model.HasAccount = CreateIdentity().RoleHasAccount(item.Id);
                 list.Add(model);
             }
@@ -131,7 +131,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
-            var data = model.CopyTo(new Oldmansoft.Identity.Data.RoleData());
+            var data = model.MapTo(new Oldmansoft.Identity.Data.RoleData());
             data.Permissions = GetPermissions();
             if (CreateIdentity().CreateRole<Resource.System>(data))
             {
@@ -157,7 +157,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
                 permissions[item.ResourceId].Add(((int)item.Operator).ToString());
             }
 
-            var model = data.CopyTo(new Models.RoleManageEditModel());
+            var model = data.MapTo(new Models.RoleManageEditModel());
             var form = FormHorizontal.Create(model, Url.Location(new Func<Models.RoleManageEditModel, JsonResult>(EditResult)));
             foreach (var item in ResourceSupport())
             {
@@ -178,7 +178,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             }
             var data = CreateIdentity().GetRole<Resource.System>(model.Id);
             if (data == null) return Json(DealResult.WrongRefresh("内容不存在"));
-            model.CopyTo(data);
+            model.MapTo(data);
             data.Permissions = GetPermissions();
             CreateIdentity().ReplaceRole<Resource.System>(data);
             return Json(DealResult.Refresh());
