@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain.Driver.Mongo;
+using Oldmansoft.ClassicDomain;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
