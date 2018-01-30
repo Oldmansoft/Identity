@@ -117,6 +117,72 @@ namespace WebManApplication
         }
 
         /// <summary>
+        /// 根据权限添加动作
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="location"></param>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public static ITableAction AddActionTable<TModel>(this StaticTable<TModel> source, ILocation location, AccountData account) where TModel : class
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (location == null) throw new ArgumentNullException("location");
+            if (account == null) throw new ArgumentNullException("account");
+            if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
+            if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
+            if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+
+            var attribute = location.Method.GetCustomAttribute<AuthAttribute>();
+            if (attribute == null)
+            {
+                return source.AddActionTable(location);
+            }
+            var controller = ObjectStore.Instance.Get(location.TargetType) as AuthController;
+            var resourceId = controller.OperateResource;
+            var operation = attribute.Operation;
+
+            if (account.HasPower(resourceId, operation))
+            {
+                return source.AddActionTable(location);
+            }
+            return EmptyTableAction.Instance;
+        }
+
+        /// <summary>
+        /// 根据权限添加动作
+        /// </summary>
+        /// <typeparam name="TModel"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="location"></param>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public static IStaticTableItemAction<TModel> AddActionItem<TModel>(this StaticTable<TModel> source, ILocation location, AccountData account) where TModel : class
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (location == null) throw new ArgumentNullException("location");
+            if (account == null) throw new ArgumentNullException("account");
+            if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
+            if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
+            if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+
+            var attribute = location.Method.GetCustomAttribute<AuthAttribute>();
+            if (attribute == null)
+            {
+                return source.AddActionItem(location);
+            }
+            var controller = ObjectStore.Instance.Get(location.TargetType) as AuthController;
+            var resourceId = controller.OperateResource;
+            var operation = attribute.Operation;
+
+            if (account.HasPower(resourceId, operation))
+            {
+                return source.AddActionItem(location);
+            }
+            return EmptyTableAction<TModel>.Instance;
+        }
+
+        /// <summary>
         /// 添加查找面板
         /// </summary>
         /// <typeparam name="TModel"></typeparam>
