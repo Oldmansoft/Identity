@@ -8,9 +8,25 @@ namespace Oldmansoft.Identity.Driver.Mongo
 {
     class Role : Domain.Role
     {
-        public override bool HasAccountSetIt(Domain.IAccountRepository accountRepository)
+        private Role() { }
+
+        public static Role Create(Guid partitionResourceId, string name, string description, IEnumerable<Domain.Permission> permissions)
         {
-            return accountRepository.ContainsRoleId(Id);
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
+            if (description == null) throw new ArgumentNullException("description");
+            if (permissions == null) throw new ArgumentNullException("permissions");
+
+            var result = new Role();
+            result.PartitionResourceId = partitionResourceId;
+            result.Name = name.Trim();
+            result.Description = description.Trim();
+            result.Permissions.AddRange(permissions);
+            return result;
+        }
+
+        public override bool HasAccountSetIt(Domain.IAccount account)
+        {
+            return account.ContainsRoleId(Id);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 身份系统仓储工厂
         /// </summary>
-        protected abstract IRepositoryFactory Factory { get; }
+        protected abstract Infrastructure.IRepositoryFactory Factory { get; }
 
         private Guid? _AccountId { get; set; }
 

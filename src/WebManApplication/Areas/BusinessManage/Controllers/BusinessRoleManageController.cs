@@ -130,9 +130,7 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
-            var data = model.MapTo(new Oldmansoft.Identity.Data.RoleData());
-            data.Permissions = GetPermissions();
-            if (CreateIdentity().CreateRole<Resource.Business>(data))
+            if (CreateIdentity().CreateRole<Resource.Business>(model.Name, model.Description, GetPermissions()))
             {
                 return Json(DealResult.Refresh());
             }
@@ -177,9 +175,8 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             }
             var data = CreateIdentity().GetRole<Resource.Business>(model.Id);
             if (data == null) return Json(DealResult.WrongRefresh("内容不存在"));
-            model.MapTo(data);
-            data.Permissions = GetPermissions();
-            CreateIdentity().ReplaceRole<Resource.Business>(data);
+
+            CreateIdentity().ReplaceRole<Resource.Business>(model.Id, model.Name, model.Description, GetPermissions());
             return Json(DealResult.Refresh());
         }
 

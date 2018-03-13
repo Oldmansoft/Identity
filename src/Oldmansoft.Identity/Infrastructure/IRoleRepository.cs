@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.ClassicDomain;
+using Oldmansoft.Identity.Domain;
 
-namespace Oldmansoft.Identity.Domain
+namespace Oldmansoft.Identity.Infrastructure
 {
     /// <summary>
     /// 角色仓储

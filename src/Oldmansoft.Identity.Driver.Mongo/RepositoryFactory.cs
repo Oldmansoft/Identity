@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.ClassicDomain;
 using Oldmansoft.ClassicDomain.Driver.Mongo;
+using Oldmansoft.Identity.Infrastructure;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
@@ -35,26 +36,33 @@ namespace Oldmansoft.Identity.Driver.Mongo
         /// <summary>
         /// 创建帐号对象
         /// </summary>
+        /// <param name="partitionResourceId">分区资源号</param>
+        /// <param name="name">名称</param>
+        /// <param name="memberType">会员类型</param>
         /// <returns></returns>
-        public Domain.Account CreateAccountObject()
+        public Domain.Account CreateAccountObject(Guid partitionResourceId, string name, int memberType)
         {
-            return new Account();
+            return Account.Create(partitionResourceId, name, memberType);
         }
 
         /// <summary>
         /// 创建角色对象
         /// </summary>
+        /// <param name="partitionResourceId">资源区</param>
+        /// <param name="name">名称</param>
+        /// <param name="description">注释</param>
+        /// <param name="permissions">许可列表</param>
         /// <returns></returns>
-        public Domain.Role CreateRoleObject()
+        public Domain.Role CreateRoleObject(Guid partitionResourceId, string name, string description, List<Domain.Permission> permissions)
         {
-            return new Role();
+            return Role.Create(partitionResourceId, name, description, permissions);
         }
 
         /// <summary>
         /// 创建帐号仓储
         /// </summary>
         /// <returns></returns>
-        public Domain.IAccountRepository CreateAccountRepository()
+        public IAccountRepository CreateAccountRepository()
         {
             return new AccountRepository(Uow);
         }
@@ -63,7 +71,7 @@ namespace Oldmansoft.Identity.Driver.Mongo
         /// 创建角色仓储
         /// </summary>
         /// <returns></returns>
-        public Domain.IRoleRepository CreateRoleRepository()
+        public IRoleRepository CreateRoleRepository()
         {
             return new RoleRepository(Uow);
         }

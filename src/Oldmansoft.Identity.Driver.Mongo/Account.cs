@@ -24,9 +24,26 @@ namespace Oldmansoft.Identity.Driver.Mongo
         /// <summary>
         /// 创建帐号
         /// </summary>
-        public Account()
+        private Account()
         {
+            CreatedTime = DateTime.UtcNow;
             RoleIds = new List<Guid>();
+        }
+
+        /// <summary>
+        /// 创建
+        /// </summary>
+        /// <param name="partitionResourceId"></param>
+        /// <param name="name"></param>
+        /// <param name="memberType"></param>
+        /// <returns></returns>
+        public static Account Create(Guid partitionResourceId, string name, int memberType)
+        {
+            var result = new Account();
+            result.PartitionResourceId = partitionResourceId;
+            result.Name = name;
+            result.MemberType = memberType;
+            return result;
         }
 
         protected override byte[] GetPasswordHash()

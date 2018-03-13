@@ -8,7 +8,7 @@ using Oldmansoft.ClassicDomain.Util;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
-    class AccountRepository : ClassicDomain.Driver.Mongo.RepositoryDefinedSuperClass<Account, Domain.Account, Guid, Mapping>, Domain.IAccountRepository
+    class AccountRepository : ClassicDomain.Driver.Mongo.RepositoryDefinedSuperClass<Account, Domain.Account, Guid, Mapping>, Infrastructure.IAccountRepository
     {
         public AccountRepository(UnitOfWork uow)
             : base(uow)

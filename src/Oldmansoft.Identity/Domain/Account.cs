@@ -14,38 +14,38 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 序号
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// 资源分区
         /// 用于区分帐号管理区域
         /// </summary>
-        public Guid PartitionResourceId { get; set; }
+        public Guid PartitionResourceId { get; protected set; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// 成员序号
         /// </summary>
-        public Guid? MemberId { get; set; }
+        public Guid? MemberId { get; private set; }
 
         /// <summary>
         /// 成员类型
         /// </summary>
-        public int MemberType { get; set; }
+        public int MemberType { get; protected set; }
 
         /// <summary>
         /// 创建时间
         /// </summary>
-        public DateTime CreatedTime { get; set; }
+        public DateTime CreatedTime { get; protected set; }
 
         /// <summary>
         /// 创建帐号
         /// </summary>
-        public Account()
+        protected Account()
         {
             CreatedTime = DateTime.Now;
         }

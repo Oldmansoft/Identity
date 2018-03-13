@@ -14,12 +14,12 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 资源序号
         /// </summary>
-        public Guid ResourceId { get; set; }
+        public Guid ResourceId { get; private set; }
 
         /// <summary>
         /// 操作
         /// </summary>
-        public Operation Operator { get; set; }
+        public Operation Operator { get; private set; }
 
         /// <summary>
         /// 是否可以操作资源

@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.ClassicDomain;
+using Oldmansoft.Identity.Domain;
 
-namespace Oldmansoft.Identity.Domain
+namespace Oldmansoft.Identity.Infrastructure
 {
     /// <summary>
     /// 帐号仓储
     /// </summary>
-    public interface IAccountRepository : IRepository<Account, Guid>
+    public interface IAccountRepository : IRepository<Account, Guid>, IAccount
     {
         /// <summary>
         /// 从名字获取
@@ -40,13 +41,6 @@ namespace Oldmansoft.Identity.Domain
         /// <param name="key">查找内容</param>
         /// <returns></returns>
         IPagingOrdered<Account> Paging(Guid partitionResourceId, string key);
-
-        /// <summary>
-        /// 是否包含角色序号
-        /// </summary>
-        /// <param name="roleId">角色序号</param>
-        /// <returns></returns>
-        bool ContainsRoleId(Guid roleId);
 
         /// <summary>
         /// 分页

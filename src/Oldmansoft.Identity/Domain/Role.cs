@@ -14,33 +14,33 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 序号
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// 说明
         /// </summary>
-        public string Description { get; set; }
+        public string Description { get; protected set; }
 
         /// <summary>
         /// 资源分区
         /// 角色只拥有此资源下的子资源许可设定
         /// </summary>
-        public Guid PartitionResourceId { get; set; }
+        public Guid PartitionResourceId { get; protected set; }
 
         /// <summary>
         /// 授权列表
         /// </summary>
-        public List<Permission> Permissions { get; set; }
+        public List<Permission> Permissions { get; protected set; }
 
         /// <summary>
         /// 创建角色
         /// </summary>
-        public Role()
+        protected Role()
         {
             Permissions = new List<Permission>();
         }
@@ -66,8 +66,35 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 是否帐号有此角色
         /// </summary>
-        /// <param name="accountRepository"></param>
+        /// <param name="account"></param>
         /// <returns></returns>
-        public abstract bool HasAccountSetIt(IAccountRepository accountRepository);
+        public abstract bool HasAccountSetIt(IAccount account);
+
+        /// <summary>
+        /// 改变
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="permissions"></param>
+        public void Change(string name, string description, IEnumerable<Permission> permissions)
+        {
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
+            if (description == null) throw new ArgumentNullException("description");
+            if (permissions == null) throw new ArgumentNullException("permissions");
+            Name = name.Trim();
+            Description = description.Trim();
+            Permissions.Clear();
+            Permissions.AddRange(permissions);
+        }
+
+        /// <summary>
+        /// 是否为相同的分区
+        /// </summary>
+        /// <param name="resourceId"></param>
+        /// <returns></returns>
+        public bool SamePartition(Guid resourceId)
+        {
+            return PartitionResourceId == resourceId;
+        }
     }
 }

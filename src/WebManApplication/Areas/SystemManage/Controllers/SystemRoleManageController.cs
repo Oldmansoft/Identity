@@ -131,9 +131,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
-            var data = model.MapTo(new Oldmansoft.Identity.Data.RoleData());
-            data.Permissions = GetPermissions();
-            if (CreateIdentity().CreateRole<Resource.System>(data))
+            if (CreateIdentity().CreateRole<Resource.System>(model.Name, model.Description, GetPermissions()))
             {
                 return Json(DealResult.Refresh());
             }
@@ -178,9 +176,8 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             }
             var data = CreateIdentity().GetRole<Resource.System>(model.Id);
             if (data == null) return Json(DealResult.WrongRefresh("内容不存在"));
-            model.MapTo(data);
-            data.Permissions = GetPermissions();
-            CreateIdentity().ReplaceRole<Resource.System>(data);
+            
+            CreateIdentity().ReplaceRole<Resource.System>(model.Id, model.Name, model.Description, GetPermissions());
             return Json(DealResult.Refresh());
         }
 

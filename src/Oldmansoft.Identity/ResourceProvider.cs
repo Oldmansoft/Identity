@@ -79,20 +79,17 @@ namespace Oldmansoft.Identity
             var type = typeof(TOperateResource);
             var summary = Util.AssemblyXml.SummaryReader.GetTypeInfo(type);
 
-            var result = new Domain.Resource();
-            result.Id = CreateGuid(type, string.Empty);
-            result.Name = summary.GetSummary(type.GetFullName());
-            if (result.Name == null) result.Name = type.Name;
-
+            var name = summary.GetSummary(type.GetFullName());
+            if (string.IsNullOrWhiteSpace(name)) name = type.Name;
+            var result = Domain.Resource.Create(CreateGuid(type, string.Empty), name);
+            
             foreach (var property in type.GetProperties())
             {
                 if (property.CanWrite && property.PropertyType == typeof(Guid))
                 {
-                    var data = new Domain.ResourceItem();
-                    data.Id = CreateGuid(property.DeclaringType, property.Name);
-                    data.Name = summary.GetSummary(property.Name);
-                    if (data.Name == null) data.Name = property.Name;
-                    result.Add(data);
+                    name = summary.GetSummary(property.Name);
+                    if (string.IsNullOrWhiteSpace(name)) name = property.Name;
+                    result.Add(Domain.ResourceItem.Create(CreateGuid(property.DeclaringType, property.Name), name));
                 }
             }
 
@@ -100,11 +97,9 @@ namespace Oldmansoft.Identity
             {
                 if (field.IsPublic && field.FieldType == typeof(Guid))
                 {
-                    var data = new Domain.ResourceItem();
-                    data.Id = CreateGuid(field.DeclaringType, field.Name);
-                    data.Name = summary.GetSummary(field.Name);
-                    if (data.Name == null) data.Name = field.Name;
-                    result.Add(data);
+                    name = summary.GetSummary(field.Name);
+                    if (name == null) name = field.Name;
+                    result.Add(Domain.ResourceItem.Create(CreateGuid(field.DeclaringType, field.Name), name));
                 }
             }
             return result;

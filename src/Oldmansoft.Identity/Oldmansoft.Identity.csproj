@@ -55,13 +55,14 @@
     <Compile Include="Data\AccountData.cs" />
     <Compile Include="Data\PermissionData.cs" />
     <Compile Include="Data\RoleData.cs" />
-    <Compile Include="Domain\IAccountRepository.cs" />
-    <Compile Include="Domain\IRoleRepository.cs" />
+    <Compile Include="Domain\IAccount.cs" />
+    <Compile Include="Infrastructure\IAccountRepository.cs" />
+    <Compile Include="Infrastructure\IRoleRepository.cs" />
     <Compile Include="Domain\ResourceItem.cs" />
     <Compile Include="Extends.cs" />
     <Compile Include="IdentityManager.cs" />
     <Compile Include="IdentityException.cs" />
-    <Compile Include="IRepositoryFactory.cs" />
+    <Compile Include="Infrastructure\IRepositoryFactory.cs" />
     <Compile Include="IOperateResource.cs" />
     <Compile Include="Operation.cs" />
     <Compile Include="Domain\Permission.cs" />

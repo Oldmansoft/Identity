@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Oldmansoft.ClassicDomain;
 using Oldmansoft.ClassicDomain.Util;
+using Oldmansoft.Identity.Infrastructure;
 
 namespace Oldmansoft.Identity
 {
@@ -33,12 +34,9 @@ namespace Oldmansoft.Identity
 
             if (repository.GetByName(name) != null) return false;
 
-            var domain = Factory.CreateAccountObject();
-            domain.PartitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
-            domain.Name = name;
+            var domain = Factory.CreateAccountObject(ResourceProvider.GetResource<TOperateResource>().Id, name, memberType);
             domain.SetPasswordHash(passwordSHA256Hash);
-            domain.MemberId = memberId;
-            domain.MemberType = memberType;
+            if (memberId.HasValue) domain.Bind(memberId.Value, memberType);
             repository.Add(domain);
 
             try
@@ -71,6 +69,40 @@ namespace Oldmansoft.Identity
 
             return data;
         }
+
+        /// <summary>
+        /// 获取同样分区的角色列表
+        /// </summary>
+        /// <param name="roleIds"></param>
+        /// <param name="roleRepository"></param>
+        /// <param name="partitionResourceId"></param>
+        /// <param name="list"></param>
+        private void TakeSamePartitionRole(Guid[] roleIds, IRoleRepository roleRepository, Guid partitionResourceId, List<Guid> list)
+        {
+            foreach (var roleId in roleIds)
+            {
+                var role = roleRepository.Get(roleId);
+                if (!role.SamePartition(partitionResourceId)) continue;
+                list.Add(roleId);
+            }
+        }
+
+        /// <summary>
+        /// 获取其它分区的角色列表
+        /// </summary>
+        /// <param name="roleRepository"></param>
+        /// <param name="partitionResourceId"></param>
+        /// <param name="domain"></param>
+        /// <param name="list"></param>
+        private void TakeOtherPartitionRole(IRoleRepository roleRepository, Guid partitionResourceId, Domain.Account domain, List<Guid> list)
+        {
+            foreach (var roleId in domain.GetRoleIds())
+            {
+                var role = roleRepository.Get(roleId);
+                if (role.SamePartition(partitionResourceId)) continue;
+                list.Add(roleId);
+            }
+        }
         #endregion
 
         #region 资源方法
@@ -101,13 +133,7 @@ namespace Oldmansoft.Identity
         {
             var roles = GetRoles<TOperateResource>();
             if (roles.Count > 0) return false;
-
-            var adminResource = GetResource<TOperateResource>();
-
-            var role = new Data.RoleData();
-            role.Name = roleName;
-            role.Description = roleDescription;
-
+            
             var allOperators = new Operation[]
             {
                 Operation.List,
@@ -117,23 +143,24 @@ namespace Oldmansoft.Identity
                 Operation.Modify,
                 Operation.Remove
             };
-            role.Permissions = new List<Data.PermissionData>();
-            foreach(var resource in adminResource.Children)
+            var permissions = new List<Data.PermissionData>();
+            foreach(var resource in GetResource<TOperateResource>().Children)
             {
                 foreach(var item in allOperators)
                 {
                     var permission = new Data.PermissionData();
                     permission.ResourceId = resource.Id;
                     permission.Operator = item;
-                    role.Permissions.Add(permission);
+                    permissions.Add(permission);
                 }
             }
 
             Guid accountId;
+            Guid roleId;
             if (!CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.System, out accountId)) return false;
-            if (!CreateRole<TOperateResource>(role)) return false;
+            if (!CreateRole<TOperateResource>(roleName, roleDescription, permissions, out roleId)) return false;
 
-            AccountSetRole<TOperateResource>(accountId, new Guid[] { role.Id });
+            AccountSetRole<TOperateResource>(accountId, new Guid[] { roleId });
             return true;
         }
 
@@ -418,28 +445,16 @@ namespace Oldmansoft.Identity
         {
             var repository = Factory.CreateAccountRepository();
             var roleRepository = Factory.CreateRoleRepository();
-
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
 
             var domain = repository.Get(accountId);
             if (domain == null) return false;
 
             var list = new List<Guid>();
-            foreach (var roleId in domain.GetRoleIds())
-            {
-                var role = roleRepository.Get(roleId);
-                if (role.PartitionResourceId == partitionResourceId) continue;
-                list.Add(roleId);
-            }
-            foreach (var roleId in roleIds)
-            {
-                var role = roleRepository.Get(roleId);
-                if (role.PartitionResourceId != partitionResourceId) continue;
-                list.Add(roleId);
-            }
-
+            TakeOtherPartitionRole(roleRepository, partitionResourceId, domain, list);
+            TakeSamePartitionRole(roleIds, roleRepository, partitionResourceId, list);
             domain.SetRoleIds(list.ToArray());
-            
+
             repository.Replace(domain);
             Factory.GetUnitOfWork().Commit();
             return true;
@@ -458,7 +473,7 @@ namespace Oldmansoft.Identity
         {
             var domain = Factory.CreateRoleRepository().Get(id);
             if (domain == null) return null;
-            if (domain.PartitionResourceId != ResourceProvider.GetResource<TOperateResource>().Id) return null;
+            if (!domain.SamePartition(ResourceProvider.GetResource<TOperateResource>().Id)) return null;
             return domain.MapTo(new Data.RoleData());
         }
 
@@ -499,24 +514,42 @@ namespace Oldmansoft.Identity
         /// 创建角色
         /// </summary>
         /// <typeparam name="TOperateResource">操作资源</typeparam>
-        /// <param name="data">角色数据</param>
+        /// <param name="name">名称</param>
+        /// <param name="description">注释</param>
+        /// <param name="permissions">许可列表</param>
         /// <returns></returns>
-        public bool CreateRole<TOperateResource>(Data.RoleData data)
+        public bool CreateRole<TOperateResource>(string name, string description, List<Data.PermissionData> permissions)
+            where TOperateResource : class, IOperateResource, new()
+        {
+            Guid roleId;
+            return CreateRole<TOperateResource>(name, description, permissions, out roleId);
+        }
+
+        /// <summary>
+        /// 创建角色
+        /// </summary>
+        /// <typeparam name="TOperateResource">操作资源</typeparam>
+        /// <param name="name">名称</param>
+        /// <param name="description">注释</param>
+        /// <param name="permissions">许可列表</param>
+        /// <param name="roleId">角色序号</param>
+        /// <returns></returns>
+        public bool CreateRole<TOperateResource>(string name, string description, List<Data.PermissionData> permissions, out Guid roleId)
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var repository = Factory.CreateRoleRepository();
-            var domain = data.MapTo(Factory.CreateRoleObject());
-            domain.PartitionResourceId = partitionResourceId;
+            var domain = Factory.CreateRoleObject(partitionResourceId, name, description, permissions.MapTo(new List<Domain.Permission>()));
             repository.Add(domain);
             try
             {
                 Factory.GetUnitOfWork().Commit();
-                data.Id = domain.Id;
+                roleId = domain.Id;
                 return true;
             }
             catch (UniqueException)
             {
+                roleId = Guid.Empty;
                 return false;
             }
         }
@@ -525,19 +558,21 @@ namespace Oldmansoft.Identity
         /// 修改角色
         /// </summary>
         /// <typeparam name="TOperateResource">操作资源</typeparam>
-        /// <param name="data">角色数据</param>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        /// <param name="permissions"></param>
         /// <returns></returns>
-        public bool ReplaceRole<TOperateResource>(Data.RoleData data)
+        public bool ReplaceRole<TOperateResource>(Guid id, string name, string description, IEnumerable<Data.PermissionData> permissions)
             where TOperateResource : class, IOperateResource, new()
         {
-            var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var repository = Factory.CreateRoleRepository();
 
-            var domain = repository.Get(data.Id);
+            var domain = repository.Get(id);
             if (domain == null) return false;
-            if (domain.PartitionResourceId != partitionResourceId) return false;
+            if (!domain.SamePartition(ResourceProvider.GetResource<TOperateResource>().Id)) return false;
 
-            data.MapTo(domain);
+            domain.Change(name, description, permissions.MapTo(new List<Domain.Permission>()));
             repository.Replace(domain);
             Factory.GetUnitOfWork().Commit();
             return true;
@@ -552,13 +587,12 @@ namespace Oldmansoft.Identity
         public bool RemoveRole<TOperateResource>(Guid roleId)
             where TOperateResource : class, IOperateResource, new()
         {
-            var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
             var repository = Factory.CreateRoleRepository();
             
             var domain = repository.Get(roleId);
             if (domain == null) return false;
             if (domain.HasAccountSetIt(Factory.CreateAccountRepository())) return false;
-            if (domain.PartitionResourceId != partitionResourceId) return false;
+            if (!domain.SamePartition(ResourceProvider.GetResource<TOperateResource>().Id)) return false;
 
             repository.Remove(domain);
             Factory.GetUnitOfWork().Commit();
