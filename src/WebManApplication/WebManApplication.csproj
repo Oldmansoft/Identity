@@ -121,24 +121,24 @@
       <HintPath>..\packages\mongocsharpdriver.2.2.4\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.ClassicDomain, Version=3.8.97.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Domain.Net.3.8.97\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain, Version=4.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Domain.Net.4.0.13\lib\net45\Oldmansoft.ClassicDomain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.ClassicDomain.Driver.Mongo, Version=3.8.97.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.ClassicDomain.Driver.Mongo.3.8.97\lib\net45\Oldmansoft.ClassicDomain.Driver.Mongo.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain.Driver.Mongo, Version=4.0.13.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.ClassicDomain.Driver.Mongo.4.0.13\lib\net45\Oldmansoft.ClassicDomain.Driver.Mongo.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.0.10.66\lib\net45\Oldmansoft.Html.dll</HintPath>
+    <Reference Include="Oldmansoft.Html, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.0.15.82\lib\net45\Oldmansoft.Html.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.10.66\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.15.82\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.10.66\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.15.82\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">

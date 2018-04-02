@@ -114,6 +114,42 @@ section.container-fluid {
     margin-right: 0;
 }
 
+.col-container{
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+a.badge-container {
+    position: relative;
+}
+
+a.badge-bar .badge,
+.dropdown-menu a.badge-container .badge{
+    right: 2px;
+    top: 6px;
+}
+.side-menu a.badge-container .badge{
+    right: 10px;
+    top: 15px;
+}
+.branch>a>.badge {
+    right: auto !important;
+    left: 14px;
+}
+
+a.badge-container .badge,
+.dropdown>a>.badge {
+    position: absolute;
+    background-color: #D9534F;
+}
+.dropdown>a>.badge {
+    right: 3px;
+    top: 6px;
+}
+
 .disabled,
 .disabled:hover {
     color: gray;
@@ -123,10 +159,6 @@ section.container-fluid {
 
 .clear {
     clear: both;
-}
-
-.hidden {
-    display: none;
 }
 
 /*plugins fixed start*/
@@ -584,6 +616,7 @@ table.dataTable tbody td ul li:first-child {
 .input-group .single-file-input,
 .input-group .mulit-file-input {
     height: 0px;
+    width: 1px;
     border: 0px;
     margin: 0px;
     padding: 0px;
@@ -612,13 +645,18 @@ table.dataTable tbody td ul li:first-child {
     color: gray;
 }
 
-.tagsinput {
+.form-control.tagsinput {
     height: 100px;
+}
+
+.form-control.tagsinput div {
+    float: left;
+    margin: 5px 5px 5px 0;
 }
 
 .tagsinput div {
     float: left;
-    margin: 5px 5px 5px 0;
+    margin: 0 5px 0 0;
 }
 
 .tagsinput span {

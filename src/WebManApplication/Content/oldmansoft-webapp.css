@@ -63,6 +63,9 @@
 .dialog-body {
     padding: 15px;
 }
+.dialog-body p {
+    margin: 0 0 5px 0;
+}
 .dialog-footer {
     padding: 15px;
     border-top: 1px solid #e5e5e5;
@@ -98,13 +101,16 @@
     position: absolute;
 }
 .scrollbar-track {
-    position: fixed;
+    position: relative;
     width: 12px;
     background-color: darkgray;
     opacity: 0.1;
     z-index: 1;
     transition: 0.3s;
     cursor: default;
+}
+body>.scrollbar-container>.scrollbar-track {
+    position: fixed;
 }
 .scrollbar-track:hover,.scrollbar-track.focus {
     opacity: 0.9 !important;

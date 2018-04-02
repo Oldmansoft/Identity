@@ -35,16 +35,16 @@
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.0.10.66\lib\net45\Oldmansoft.Html.dll</HintPath>
+    <Reference Include="Oldmansoft.Html, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.0.15.82\lib\net45\Oldmansoft.Html.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.10.66\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.15.82\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.10.66.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.10.66\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.15.82\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -105,6 +105,12 @@
       <Project>{2d9ebb8e-0ef0-4157-af5c-694ecc122cec}</Project>
       <Name>Oldmansoft.Identity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\oldmansoft-webapp.css" />
+    <Content Include="Content\oldmansoft-webapp.min.css" />
+    <Content Include="Scripts\oldmansoft-webapp.js" />
+    <Content Include="Scripts\oldmansoft-webapp.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
