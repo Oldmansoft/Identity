@@ -23,7 +23,7 @@ namespace WebManApplication.Controllers
 
         public ActionResult Index()
         {
-            var document = new MainDocument(Url.Location(Welcome));
+            var document = new ManageDocument(Url.Location(Welcome));
             document.Resources.Select2.Enabled = true;
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));

@@ -14,7 +14,7 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 序号
         /// </summary>
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
 
         /// <summary>
         /// 名称
@@ -76,7 +76,7 @@ namespace Oldmansoft.Identity.Domain
         /// <param name="name"></param>
         /// <param name="description"></param>
         /// <param name="permissions"></param>
-        public void Change(string name, string description, IEnumerable<Permission> permissions)
+        public void Change(string name, string description, IList<Permission> permissions)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
             if (description == null) throw new ArgumentNullException("description");

@@ -10,7 +10,7 @@ namespace Oldmansoft.Identity.Driver.Mongo
     {
         private Role() { }
 
-        public static Role Create(Guid partitionResourceId, string name, string description, IEnumerable<Domain.Permission> permissions)
+        public static Role Create(Guid partitionResourceId, string name, string description, IList<Domain.Permission> permissions)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException("name");
             if (description == null) throw new ArgumentNullException("description");

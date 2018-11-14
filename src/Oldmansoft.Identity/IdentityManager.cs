@@ -563,7 +563,7 @@ namespace Oldmansoft.Identity
         /// <param name="description"></param>
         /// <param name="permissions"></param>
         /// <returns></returns>
-        public bool ReplaceRole<TOperateResource>(Guid id, string name, string description, IEnumerable<Data.PermissionData> permissions)
+        public bool ReplaceRole<TOperateResource>(Guid id, string name, string description, IList<Data.PermissionData> permissions)
             where TOperateResource : class, IOperateResource, new()
         {
             var repository = Factory.CreateRoleRepository();

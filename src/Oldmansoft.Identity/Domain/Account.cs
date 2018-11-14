@@ -14,7 +14,7 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 序号
         /// </summary>
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
 
         /// <summary>
         /// 资源分区
@@ -30,7 +30,7 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 成员序号
         /// </summary>
-        public Guid? MemberId { get; private set; }
+        public Guid? MemberId { get; protected set; }
 
         /// <summary>
         /// 成员类型
