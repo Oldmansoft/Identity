@@ -17,6 +17,12 @@ namespace Oldmansoft.Identity.Data
         public Guid Id { get; set; }
 
         /// <summary>
+        /// 资源分区
+        /// 用于区分帐号管理区域
+        /// </summary>
+        public Guid PartitionResourceId { get; set; }
+
+        /// <summary>
         /// 帐号名称
         /// </summary>
         public string Name { get; set; }
