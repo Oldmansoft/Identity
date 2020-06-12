@@ -27,8 +27,8 @@ namespace WebManApplication
         public static TreeListItem Add(this TreeListItem source, TreeListItem item, AccountData account)
         {
             if (source == null) throw new ArgumentNullException("source");
-            if (item == null) throw new ArgumentNullException("item");
-            if (account == null) throw new ArgumentNullException("account");
+            if (item == null) return source;
+            if (account == null) return source;
             if (item.Location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (item.Location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
             if (!item.Location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
@@ -62,7 +62,7 @@ namespace WebManApplication
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");
-            if (account == null) throw new ArgumentNullException("account");
+            if (account == null) return EmptyTableAction.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
             if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
@@ -95,7 +95,7 @@ namespace WebManApplication
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");
-            if (account == null) throw new ArgumentNullException("account");
+            if (account == null) return EmptyItemAction.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
             if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
@@ -128,7 +128,7 @@ namespace WebManApplication
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");
-            if (account == null) throw new ArgumentNullException("account");
+            if (account == null) return EmptyTableAction.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
             if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
@@ -161,7 +161,7 @@ namespace WebManApplication
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");
-            if (account == null) throw new ArgumentNullException("account");
+            if (account == null) return EmptyTableAction<TModel>.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
             if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");

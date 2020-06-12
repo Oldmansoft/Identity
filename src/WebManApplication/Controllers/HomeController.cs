@@ -23,6 +23,8 @@ namespace WebManApplication.Controllers
 
         public ActionResult Index()
         {
+            if (Account == null) return RedirectToAction("Login");
+
             var document = new ManageDocument(Url.Location(Welcome));
             document.Resources.Select2.Enabled = true;
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
