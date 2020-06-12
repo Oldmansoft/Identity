@@ -328,11 +328,16 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount, string key = null)
         {
-            return Factory.CreateAccountRepository()
+            var list = Factory.CreateAccountRepository()
                 .Paging(key)
                 .Size(size)
-                .ToList(index, out totalCount)
-                .MapTo(new List<Data.AccountData>());
+                .ToList(index, out totalCount);
+            var result = new List<Data.AccountData>();
+            foreach(var item in list)
+            {
+                result.Add(FillRoles(Factory, item));
+            }
+            return result;
         }
 
         /// <summary>
@@ -348,11 +353,16 @@ namespace Oldmansoft.Identity
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
-            return Factory.CreateAccountRepository()
+            var list = Factory.CreateAccountRepository()
                 .Paging(partitionResourceId, key)
                 .Size(size)
-                .ToList(index, out totalCount)
-                .MapTo(new List<Data.AccountData>());
+                .ToList(index, out totalCount);
+            var result = new List<Data.AccountData>();
+            foreach (var item in list)
+            {
+                result.Add(FillRoles(Factory, item));
+            }
+            return result;
         }
 
         /// <summary>
@@ -366,9 +376,15 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount, Guid roleId, string key = null)
         {
-            return Factory.CreateAccountRepository()
-                .Paging(index, size, out totalCount, roleId, key)
-                .MapTo(new List<Data.AccountData>());
+            var list = Factory.CreateAccountRepository()
+                .Paging(index, size, out totalCount, roleId, key);
+
+            var result = new List<Data.AccountData>();
+            foreach (var item in list)
+            {
+                result.Add(FillRoles(Factory, item));
+            }
+            return result;
         }
         
         /// <summary>
