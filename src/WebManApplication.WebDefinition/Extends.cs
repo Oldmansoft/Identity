@@ -58,7 +58,7 @@ namespace WebManApplication
         /// <param name="location"></param>
         /// <param name="account"></param>
         /// <returns></returns>
-        public static ITableAction AddActionTable<TModel>(this DataTableDefinition<TModel> source, ILocation location, AccountData account) where TModel : class
+        public static ITableAction AddActionTable<TModel>(this DynamicTable<TModel> source, ILocation location, AccountData account) where TModel : class
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");
@@ -91,7 +91,7 @@ namespace WebManApplication
         /// <param name="location"></param>
         /// <param name="account"></param>
         /// <returns></returns>
-        public static IDataTableItemAction AddActionItem<TModel>(this DataTableDefinition<TModel> source, ILocation location, AccountData account) where TModel : class
+        public static IDynamicTableItemAction AddActionItem<TModel>(this DynamicTable<TModel> source, ILocation location, AccountData account) where TModel : class
         {
             if (source == null) throw new ArgumentNullException("source");
             if (location == null) throw new ArgumentNullException("location");
@@ -191,7 +191,7 @@ namespace WebManApplication
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="placeHolder"></param>
-        public static void AddSearchPanel<TModel>(this DataTableDefinition<TModel> source, ILocation location, string key, string value, string placeHolder = null) where TModel : class
+        public static void AddSearchPanel<TModel>(this DynamicTable<TModel> source, ILocation location, string key, string value, string placeHolder = null) where TModel : class
         {
             if (source == null) return;
             if (location == null) throw new ArgumentNullException("location");

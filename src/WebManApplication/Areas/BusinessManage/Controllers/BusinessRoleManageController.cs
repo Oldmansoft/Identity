@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Oldmansoft.Html;
 
 namespace WebManApplication.Areas.BusinessManage.Controllers
 {
@@ -30,7 +31,7 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
         [Location("业务角色", Icon = FontAwesome.User)]
         public ActionResult Index(string key)
         {
-            var table = DataTable.Definition<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
+            var table = DataTable.Define<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location<BusinessRoleAccountController>(o => o.Index));
             table.AddActionItem(Url.Location(Edit), Account);
@@ -44,7 +45,7 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
         }
 
         [Auth(Operation.List)]
-        public JsonResult IndexDataSource(string key, DataTableRequest request)
+        public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
             int totalCount;
             var list = new List<Models.RoleManageListMoreModel>();
@@ -59,23 +60,60 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
 
         private void SetResourceInput(FormHorizontal form, Oldmansoft.Identity.Data.ResourceData resource, Dictionary<Guid, List<string>> permissions)
         {
-            var div = new Oldmansoft.Html.HtmlElement(Oldmansoft.Html.HtmlTag.Div);
+            var div = new HtmlElement(HtmlTag.Div);
             foreach (var item in resource.Children)
             {
                 List<string> value = null;
                 if (permissions != null) permissions.TryGetValue(item.Id, out value);
+                if (value == null) value = new List<string>();
 
-                var input = new Oldmansoft.Html.WebMan.FormInputCreator.Inputs.CheckBoxList();
-                input.Init("Operation" + item.Id, typeof(string), value, Extends.GetOperationDataSourceList());
-                input.SetInputMode(false, false, null);
-
-                var inputHead = new Oldmansoft.Html.HtmlElement(Oldmansoft.Html.HtmlTag.Label);
-                inputHead.Text(item.Name);
-                inputHead.Css("margin-bottom", "2px").Css("vertical-align", "middle").Css("padding-top", "7px").Css("padding-right", "7px");
-                input.Prepend(inputHead);
+                var input = CreateCheckBoxList("Operation" + item.Id, value);
+                input.Prepend(new HtmlElement(HtmlTag.Label).Text(item.Name).AddClass("checkbox-list-head"));
                 div.Append(input);
             }
             form.Add(resource.Name, div.CreateGrid(Column.Sm9 | Column.Md10));
+        }
+
+        private static HtmlElement CreateCheckBoxList(string name, List<string> value)
+        {
+            var result = new HtmlElement(HtmlTag.Div);
+            foreach (var option in GetDataSourceList())
+            {
+                var lable = new HtmlElement(HtmlTag.Label);
+                result.Append(lable);
+                lable.AddClass("checkbox-inline");
+
+                var input = new HtmlElement(HtmlTag.Input);
+                lable.Append(input);
+                input.Attribute(HtmlAttribute.Type, "checkbox");
+                input.Attribute(HtmlAttribute.Name, name);
+                input.Attribute(HtmlAttribute.Value, option.Value);
+                if (value.Contains(option.Value))
+                {
+                    input.Attribute(HtmlAttribute.Checked, "checked");
+                }
+                lable.Append(new HtmlRaw(option.Text.HtmlEncode()));
+            }
+            return result;
+        }
+
+        private static List<ListDataItem> GetDataSourceList()
+        {
+            var cn = new Dictionary<string, string>();
+            cn.Add("List", "列表");
+            cn.Add("Execute", "执行");
+            cn.Add("View", "查看");
+            cn.Add("Append", "添加");
+            cn.Add("Modify", "修改");
+            cn.Add("Remove", "移除");
+
+            var list = new List<ListDataItem>();
+            foreach (var item in Enum.GetValues(typeof(Operation)))
+            {
+                list.Add(new ListDataItem(cn[Enum.GetName(typeof(Operation), item)], ((int)item).ToString()));
+            }
+
+            return list;
         }
 
         private void GetPermissionsFromResource(List<Oldmansoft.Identity.Data.PermissionData> result, Oldmansoft.Identity.Data.ResourceData resource)

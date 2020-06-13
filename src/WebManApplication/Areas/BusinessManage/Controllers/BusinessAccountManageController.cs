@@ -23,7 +23,7 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
         [Location("帐号管理", Icon = FontAwesome.User)]
         public ActionResult Index(string key)
         {
-            var table = DataTable.Definition<Models.AccountManageListModel>(o => o.Id)
+            var table = DataTable.Define<Models.AccountManageListModel>(o => o.Id)
                 .Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
             table.AddActionItem(Url.Location(SetPassword), Account);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WebManApplication
 {
-    class EmptyItemAction : IDataTableItemAction
+    class EmptyItemAction : IDynamicTableItemAction
     {
         public static readonly EmptyItemAction Instance = new EmptyItemAction();
 
@@ -15,12 +15,12 @@ namespace WebManApplication
         {
         }
 
-        public IDataTableItemAction Confirm(string content)
+        public IDynamicTableItemAction Confirm(string content)
         {
             return this;
         }
 
-        public IDataTableItemAction OnClientCondition(ItemActionClient action, string condition)
+        public IDynamicTableItemAction OnClientCondition(ItemActionClient action, string condition)
         {
             return this;
         }

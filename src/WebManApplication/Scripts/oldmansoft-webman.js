@@ -1,7 +1,95 @@
 ﻿/*
-* v0.15.82
+* v0.27.111
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
+(function ($) {
+    $.fn.bootstrapValidator.validators.listCount = {
+        validate: function (validator, $field, options) {
+            var type = $field.attr('type'),
+                fields,
+                i,
+                delInputs,
+                count = 0;
+            if ('file' === type) {
+                if ($field.hasClass("template-mulit-file-input")) {
+                    delInputs = $field.parent().parent().find(".del-file-input");
+                    for (i = 0; i < delInputs.length; i++) {
+                        if ($.trim(delInputs.eq(i).val()) === '0') count++;
+                    }
+
+                    fields = findTemporaryTargetField($field);
+                    for (i = 0; i < fields.length; i++) {
+                        if ($.trim(fields.eq(i).val()) !== '') count += fields.get(i).files.length;
+                    }
+                }
+            } else if ($field.hasClass("input") && $field.parent().hasClass("tagsinput")) {
+                count = findTemporaryTargetField($field).length;
+            } else if ('checkbox' === type) {
+                fields = $("input[name=" + $field.attr("name") + "]");
+                for (i = 0; i < fields.length; i++) {
+                    if (fields.eq(i).prop("checked")) count++;
+                }
+            } else if ($field.is("select")) {
+                fields = $field.children();
+                for (var i = 0; i < fields.length; i++) {
+                    if (fields.eq(i).prop("selected")) count++;
+                }
+            } else {
+                count = $("input[name=" + $field.attr("name") + "]").length;
+            }
+            if (count == 0) return true;
+            if (options.fixed) return count == options.fixed;
+            if (options.min && options.max) {
+                if (options.inclusive) {
+                    return count >= options.min && count <= options.max;
+                } else {
+                    return count > options.min && count < options.max;
+                }
+            }
+            if (options.min) {
+                if (options.inclusive) {
+                    return count >= options.min;
+                } else {
+                    return count > options.min;
+                }
+            }
+            if (options.max) {
+                if (options.inclusive) {
+                    return count <= options.max;
+                } else {
+                    return count < options.max;
+                }
+            }
+            return true;
+        }
+    };
+
+    $.fn.bootstrapValidator.validators.fileLimitContentLength = {
+        validate: function (validator, $field, options) {
+            var type = $field.attr('type'),
+                fields,
+                i,
+                j,
+                count = 0;
+            if ('file' === type) {
+                if ($field.hasClass("template-mulit-file-input")) {
+                    fields = findTemporaryTargetField($field);
+                    for (i = 0; i < fields.length; i++) {
+                        if ($.trim(fields.eq(i).val()) !== '') {
+                            for (j = 0; j < fields.get(i).files.length; j++) {
+                                if (fields.get(i).files[j].size > options.length) return false;
+                            }
+                        }
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        }
+    };
+}(window.jQuery));
+
 if (!window.oldmansoft) window.oldmansoft = {};
 window.oldmansoft.webman = new (function () {
     var $this = this,
@@ -70,7 +158,7 @@ window.oldmansoft.webman = new (function () {
                 }
                 resetMainHeight();
             });
-            if ($(this).children("ul").length > 0) {
+            if ($(this).find("ul>li>a[href]").length > 0) {
                 item.node.append($("<i></i>").addClass("arrow").addClass("fa").addClass("fa-plus-circle"));
             } else if (item.node.attr("href") == undefined) {
                 $(this).hide();
@@ -88,17 +176,16 @@ window.oldmansoft.webman = new (function () {
                 icon = null;
                 for (j = 0; j < store.length; j++) {
                     if (link == store[j].node.attr("href")) {
-                        text = store[j].node.children("span").text();
+                        text = store[j].node.children("span").first().text();
                         icon = store[j].node.children("i").clone();
                         break;
                     }
                 }
 
                 currentLinks = links.slice(0, i + 1);
-                currentLinks.splice(0, 0, "");
                 a = $("<a></a>");
                 if (i < links.length - 1) {
-                    a.attr("href", currentLinks.join("#"));
+                    a.attr("href", "#" + oldmansoft.webapp.parser(currentLinks).getContent());
                 }
                 if (!text) {
                     if (view.node.data("link") == links[i]) {
@@ -145,6 +232,7 @@ window.oldmansoft.webman = new (function () {
             var operator;
             if (!data.NewData) {
                 if (method == dealMethod.form && form) form.bootstrapValidator("disableSubmitButtons", false);
+                action();
                 return;
             }
 
@@ -154,6 +242,7 @@ window.oldmansoft.webman = new (function () {
             } else if (!isNewContent) {
                 $app.reload();
             }
+            action();
         }
 
         function action() {
@@ -176,12 +265,10 @@ window.oldmansoft.webman = new (function () {
             }
         }
 
-        if (data.CloseOpen && method == dealMethod.form) {
-            $app.close(null, refresh);
-            action();
+        if (data.CloseOpen && (!$app.current().node.hasClass("main-view") || (method == dealMethod.form && $app.current().view.getLinks().length > 1))) {
+            $app.close().completed(refresh);
         } else {
             refresh(false);
-            action();
         }
     }
 
@@ -262,10 +349,10 @@ window.oldmansoft.webman = new (function () {
 
     function markFileDelete(container) {
         var text = container.find(".icon-fa-text");
-        if (text.hasClass("mark")) {
+        if (text.hasClass("del-mark")) {
             return false;
         }
-        text.addClass("mark");
+        text.addClass("del-mark");
         text.wrap("<del></del>");
         container.find(".del-file-input").val("1");
         return true;
@@ -273,10 +360,10 @@ window.oldmansoft.webman = new (function () {
 
     function unmarkFileDelete(container) {
         var text = container.find(".icon-fa-text");
-        if (!text.hasClass("mark")) {
+        if (!text.hasClass("del-mark")) {
             return false;
         }
-        text.removeClass("mark");
+        text.removeClass("del-mark");
         text.unwrap("<del></del>");
         container.find(".del-file-input").val("0");
         return true;
@@ -576,7 +663,8 @@ window.oldmansoft.webman = new (function () {
 
     var tableScroller = new (function () {
         var x,
-            table;
+            table,
+            disabled = false;
         function disabledSelectStart() {
             return false;
         }
@@ -591,7 +679,9 @@ window.oldmansoft.webman = new (function () {
             table.off("mouseleave ", mouseup);
         }
         function mousedown(e) {
+            if (disabled) return;
             table = $(this);
+            if (table.get(0).scrollWidth == table.width()) return;
             x = e.clientX;
             table.addClass("mouse-down");
             table.on("selectstart", disabledSelectStart);
@@ -601,6 +691,8 @@ window.oldmansoft.webman = new (function () {
         }
         this.init = function () {
             $(document).on("mousedown", ".dataTables_wrapper", mousedown);
+            $(document).on("keydown", function (key) { if (key.keyCode == 17) disabled = true; });
+            $(document).on("keyup", function (key) { if (key.keyCode == 17) disabled = false; });
         }
     })();
 
@@ -963,6 +1055,17 @@ window.oldmansoft.webman = new (function () {
         });
     }
 
+    function header_form_search_click() {
+        var form = $(this).parents("form"),
+            input = form.find("input[type=text]");
+        if ($.trim(input.val()) == "")
+        {
+            input.get(0).focus();
+            return;
+        }
+        submitForm(form);
+    }
+
     this.init = function (main, defaultLink) {
         menu = new define_menu();
         oldmansoft.webapp.configTarget(function (target) {
@@ -995,7 +1098,7 @@ window.oldmansoft.webman = new (function () {
         $(document).on("submit", "form:not(.bv-form)", form_not_bv_form_submit);
         $(document).on("click", ".container-remove", container_remove_click);
         $(document).on("click", ".container-parent-remove", container_parent_remove_click);
-        $(".webman-main-panel header form i.fa-search").on("click", function () { submitForm($(this).parents("form")); });
+        $(".webman-main-panel header form i.fa-search").on("click", header_form_search_click);
         tableScroller.init();
    }
 

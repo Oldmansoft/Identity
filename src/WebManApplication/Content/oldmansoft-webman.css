@@ -1,5 +1,22 @@
-﻿@media (max-width: 666px) {
-    .webman-main-panel > header > form {
+﻿/* theme color */
+@media (max-width: 768px) {
+    .webman-left-panel nav ul.side-menu li ul,
+    .webman-left-panel nav ul.side-menu>li:hover {
+        background-color: #1d2939;
+    }
+}
+body,
+.mini-nav .webman-left-panel nav ul.side-menu li ul,
+.mini-nav .webman-left-panel nav ul.side-menu>li:hover
+{
+    background-color: #1d2939;
+}
+.webman-main-panel header .webman-bar a {
+    color: #1d2939;
+}
+
+@media (max-width: 666px) {
+    .webman-main-panel>header>form {
         display: none;
     }
 }
@@ -12,7 +29,7 @@
         margin-left: 0 !important;
     }
 
-    .mini-nav .webman-main-panel > header {
+    .mini-nav .webman-main-panel>header {
         margin-left: 0 !important;
     }
 
@@ -29,15 +46,15 @@
         margin-left: 50px !important;
     }
 
-    .webman-main-panel > header {
+    .webman-main-panel>header {
         margin-left: -50px;
     }
 
-    .webman-left-panel nav > ul > li > a span {
+    .webman-left-panel nav>ul>li>a span {
         display: none;
     }
 
-    .webman-left-panel nav > ul > li > a i {
+    .webman-left-panel nav>ul>li>a i {
         font-size: 16px;
         width: 16px;
     }
@@ -50,36 +67,35 @@
         display: none;
     }
 
-    .webman-left-panel nav ul.side-menu li.expand > ul {
+    .webman-left-panel nav ul.side-menu li.expand>ul {
         display: none !important;
     }
 
-    .webman-left-panel nav ul.side-menu > li:hover {
+    .webman-left-panel nav ul.side-menu>li:hover {
         width: 180px;
     }
 
-    .webman-left-panel nav ul.side-menu > li:hover > a {
-        background-color: #293846;
+    .webman-left-panel nav ul.side-menu>li:hover>a {
+        background-color: rgba(255,255,255,0.08);
         color: #fff;
     }
 
-    .webman-left-panel nav ul.side-menu li:hover > ul {
+    .webman-left-panel nav ul.side-menu li:hover>ul {
         display: block !important;
     }
 
-    .webman-left-panel nav ul.side-menu > li:hover > a span {
+    .webman-left-panel nav ul.side-menu>li:hover>a span {
         display: inline-block;
         margin-left: 28px;
     }
 
-    .webman-left-panel nav ul.side-menu > li > ul {
+    .webman-left-panel nav ul.side-menu>li>ul {
         left: 50px !important;
         top: 49px !important;
     }
 
     .webman-left-panel nav ul.side-menu li ul {
         position: absolute;
-        background-color: #1d2939;
         width: 130px;
         left: 130px;
         top: 0;
@@ -91,7 +107,6 @@
 }
 
 body {
-    background-color: #1d2939;
     font-family: 'LatoBold', 'Lucida Grande', 'Lucida Sans Unicode', Helvetica, sans-serif;
     line-height: 21px;
 }
@@ -143,11 +158,15 @@ a.badge-bar .badge,
 a.badge-container .badge,
 .dropdown>a>.badge {
     position: absolute;
-    background-color: #D9534F;
+    background-color: #d9534f;
 }
 .dropdown>a>.badge {
     right: 3px;
     top: 6px;
+}
+
+span.badge:empty {
+    display: none !important;
 }
 
 .disabled,
@@ -174,6 +193,7 @@ a.badge-container .badge,
 }
 
 .webman-main-panel {
+    background-color: rgba(255,255,255,0.85);
     margin-left: 220px;
 }
 
@@ -219,7 +239,7 @@ a.badge-container .badge,
 }
 
 .mini-nav .webman-left-panel nav ul.side-menu>li:hover>a {
-    background-color: #293846;
+    background-color: rgba(255,255,255,0.08);
     color: #fff;
 }
 
@@ -239,7 +259,6 @@ a.badge-container .badge,
 
 .mini-nav .webman-left-panel nav ul.side-menu li ul {
     position: absolute;
-    background-color: #1d2939;
     width: 130px;
     left: 130px;
     top: 0;
@@ -251,7 +270,7 @@ a.badge-container .badge,
 
 .webman-left-panel header {
     padding: 10px;
-    background-color: #2f4050;
+    background-color: rgba(255,255,255,0.15);
     font-size: 30px;
     letter-spacing: -1.5px;
     line-height: 30px;
@@ -261,7 +280,7 @@ a.badge-container .badge,
 
 .webman-left-panel nav ul.side-menu ul {
     display: none;
-    background: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0,0,0,0.3);
 }
 
 .webman-left-panel nav ul.side-menu ul i:not(.arrow) {
@@ -298,27 +317,23 @@ a.badge-container .badge,
 }
 
 .webman-left-panel nav ul li a {
-    color: #8f939e;
+    color: rgba(255,255,255,0.8);
     text-decoration: none;
     padding: 14px 15px 14px 15px;
     display: block;
 }
 
 .webman-left-panel nav ul li a:hover {
-    background-color: #293846;
+    background-color: rgba(255,255,255,0.08);
     color: #fff;
 }
 .webman-left-panel nav ul li.active>a {
-    background-color: #35485a;
+    background-color: rgba(255,255,255,0.13);
     color: #fff;
 }
 
 .webman-left-panel nav ul.side-menu li.expand>ul {
     display: block;
-}
-
-.webman-main-panel {
-    background-color: #e4e7ea;
 }
 
 .webman-main-panel>header {
@@ -333,10 +348,6 @@ a.badge-container .badge,
     font-size: 22px;
     cursor: pointer;
     border-right: 1px solid #eee;
-}
-
-.webman-main-panel header .webman-bar a {
-    color: #1d2939;
 }
 
 .webman-main-panel header .webman-bar a i {
@@ -471,6 +482,10 @@ header .dropdown-menu a {
     margin-bottom: 15px;
 }
 
+.open-view {
+    padding: 0;
+}
+
 .open-view .webman-panel:first-child {
     margin-top: 0;
 }
@@ -481,17 +496,20 @@ header .dropdown-menu a {
     padding: 18px;
     border-bottom: 1px solid #e7e7e7;
 }
-
 .webman-panel>header i,
-.webman-panel header h2 {
+.webman-panel>header h2 {
     float: left;
     font-size: 18px;
 }
-
 .webman-panel>header h2 {
     margin: 0 0 0 10px;
 }
-
+.webman-panel>header>span {
+    float: left;
+    margin: 5px 0 0 10px;
+    line-height: 14px;
+    color: #666;
+}
 .webman-panel-tools {
     float: right;
 }
@@ -550,7 +568,7 @@ header .dropdown-menu a {
     position: absolute;
     top: -45px;
     right: 50px;
-    border-right: 1px solid #DBDBDB;
+    border-right: 1px solid #dbdbdb;
 }
 .dataTable-item-action a {
     cursor: pointer;
@@ -678,7 +696,6 @@ table.dataTable tbody td ul li:first-child {
     border: 1px solid transparent;
     padding: 5px;
     background: transparent;
-    color: #000;
     outline: 0px;
     margin-right: 5px;
     margin-bottom: 5px;
