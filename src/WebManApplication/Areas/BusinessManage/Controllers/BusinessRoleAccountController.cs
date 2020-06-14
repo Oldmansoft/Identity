@@ -33,21 +33,23 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             var role = CreateIdentity().GetRole<Resource.Business>(roleId);
             if (role == null) return HttpNotFound();
 
-            var sourceLocation = Url.Location(new Func<Guid, string, DataTableRequest, JsonResult>(IndexDataSource));
-            var table = DataTable.Definition<Models.AccountManageListModel>(o => o.Id).Create(sourceLocation.Set("roleId", roleId).Set("key", key));
+            var sourceLocation = Url.Location(new Func<Guid, string, DataTable.Request, JsonResult>(IndexDataSource));
+            var table = DataTable.Define<Models.AccountManageListModel>(o => o.Id).Create(sourceLocation.Set("roleId", roleId).Set("key", key));
             table.AddActionItem(Url.Location(new Func<Guid, Guid[], JsonResult>(Remove)).Set("roleId", roleId), Account);
             var searchLocation = Url.Location(new Func<Guid, string, ActionResult>(Search));
-            table.AddSearchPanel(searchLocation.Set("roleId", roleId), "key", key, "帐号");
 
             var panel = new Panel();
             panel.ConfigLocation();
             panel.Caption = string.Format("{0} 的帐号列表", role.Name);
             panel.Append(table);
-            return Content(panel.CreateGrid());
+
+            var result = Content(panel.CreateGrid());
+            result.SetQuickSearch(Url.Location(Index));
+            return result;
         }
 
         [Auth(Operation.List)]
-        public JsonResult IndexDataSource(Guid roleId, string key, DataTableRequest request)
+        public JsonResult IndexDataSource(Guid roleId, string key, DataTable.Request request)
         {
             int totalCount;
             var list = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, roleId, key);

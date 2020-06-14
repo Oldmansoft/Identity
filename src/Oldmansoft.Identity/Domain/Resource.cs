@@ -10,18 +10,8 @@ namespace Oldmansoft.Identity.Domain
     /// <summary>
     /// 操作资源
     /// </summary>
-    public class Resource
+    public class Resource : ResourceItem
     {
-        /// <summary>
-        /// 序号
-        /// </summary>
-        public Guid Id { get; private set; }
-
-        /// <summary>
-        /// 名称
-        /// </summary>
-        public string Name { get; private set; }
-
         /// <summary>
         /// 资源列表
         /// </summary>

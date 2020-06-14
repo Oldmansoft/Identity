@@ -26,25 +26,38 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             var table = DataTable.Define<Models.AccountManageListModel>(o => o.Id)
                 .Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
-            table.AddActionItem(Url.Location(SetPassword), Account);
-            table.AddActionItem(Url.Location(SetRole), Account);
+            table.AddActionItem(Url.Location(SetPassword), Account).OnClientCondition(ItemActionClient.Disable, string.Format("data.Partition != '{0}'", ResourceProvider.GetResourceData<Resource.Business>().Name));
+            table.AddActionItem(Url.Location(SetRole), Account).OnClientCondition(ItemActionClient.Disable, string.Format("data.Partition != '{0}'", ResourceProvider.GetResourceData<Resource.Business>().Name));
             table.AddActionItem(Url.Location(Delete), Account)
                 .Confirm("是否删除帐号")
                 .OnClientCondition(ItemActionClient.Disable, "data.MemberType == -1")
-                .OnClientCondition(ItemActionClient.Disable, "data.MemberId != ''");
-            table.AddSearchPanel(Url.Location(Index), "key", key, "帐号");
-            
+                .OnClientCondition(ItemActionClient.Disable, "data.MemberId != ''")
+                .OnClientCondition(ItemActionClient.Disable, string.Format("data.Partition != '{0}'", ResourceProvider.GetResourceData<Resource.Business>().Name));
+            table.SetRowClassNameWhenClientCondition("text-warning", string.Format("data.Partition != '{0}'", ResourceProvider.GetResourceData<Resource.Business>().Name));
+
             var panel = new Panel();
             panel.ConfigLocation();
             panel.Append(table);
-            return Content(panel.CreateGrid());
+
+            var result = Content(panel.CreateGrid());
+            result.SetQuickSearch(Url.Location(Index));
+            return result;
         }
 
         [Auth(Operation.List)]
-        public JsonResult IndexDataSource(string key, DataTableRequest request)
+        public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
+            var resources = ResourceProvider.GetResourceFromAssembly(typeof(Resource));
             int totalCount;
-            var list = CreateIdentity().GetAccounts<Resource.Business>(request.PageIndex, request.PageSize, out totalCount, key);
+            var source = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, key);
+            var list = new List<Models.AccountManageListModel>();
+            foreach (var item in source)
+            {
+                var model = item.MapTo(new Models.AccountManageListModel());
+                model.Partition = resources.First(o => o.Id == item.PartitionResourceId).Name;
+                model.Roles = item.Roles.Select(o => o.Name).ToList();
+                list.Add(model);
+            }
             return Json(DataTable.Source(list, request, totalCount));
         }
 

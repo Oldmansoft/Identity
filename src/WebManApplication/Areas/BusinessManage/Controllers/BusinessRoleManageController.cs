@@ -36,12 +36,14 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
             table.AddActionItem(Url.Location<BusinessRoleAccountController>(o => o.Index));
             table.AddActionItem(Url.Location(Edit), Account);
             table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色").OnClientCondition(ItemActionClient.Disable, "data.HasAccount == '是'");
-            table.AddSearchPanel(Url.Location(Index), "key", key, "名称");
 
             var panel = new Panel();
             panel.ConfigLocation();
             panel.Append(table);
-            return Content(panel.CreateGrid());
+
+            var result = Content(panel.CreateGrid());
+            result.SetQuickSearch(Url.Location(Index));
+            return result;
         }
 
         [Auth(Operation.List)]

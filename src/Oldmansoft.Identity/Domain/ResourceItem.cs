@@ -14,14 +14,17 @@ namespace Oldmansoft.Identity.Domain
         /// <summary>
         /// 序号
         /// </summary>
-        public Guid Id { get; private set; }
+        public Guid Id { get; protected set; }
 
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
 
-        private ResourceItem() { }
+        /// <summary>
+        /// 创建
+        /// </summary>
+        protected ResourceItem() { }
 
         /// <summary>
         /// 创建
@@ -29,7 +32,7 @@ namespace Oldmansoft.Identity.Domain
         /// <param name="id"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static ResourceItem Create(Guid id, string name)
+        public static ResourceItem CreateItem(Guid id, string name)
         {
             var result = new ResourceItem();
             result.Id = id;

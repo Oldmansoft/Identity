@@ -39,7 +39,7 @@ namespace WebManApplication
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        protected ActionResult Content(Oldmansoft.Html.IHtmlElement element)
+        protected Oldmansoft.Html.WebMan.HtmlResult Content(Oldmansoft.Html.IHtmlElement element)
         {
             return new Oldmansoft.Html.WebMan.HtmlResult(element);
         }

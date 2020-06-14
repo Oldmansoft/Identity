@@ -10,8 +10,14 @@ namespace WebManApplication.Areas.SystemManage.Models
     {
         public Guid Id { get; set; }
 
+        [Display(Name = "区名")]
+        public string Partition { get; set; }
+
         [Display(Name = "帐号")]
         public string Name { get; set; }
+
+        [Display(Name = "角色")]
+        public List<string> Roles { get; set; }
     }
 
     public class AccountManageCreateModel

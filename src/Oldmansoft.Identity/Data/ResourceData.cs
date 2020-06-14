@@ -25,21 +25,21 @@ namespace Oldmansoft.Identity.Data
         /// 子资源
         /// </summary>
         public List<ResourceItemData> Children { get; set; }
+    }
+
+    /// <summary>
+    /// 资源数据项
+    /// </summary>
+    public class ResourceItemData
+    {
+        /// <summary>
+        /// 序号
+        /// </summary>
+        public Guid Id { get; set; }
 
         /// <summary>
-        /// 资源数据
+        /// 名称
         /// </summary>
-        public class ResourceItemData
-        {
-            /// <summary>
-            /// 序号
-            /// </summary>
-            public Guid Id { get; set; }
-
-            /// <summary>
-            /// 名称
-            /// </summary>
-            public string Name { get; set; }
-        }
+        public string Name { get; set; }
     }
 }

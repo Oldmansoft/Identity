@@ -37,23 +37,26 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             table.AddActionItem(Url.Location<SystemRoleAccountController>(o => o.Index));
             table.AddActionItem(Url.Location(Edit), Account);
             table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色").OnClientCondition(ItemActionClient.Disable, "data.HasAccount == '是'");
-            table.AddSearchPanel(Url.Location(Index), "key", key, "名称");
 
             var panel = new Panel();
             panel.ConfigLocation();
             panel.Append(table);
-            return Content(panel.CreateGrid());
+
+            var result = Content(panel.CreateGrid());
+            result.SetQuickSearch(Url.Location(Index));
+            return result;
         }
 
         [Auth(Operation.List)]
         public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
+            var identityManager = CreateIdentity();
             int totalCount;
             var list = new List<Models.RoleManageListMoreModel>();
-            foreach (var item in CreateIdentity().GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key))
+            foreach (var item in identityManager.GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key))
             {
                 var model = item.MapTo(new Models.RoleManageListMoreModel());
-                model.HasAccount = CreateIdentity().RoleHasAccount(item.Id);
+                model.HasAccount = identityManager.RoleHasAccount(item.Id);
                 list.Add(model);
             }
             return Json(DataTable.Source(list, request, totalCount));
