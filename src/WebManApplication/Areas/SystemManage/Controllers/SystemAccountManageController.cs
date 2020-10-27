@@ -47,14 +47,13 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Auth(Operation.List)]
         public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
-            var resources = ResourceProvider.GetResourceFromAssembly(typeof(Resource));
             int totalCount;
             var source = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, key);
             var list = new List<Models.AccountManageListModel>();
             foreach (var item in source)
             {
                 var model = item.MapTo(new Models.AccountManageListModel());
-                model.Partition = resources.First(o => o.Id == item.PartitionResourceId).Name;
+                model.Partition = ResourceProvider.GetResourceData<Resource>(item.PartitionResourceId).Name.Name;
                 model.Roles = item.Roles.Select(o => o.Name).ToList();
                 list.Add(model);
             }

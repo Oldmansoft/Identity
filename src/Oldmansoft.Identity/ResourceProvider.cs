@@ -20,10 +20,13 @@ namespace Oldmansoft.Identity
 
         private static ConcurrentDictionary<Type, Domain.Resource> DomainStore { get; set; }
 
+        private static ConcurrentDictionary<Type, List<Domain.Resource>> ListStore { get; set; }
+
         static ResourceProvider()
         {
             StructureStore = new ConcurrentDictionary<Type, object>();
             DomainStore = new ConcurrentDictionary<Type, Domain.Resource>();
+            ListStore = new ConcurrentDictionary<Type, List<Domain.Resource>>();
         }
         
         private static T CreateResource<T>(Type type) where T : class, new()
@@ -112,22 +115,36 @@ namespace Oldmansoft.Identity
             DomainStore.TryAdd(type, result);
             return result;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="typeOfAssembly"></param>
-        /// <returns></returns>
-        public static IList<Domain.Resource> GetResourceFromAssembly(Type typeOfAssembly)
+        
+        private static IList<Domain.Resource> GetResourceFromAssembly(Type typeOfResource)
         {
+            List<Domain.Resource> value;
+            if (ListStore.TryGetValue(typeOfResource, out value)) return value;
+
             var result = new List<Domain.Resource>();
-            var types = System.Reflection.Assembly.GetAssembly(typeOfAssembly).GetTypes();
+            var types = System.Reflection.Assembly.GetAssembly(typeOfResource).GetTypes();
             foreach(var type in types)
             {
                 if (!type.GetInterfaces().Contains(typeof(IOperateResource))) continue;
                 result.Add(GetResource(type));
             }
+
+            ListStore.TryAdd(typeOfResource, result);
             return result;
+        }
+
+        /// <summary>
+        /// 获取资源数据
+        /// </summary>
+        /// <typeparam name="TResource"></typeparam>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public static Data.ResourceData GetResourceData<TResource>(Guid id)
+            where TResource : class
+        {
+            var list = GetResourceFromAssembly(typeof(TResource));
+            var domain = list.FirstOrDefault(o => o.Id == id);
+            return domain.MapTo(new Data.ResourceData());
         }
 
         /// <summary>
