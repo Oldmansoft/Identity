@@ -288,6 +288,23 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 获取帐号
         /// </summary>
+        /// <param name="memberId">会员序号</param>
+        /// <returns></returns>
+        public IList<Data.AccountData> GetAccountsByMemberId(Guid memberId)
+        {
+            var list = Factory.CreateAccountRepository().ListByMemberId(memberId);
+
+            var result = new List<Data.AccountData>();
+            foreach (var item in list)
+            {
+                result.Add(FillRoles(Factory, item));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 获取帐号
+        /// </summary>
         /// <param name="name">帐号</param>
         /// <param name="passwordSHA256Hash">密码十六进制散列</param>
         /// <returns></returns>

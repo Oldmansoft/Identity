@@ -24,6 +24,18 @@ namespace Oldmansoft.Identity.Driver.Mongo
             return Query().Where(o => o.MemberId == memberId).FirstOrDefault();
         }
 
+        public IList<Domain.Account> ListByMemberId(Guid memberId)
+        {
+            var list = Query().Where(o => o.MemberId == memberId).ToList();
+
+            var result = new List<Domain.Account>();
+            foreach (var item in list)
+            {
+                result.Add(item);
+            }
+            return result;
+        }
+
         public Domain.Account GetByName(string name)
         {
             return Query().Where(o => o.Name == name).FirstOrDefault();

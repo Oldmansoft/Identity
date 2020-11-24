@@ -28,6 +28,13 @@ namespace Oldmansoft.Identity.Infrastructure
         Account GetByMemberId(Guid memberId);
 
         /// <summary>
+        /// 从会员序号获取
+        /// </summary>
+        /// <param name="memberId">成员序号</param>
+        /// <returns></returns>
+        IList<Account> ListByMemberId(Guid memberId);
+
+        /// <summary>
         /// 分页
         /// </summary>
         /// <param name="key">查找内容</param>

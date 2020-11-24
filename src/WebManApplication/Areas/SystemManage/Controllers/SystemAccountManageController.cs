@@ -53,7 +53,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             foreach (var item in source)
             {
                 var model = item.MapTo(new Models.AccountManageListModel());
-                model.Partition = ResourceProvider.GetResourceData<Resource>(item.PartitionResourceId).Name.Name;
+                model.Partition = ResourceProvider.GetResourceData<Resource>(item.PartitionResourceId).Name;
                 model.Roles = item.Roles.Select(o => o.Name).ToList();
                 list.Add(model);
             }
