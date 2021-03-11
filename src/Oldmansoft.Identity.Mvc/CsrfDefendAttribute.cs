@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace Oldmansoft.Identity
 {
@@ -35,9 +30,11 @@ namespace Oldmansoft.Identity
 
         private void SetDefendContent(ActionExecutingContext filterContext)
         {
-            var content = new ContentResult();
-            content.Content = "^_^";
-            content.ContentType = "text/plain";
+            var content = new ContentResult
+            {
+                Content = "^_^",
+                ContentType = "text/plain"
+            };
             filterContext.Result = content;
         }
 

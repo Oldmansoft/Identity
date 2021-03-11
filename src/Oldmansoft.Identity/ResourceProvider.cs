@@ -1,10 +1,9 @@
-﻿using System;
+﻿using Oldmansoft.ClassicDomain;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
 
 namespace Oldmansoft.Identity
 {
@@ -67,8 +66,7 @@ namespace Oldmansoft.Identity
             where TOperateResource : class, IOperateResource, new()
         {
             Type type = typeof(TOperateResource);
-            object value;
-            if (StructureStore.TryGetValue(type, out value)) return value as TOperateResource;
+            if (StructureStore.TryGetValue(type, out object value)) return value as TOperateResource;
 
             var resource = CreateResource<TOperateResource>(type);
             StructureStore.TryAdd(type, resource);
@@ -84,8 +82,7 @@ namespace Oldmansoft.Identity
 
         private static Domain.Resource GetResource(Type type)
         {
-            Domain.Resource value;
-            if (DomainStore.TryGetValue(type, out value)) return value;
+            if (DomainStore.TryGetValue(type, out Domain.Resource value)) return value;
 
             var summary = Util.AssemblyXml.SummaryReader.GetTypeInfo(type);
             var name = summary.GetSummary(type.GetFullName());
@@ -118,8 +115,7 @@ namespace Oldmansoft.Identity
         
         private static IList<Domain.Resource> GetResourceFromAssembly(Type typeOfResource)
         {
-            List<Domain.Resource> value;
-            if (ListStore.TryGetValue(typeOfResource, out value)) return value;
+            if (ListStore.TryGetValue(typeOfResource, out List<Domain.Resource> value)) return value;
 
             var result = new List<Domain.Resource>();
             var types = System.Reflection.Assembly.GetAssembly(typeOfResource).GetTypes();

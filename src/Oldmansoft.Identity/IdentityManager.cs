@@ -1,11 +1,8 @@
-﻿using System;
+﻿using Oldmansoft.ClassicDomain;
+using Oldmansoft.Identity.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
-using Oldmansoft.ClassicDomain.Util;
-using Oldmansoft.Identity.Infrastructure;
 
 namespace Oldmansoft.Identity
 {
@@ -14,13 +11,13 @@ namespace Oldmansoft.Identity
     /// </summary>
     public class IdentityManager
     {
-        private IRepositoryFactory Factory { get; set; }
+        private Infrastructure.IRepositoryFactory Factory { get; set; }
 
         /// <summary>
         /// 创建身份管理员
         /// </summary>
         /// <param name="factory"></param>
-        public IdentityManager(IRepositoryFactory factory)
+        public IdentityManager(Infrastructure.IRepositoryFactory factory)
         {
             Factory = factory;
         }
@@ -51,7 +48,7 @@ namespace Oldmansoft.Identity
             return true;
         }
 
-        private Data.AccountData FillRoles(IRepositoryFactory factory, Domain.Account domain)
+        private Data.AccountData FillRoles(Domain.Account domain)
         {
             var data = domain.MapTo(new Data.AccountData());
 
@@ -148,17 +145,17 @@ namespace Oldmansoft.Identity
             {
                 foreach(var item in allOperators)
                 {
-                    var permission = new Data.PermissionData();
-                    permission.ResourceId = resource.Id;
-                    permission.Operator = item;
+                    var permission = new Data.PermissionData
+                    {
+                        ResourceId = resource.Id,
+                        Operator = item
+                    };
                     permissions.Add(permission);
                 }
             }
 
-            Guid accountId;
-            Guid roleId;
-            if (!CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.System, out accountId)) return false;
-            if (!CreateRole<TOperateResource>(roleName, roleDescription, permissions, out roleId)) return false;
+            if (!CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.System, out Guid accountId)) return false;
+            if (!CreateRole<TOperateResource>(roleName, roleDescription, permissions, out Guid roleId)) return false;
 
             AccountSetRole<TOperateResource>(accountId, new Guid[] { roleId });
             return true;
@@ -174,8 +171,7 @@ namespace Oldmansoft.Identity
         public bool CreateAccount<TOperateResource>(string name, string passwordSHA256Hash)
             where TOperateResource : class, IOperateResource, new()
         {
-            Guid accountId;
-            return CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out accountId);
+            return CreateAccount<TOperateResource>(name, passwordSHA256Hash, null, DataDefinition.MemberType.Unknown, out _);
         }
 
         /// <summary>
@@ -256,7 +252,7 @@ namespace Oldmansoft.Identity
             var domain = Factory.CreateAccountRepository().Get(accountId);
             if (domain == null) return null;
 
-            return FillRoles(Factory, domain);
+            return FillRoles(domain);
         }
 
         /// <summary>
@@ -269,7 +265,7 @@ namespace Oldmansoft.Identity
             var domain = Factory.CreateAccountRepository().GetByName(name);
             if (domain == null) return null;
 
-            return FillRoles(Factory, domain);
+            return FillRoles(domain);
         }
 
         /// <summary>
@@ -282,7 +278,7 @@ namespace Oldmansoft.Identity
             var domain = Factory.CreateAccountRepository().GetByMemberId(memberId);
             if (domain == null) return null;
 
-            return FillRoles(Factory, domain);
+            return FillRoles(domain);
         }
 
         /// <summary>
@@ -297,7 +293,7 @@ namespace Oldmansoft.Identity
             var result = new List<Data.AccountData>();
             foreach (var item in list)
             {
-                result.Add(FillRoles(Factory, item));
+                result.Add(FillRoles(item));
             }
             return result;
         }
@@ -315,7 +311,7 @@ namespace Oldmansoft.Identity
             if (domain == null) return null;
             if (!domain.CheckPasswordHash(passwordSHA256Hash)) return null;
 
-            return FillRoles(Factory, domain);
+            return FillRoles(domain);
         }
 
         /// <summary>
@@ -332,7 +328,7 @@ namespace Oldmansoft.Identity
             if (domain == null) return null;
             if (!domain.CheckPassword(doubleSHA256Hash, seed)) return null;
 
-            return FillRoles(Factory, domain);
+            return FillRoles(domain);
         }
 
         /// <summary>
@@ -352,7 +348,7 @@ namespace Oldmansoft.Identity
             var result = new List<Data.AccountData>();
             foreach(var item in list)
             {
-                result.Add(FillRoles(Factory, item));
+                result.Add(FillRoles(item));
             }
             return result;
         }
@@ -377,7 +373,7 @@ namespace Oldmansoft.Identity
             var result = new List<Data.AccountData>();
             foreach (var item in list)
             {
-                result.Add(FillRoles(Factory, item));
+                result.Add(FillRoles(item));
             }
             return result;
         }
@@ -399,7 +395,7 @@ namespace Oldmansoft.Identity
             var result = new List<Data.AccountData>();
             foreach (var item in list)
             {
-                result.Add(FillRoles(Factory, item));
+                result.Add(FillRoles(item));
             }
             return result;
         }
@@ -554,8 +550,7 @@ namespace Oldmansoft.Identity
         public bool CreateRole<TOperateResource>(string name, string description, List<Data.PermissionData> permissions)
             where TOperateResource : class, IOperateResource, new()
         {
-            Guid roleId;
-            return CreateRole<TOperateResource>(name, description, permissions, out roleId);
+            return CreateRole<TOperateResource>(name, description, permissions, out _);
         }
 
         /// <summary>

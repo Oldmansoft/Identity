@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.Caching;
 
-namespace Oldmansoft.Identity
+namespace WebManApplication
 {
     /// <summary>
     /// 密码守卫
@@ -16,6 +16,8 @@ namespace Oldmansoft.Identity
         /// 唯一实例
         /// </summary>
         public static readonly PasswordGuard Instance = new PasswordGuard();
+
+        private readonly MemoryCache Memory = new MemoryCache("Identity");
 
         /// <summary>
         /// 重试次数
@@ -33,11 +35,6 @@ namespace Oldmansoft.Identity
             LockSecond = 10;
         }
 
-        private string GetKey(string name)
-        {
-            return string.Format("Identity:{0}", name);
-        }
-
         /// <summary>
         /// 是否锁定
         /// </summary>
@@ -45,7 +42,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool IsLockedOut(string name)
         {
-            var cacheItem = MemoryCache.Default.GetCacheItem(GetKey(name));
+            var cacheItem = Memory.GetCacheItem(name);
             if (cacheItem != null)
             {
                 var tryWrongCount = (int)cacheItem.Value;
@@ -63,10 +60,10 @@ namespace Oldmansoft.Identity
         /// <param name="name"></param>
         public void SetCount(string name)
         {
-            var oldValue = MemoryCache.Default.AddOrGetExisting(GetKey(name), 1, DateTime.Now.AddSeconds(LockSecond));
+            var oldValue = Memory.AddOrGetExisting(name, 1, DateTime.Now.AddSeconds(LockSecond));
             if (oldValue != null)
             {
-                MemoryCache.Default.Set(GetKey(name), (int)oldValue + 1, DateTime.Now.AddSeconds(LockSecond));
+                Memory.Set(name, (int)oldValue + 1, DateTime.Now.AddSeconds(LockSecond));
             }
         }
     }

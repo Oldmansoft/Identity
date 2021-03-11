@@ -1,19 +1,12 @@
-﻿using System;
+﻿using Oldmansoft.ClassicDomain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
-using Oldmansoft.ClassicDomain.Util;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
     class AccountRepository : ClassicDomain.Driver.Mongo.RepositoryDefinedSuperClass<Account, Domain.Account, Guid, Mapping>, Infrastructure.IAccountRepository
     {
-        public AccountRepository(UnitOfWork uow)
-            : base(uow)
-        { }
-
         public bool ContainsRoleId(Guid roleId)
         {
             return Query().Where(o => o.RoleIds.Contains(roleId)).FirstOrDefault() != null;

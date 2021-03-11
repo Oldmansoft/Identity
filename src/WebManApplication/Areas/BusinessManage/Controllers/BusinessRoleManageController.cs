@@ -1,4 +1,5 @@
 ﻿using Oldmansoft.ClassicDomain;
+using Oldmansoft.Html;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
@@ -6,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Oldmansoft.Html;
 
 namespace WebManApplication.Areas.BusinessManage.Controllers
 {
@@ -22,8 +22,10 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
 
         private List<Oldmansoft.Identity.Data.ResourceData> ResourceSupport()
         {
-            var result = new List<Oldmansoft.Identity.Data.ResourceData>();
-            result.Add(CreateIdentity().GetResource<Resource.Business>());
+            var result = new List<Oldmansoft.Identity.Data.ResourceData>
+            {
+                CreateIdentity().GetResource<Resource.Business>()
+            };
             return result;
         }
 
@@ -49,12 +51,13 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
         [Auth(Operation.List)]
         public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
-            int totalCount;
+            var identityManager = CreateIdentity();
+            var source = identityManager.GetRoles<Resource.Business>(request.PageIndex, request.PageSize, out int totalCount, key);
             var list = new List<Models.RoleManageListMoreModel>();
-            foreach (var item in CreateIdentity().GetRoles<Resource.Business>(request.PageIndex, request.PageSize, out totalCount, key))
+            foreach (var item in source)
             {
                 var model = item.MapTo(new Models.RoleManageListMoreModel());
-                model.HasAccount = CreateIdentity().RoleHasAccount(item.Id);
+                model.HasAccount = identityManager.RoleHasAccount(item.Id);
                 list.Add(model);
             }
             return Json(DataTable.Source(list, request, totalCount));
@@ -101,13 +104,15 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
 
         private static List<ListDataItem> GetDataSourceList()
         {
-            var cn = new Dictionary<string, string>();
-            cn.Add("List", "列表");
-            cn.Add("Execute", "执行");
-            cn.Add("View", "查看");
-            cn.Add("Append", "添加");
-            cn.Add("Modify", "修改");
-            cn.Add("Remove", "移除");
+            var cn = new Dictionary<string, string>
+            {
+                { "List", "列表" },
+                { "Execute", "执行" },
+                { "View", "查看" },
+                { "Append", "添加" },
+                { "Modify", "修改" },
+                { "Remove", "移除" }
+            };
 
             var list = new List<ListDataItem>();
             foreach (var item in Enum.GetValues(typeof(Operation)))
@@ -127,9 +132,11 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
                 {
                     foreach (var item in operators)
                     {
-                        var permission = new Oldmansoft.Identity.Data.PermissionData();
-                        permission.ResourceId = child.Id;
-                        permission.Operator = (Operation)int.Parse(item);
+                        var permission = new Oldmansoft.Identity.Data.PermissionData
+                        {
+                            ResourceId = child.Id,
+                            Operator = (Operation)int.Parse(item)
+                        };
                         result.Add(permission);
                     }
                 }

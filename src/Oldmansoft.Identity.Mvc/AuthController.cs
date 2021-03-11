@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity
 {
@@ -24,7 +20,7 @@ namespace Oldmansoft.Identity
         /// </summary>
         protected abstract Infrastructure.IRepositoryFactory Factory { get; }
 
-        private Guid? _AccountId { get; set; }
+        private Guid? _AccountId;
 
         /// <summary>
         /// 帐号序号
@@ -55,8 +51,7 @@ namespace Oldmansoft.Identity
             {
                 throw new ArgumentNullException("identity");
             }
-            var identity2 = identity as ClaimsIdentity;
-            if (identity2 != null)
+            if (identity is ClaimsIdentity identity2)
             {
                 return FindFirstValue(identity2, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
             }

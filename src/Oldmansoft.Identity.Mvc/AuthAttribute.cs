@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Oldmansoft.Identity
@@ -53,7 +49,6 @@ namespace Oldmansoft.Identity
         /// <param name="filterContext"></param>
         public override void OnAuthorization(System.Web.Mvc.AuthorizationContext filterContext)
         {
-            Type type = filterContext.ActionDescriptor.ControllerDescriptor.ControllerType;
             if (!(filterContext.Controller is AuthController))
             {
                 throw new IdentityException("使用 Auth 特性必须建立在 AuthController 里面，请继承它。");

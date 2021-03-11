@@ -1,10 +1,9 @@
-﻿using Oldmansoft.ClassicDomain.Util;
+﻿using Oldmansoft.ClassicDomain;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace WebManApplication.Areas.BusinessManage.Controllers
@@ -51,8 +50,15 @@ namespace WebManApplication.Areas.BusinessManage.Controllers
         [Auth(Operation.List)]
         public JsonResult IndexDataSource(Guid roleId, string key, DataTable.Request request)
         {
-            int totalCount;
-            var list = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, roleId, key);
+            var source = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out int totalCount, roleId, key);
+            var list = new List<Models.AccountManageListModel>();
+            foreach (var item in source)
+            {
+                var model = item.MapTo(new Models.AccountManageListModel());
+                model.Partition = ResourceProvider.GetResourceData<Resource>(item.PartitionResourceId).Name;
+                model.Roles = item.Roles.Select(o => o.Name).ToList();
+                list.Add(model);
+            }
             return Json(DataTable.Source(list, request, totalCount));
         }
 

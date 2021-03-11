@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
+﻿using Oldmansoft.ClassicDomain;
+using System;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
+    /// <summary>
+    /// Mongo Context 映射文件
+    /// </summary>
     class Mapping : ClassicDomain.Driver.Mongo.Context
     {
+        /// <summary>
+        /// 在模型创建时
+        /// </summary>
         protected override void OnModelCreating()
         {
             Add<Account, Guid>(domain => domain.Id)

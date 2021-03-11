@@ -1,19 +1,12 @@
-﻿using System;
+﻿using Oldmansoft.ClassicDomain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
-using Oldmansoft.ClassicDomain.Util;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
     class RoleRepository : ClassicDomain.Driver.Mongo.RepositoryDefinedSuperClass<Role, Domain.Role, Guid, Mapping>, Infrastructure.IRoleRepository
     {
-        public RoleRepository(UnitOfWork uow)
-            : base(uow)
-        { }
-
         public IList<Domain.Role> ListByPartitionResourceId(Guid partitionResourceId)
         {
             IQuerySupport<Domain.Role> repository = this;

@@ -1,16 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F59DF80B-890E-4F24-AA75-CB64A27FBAD5}</ProjectGuid>
+    <ProjectGuid>{573B67E8-F995-45A3-9C1D-CC2630EEF79C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WebManApplication</RootNamespace>
     <AssemblyName>WebManApplication.WebDefinition</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\WebManApplication.WebDefinition.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\WebManApplication.WebDefinition.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,45 +34,39 @@
   <ItemGroup>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="Oldmansoft.Html, Version=0.15.82.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.0.15.82\lib\net45\Oldmansoft.Html.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Oldmansoft.Html, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.1.0.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=0.29.116.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.0.29.116\lib\net45\Oldmansoft.Html.WebMan.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.0.0.2\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=0.26.108.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.0.26.108\lib\net45\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.1.0.0.1\lib\net461\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.3.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -86,32 +81,26 @@
     <Compile Include="EmptyTableAction.cs" />
     <Compile Include="Extends.cs" />
     <Compile Include="ObjectStore.cs" />
-    <Compile Include="Resource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resource.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Oldmansoft.Identity.Driver.Mongo\Oldmansoft.Identity.Driver.Mongo.csproj">
-      <Project>{aa989d80-28d7-40a1-8553-95aff1d2f41f}</Project>
+      <Project>{98199bcf-ccb8-4757-a431-2ede876c3bbe}</Project>
       <Name>Oldmansoft.Identity.Driver.Mongo</Name>
     </ProjectReference>
     <ProjectReference Include="..\Oldmansoft.Identity.Mvc\Oldmansoft.Identity.Mvc.csproj">
-      <Project>{6b637d52-233c-4852-8d84-8d481c1080db}</Project>
+      <Project>{82ce7e88-a0f2-4330-8ae1-94a149d0ca25}</Project>
       <Name>Oldmansoft.Identity.Mvc</Name>
     </ProjectReference>
     <ProjectReference Include="..\Oldmansoft.Identity\Oldmansoft.Identity.csproj">
-      <Project>{2d9ebb8e-0ef0-4157-af5c-694ecc122cec}</Project>
+      <Project>{d1be05b4-b499-48f7-9686-a94a94a5f9bd}</Project>
       <Name>Oldmansoft.Identity</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

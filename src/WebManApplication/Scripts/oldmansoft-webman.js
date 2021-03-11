@@ -1,5 +1,5 @@
 ﻿/*
-* v0.27.111
+* v0.30.117
 * Copyright 2016 Oldmansoft, Inc; http://www.apache.org/licenses/LICENSE-2.0
 */
 (function ($) {
@@ -333,8 +333,14 @@ window.oldmansoft.webman = new (function () {
             });
         } else if (target == "_open") {
             $app.open(action, form.serialize());
+        }else if(target == "_self"){
+            if ($app.current().node.hasClass("main-view")) {
+                $app.same(action + (action.indexOf("?") > -1 ? "&" : "?") + form.serialize());
+            } else {
+                $app.current().view.replace(action, form.serialize());
+            }
         } else if (!target) {
-            $app.link(action + "?" + form.serialize());
+            $app.link(action + (action.indexOf("?") > -1 ? "&" : "?") + form.serialize());
         } else {
             return true;
         }
@@ -631,7 +637,7 @@ window.oldmansoft.webman = new (function () {
     function badgeSetContent() {
         var hasValue = false;
 
-        $(this).children(".branch").each(badgeSetContent);
+        $(this).children("ul").children(".branch").each(badgeSetContent);
         $(this).children("ul").children("li").find(".badge").each(function () {
             if ($(this).text() != "") {
                 hasValue = true;

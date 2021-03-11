@@ -1,14 +1,10 @@
-﻿using Oldmansoft.Html;
-using Oldmansoft.Html.WebMan;
+﻿using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using Oldmansoft.Identity.Data;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WebManApplication
 {
@@ -193,8 +189,7 @@ namespace WebManApplication
             foreach (var item in Enum.GetValues(enumType))
             {
                 var name = Enum.GetName(typeof(Operation), item);
-                var attribute = enumType.GetMember(name)[0].GetCustomAttribute(typeof(DescriptionAttribute), false) as DescriptionAttribute;
-                if (attribute != null)
+                if (enumType.GetMember(name)[0].GetCustomAttribute(typeof(DescriptionAttribute), false) is DescriptionAttribute attribute)
                 {
                     name = attribute.Description;
                 }

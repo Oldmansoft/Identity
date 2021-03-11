@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity.Domain
 {
@@ -30,10 +26,11 @@ namespace Oldmansoft.Identity.Domain
         /// <returns></returns>
         public static Resource Create(Guid id, string name)
         {
-            var result = new Resource();
-            result.Id = id;
-            result.Name = name;
-            return result;
+            return new Resource
+            {
+                Id = id,
+                Name = name
+            };
         }
 
         /// <summary>

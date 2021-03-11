@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
-using Oldmansoft.ClassicDomain.Driver.Mongo;
+﻿using Oldmansoft.ClassicDomain;
 using Oldmansoft.Identity.Infrastructure;
+using System;
+using System.Collections.Generic;
 
 namespace Oldmansoft.Identity.Driver.Mongo
 {
     /// <summary>
     /// 仓储工厂
     /// </summary>
-    public class RepositoryFactory : IRepositoryFactory
+    public class RepositoryFactory : Infrastructure.IRepositoryFactory
     {
+        /// <summary>
+        /// 设置连接字符串
+        /// </summary>
+        /// <param name="connectionString"></param>
+        public static void SetConnectionString(string connectionString)
+        {
+            ConnectionString.Set<Mapping>(connectionString);
+        }
+
         private UnitOfWork Uow { get; set; }
 
         /// <summary>
@@ -64,7 +69,9 @@ namespace Oldmansoft.Identity.Driver.Mongo
         /// <returns></returns>
         public IAccountRepository CreateAccountRepository()
         {
-            return new AccountRepository(Uow);
+            var result = new AccountRepository();
+            result.SetUnitOfWork(Uow);
+            return result;
         }
 
         /// <summary>
@@ -73,7 +80,9 @@ namespace Oldmansoft.Identity.Driver.Mongo
         /// <returns></returns>
         public IRoleRepository CreateRoleRepository()
         {
-            return new RoleRepository(Uow);
+            var result = new RoleRepository();
+            result.SetUnitOfWork(Uow);
+            return result;
         }
     }
 }

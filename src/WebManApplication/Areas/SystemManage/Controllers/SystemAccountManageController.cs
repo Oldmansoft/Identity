@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using Oldmansoft.ClassicDomain;
+﻿using Oldmansoft.ClassicDomain;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace WebManApplication.Areas.SystemManage.Controllers
 {
@@ -47,8 +46,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Auth(Operation.List)]
         public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
-            int totalCount;
-            var source = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out totalCount, key);
+            var source = CreateIdentity().GetAccounts(request.PageIndex, request.PageSize, out int totalCount, key);
             var list = new List<Models.AccountManageListModel>();
             foreach (var item in source)
             {
@@ -146,6 +144,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Auth(Operation.Modify)]
         public JsonResult SetRoleResult(Models.AccountManageSetRoleModel model)
         {
+            if (model.RoleId == null) model.RoleId = new List<Guid>();
             CreateIdentity().AccountSetRole<Resource.System>(model.Id, model.RoleId.ToArray());
             return Json(DealResult.Refresh());
         }

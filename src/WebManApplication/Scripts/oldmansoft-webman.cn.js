@@ -3,6 +3,7 @@
 	text.yes = "是";
 	text.no = "否";
 	text.loading = "加载中";
+	text.load_layout_error = "加载布局出错，点击“好的”重新加载。";
 });
 $man.configText(function (text) {
     text.dataTable.info = "第 _PAGE_ 页 ( 有 _PAGES_ 页 ) 共 _TOTAL_ 条数据";

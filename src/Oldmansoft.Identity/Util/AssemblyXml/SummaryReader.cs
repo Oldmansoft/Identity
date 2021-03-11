@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity.Util.AssemblyXml
 {
@@ -27,8 +23,7 @@ namespace Oldmansoft.Identity.Util.AssemblyXml
         public static SummaryXml GetXmlInfo(Type type)
         {
             var key = type.GetFullName();
-            SummaryXml result;
-            if (Xmls.TryGetValue(key, out result)) return result;
+            if (Xmls.TryGetValue(key, out SummaryXml result)) return result;
             result = new SummaryXml(type);
             Xmls.TryAdd(key, result);
             return result;
@@ -43,8 +38,7 @@ namespace Oldmansoft.Identity.Util.AssemblyXml
         public static SummaryXml GetXmlInfo(Type type, string extension)
         {
             var key = string.Format("{0}:{1}", extension, type.GetFullName());
-            SummaryXml result;
-            if (Xmls.TryGetValue(key, out result)) return result;
+            if (Xmls.TryGetValue(key, out SummaryXml result)) return result;
             result = new SummaryXml(type);
             Xmls.TryAdd(key, result);
             return result;

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Oldmansoft.Identity.Domain
 {
@@ -34,10 +30,11 @@ namespace Oldmansoft.Identity.Domain
         /// <returns></returns>
         public static ResourceItem CreateItem(Guid id, string name)
         {
-            var result = new ResourceItem();
-            result.Id = id;
-            result.Name = name;
-            return result;
+            return new ResourceItem
+            {
+                Id = id,
+                Name = name
+            };
         }
     }
 }

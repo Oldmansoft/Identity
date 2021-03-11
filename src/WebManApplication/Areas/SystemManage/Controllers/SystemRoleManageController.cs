@@ -1,4 +1,5 @@
 ﻿using Oldmansoft.ClassicDomain;
+using Oldmansoft.Html;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
@@ -6,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Oldmansoft.Html;
 
 namespace WebManApplication.Areas.SystemManage.Controllers
 {
@@ -22,9 +22,11 @@ namespace WebManApplication.Areas.SystemManage.Controllers
 
         private List<Oldmansoft.Identity.Data.ResourceData> ResourceSupport()
         {
-            var result = new List<Oldmansoft.Identity.Data.ResourceData>();
-            result.Add(CreateIdentity().GetResource<Resource.System>());
-            result.Add(CreateIdentity().GetResource<Resource.Business>());
+            var result = new List<Oldmansoft.Identity.Data.ResourceData>
+            {
+                CreateIdentity().GetResource<Resource.System>(),
+                CreateIdentity().GetResource<Resource.Business>()
+            };
             return result;
         }
 
@@ -51,9 +53,9 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
             var identityManager = CreateIdentity();
-            int totalCount;
+            var source = identityManager.GetRoles<Resource.System>(request.PageIndex, request.PageSize, out int totalCount, key);
             var list = new List<Models.RoleManageListMoreModel>();
-            foreach (var item in identityManager.GetRoles<Resource.System>(request.PageIndex, request.PageSize, out totalCount, key))
+            foreach (var item in source)
             {
                 var model = item.MapTo(new Models.RoleManageListMoreModel());
                 model.HasAccount = identityManager.RoleHasAccount(item.Id);
@@ -103,13 +105,15 @@ namespace WebManApplication.Areas.SystemManage.Controllers
 
         private static List<ListDataItem> GetDataSourceList()
         {
-            var cn = new Dictionary<string, string>();
-            cn.Add("List", "列表");
-            cn.Add("Execute", "执行");
-            cn.Add("View", "查看");
-            cn.Add("Append", "添加");
-            cn.Add("Modify", "修改");
-            cn.Add("Remove", "移除");
+            var cn = new Dictionary<string, string>
+            {
+                { "List", "列表" },
+                { "Execute", "执行" },
+                { "View", "查看" },
+                { "Append", "添加" },
+                { "Modify", "修改" },
+                { "Remove", "移除" }
+            };
 
             var list = new List<ListDataItem>();
             foreach (var item in Enum.GetValues(typeof(Operation)))
@@ -129,9 +133,11 @@ namespace WebManApplication.Areas.SystemManage.Controllers
                 {
                     foreach (var item in operators)
                     {
-                        var permission = new Oldmansoft.Identity.Data.PermissionData();
-                        permission.ResourceId = child.Id;
-                        permission.Operator = (Operation)int.Parse(item);
+                        var permission = new Oldmansoft.Identity.Data.PermissionData
+                        {
+                            ResourceId = child.Id,
+                            Operator = (Operation)int.Parse(item)
+                        };
                         result.Add(permission);
                     }
                 }
@@ -217,7 +223,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             }
             var data = CreateIdentity().GetRole<Resource.System>(model.Id);
             if (data == null) return Json(DealResult.WrongRefresh("内容不存在"));
-            
+
             CreateIdentity().ReplaceRole<Resource.System>(model.Id, model.Name, model.Description, GetPermissions());
             return Json(DealResult.Refresh());
         }

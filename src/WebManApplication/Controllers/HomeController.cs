@@ -10,7 +10,6 @@ using System.Web.Mvc;
 
 namespace WebManApplication.Controllers
 {
-    [Authorize]
     public class HomeController : AuthController
     {
         public override Guid OperateResource
@@ -96,8 +95,7 @@ namespace WebManApplication.Controllers
         [HttpPost]
         public JsonResult Login(string account, string hash)
         {
-            var hashSeed = TempData["HashSeed"] as string;
-            if (hashSeed == null)
+            if (!(TempData["HashSeed"] is string hashSeed))
             {
                 return Json(DealResult.Wrong("脚本运行不正确"));
             }

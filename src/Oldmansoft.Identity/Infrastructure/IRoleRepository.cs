@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Oldmansoft.ClassicDomain;
+﻿using Oldmansoft.ClassicDomain;
 using Oldmansoft.Identity.Domain;
+using System;
+using System.Collections.Generic;
 
 namespace Oldmansoft.Identity.Infrastructure
 {
