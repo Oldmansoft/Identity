@@ -1,18 +1,31 @@
 ﻿using Oldmansoft.Html.WebMan;
-using Oldmansoft.Identity;
 using Oldmansoft.Identity.Data;
+using Oldmansoft.Identity.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
 
-namespace WebManApplication
+namespace Oldmansoft.Identity
 {
     /// <summary>
     /// 扩展
     /// </summary>
     public static class Extends
     {
+        private static IAuthAttribute GetAuthAttribute(MethodInfo method)
+        {
+            foreach (var attribute in method.GetCustomAttributes())
+            {
+                if (attribute is IAuthAttribute)
+                {
+                    return attribute as IAuthAttribute;
+                }
+            }
+            return null;
+        }
+
         /// <summary>
         /// 根据权限添加菜单
         /// </summary>
@@ -27,15 +40,15 @@ namespace WebManApplication
             if (account == null) return source;
             if (item.Location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (item.Location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
-            if (!item.Location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+            if (!item.Location.TargetType.GetInterfaces().Contains(typeof(IAuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
 
-            var attribute = item.Location.Method.GetCustomAttribute<AuthAttribute>();
+            var attribute = GetAuthAttribute(item.Location.Method);
             if (attribute == null)
             {
                 source.Add(item);
                 return source;
             }
-            var controller = ObjectStore.Instance.Get(item.Location.TargetType) as AuthController;
+            var controller = ObjectStore.Instance.Get(item.Location.TargetType) as IAuthController;
             var resourceId = controller.OperateResource;
             var operation = attribute.Operation;
 
@@ -61,14 +74,14 @@ namespace WebManApplication
             if (account == null) return EmptyTableAction.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
-            if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+            if (!location.TargetType.GetInterfaces().Contains(typeof(IAuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
 
-            var attribute = location.Method.GetCustomAttribute<AuthAttribute>();
+            var attribute = GetAuthAttribute(location.Method);
             if (attribute == null)
             {
                 return source.AddActionTable(location);
             }
-            var controller = ObjectStore.Instance.Get(location.TargetType) as AuthController;
+            var controller = ObjectStore.Instance.Get(location.TargetType) as IAuthController;
             var resourceId = controller.OperateResource;
             var operation = attribute.Operation;
 
@@ -94,14 +107,14 @@ namespace WebManApplication
             if (account == null) return EmptyItemAction.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
-            if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+            if (!location.TargetType.GetInterfaces().Contains(typeof(IAuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
 
-            var attribute = location.Method.GetCustomAttribute<AuthAttribute>();
+            var attribute = GetAuthAttribute(location.Method);
             if (attribute == null)
             {
                 return source.AddActionItem(location);
             }
-            var controller = ObjectStore.Instance.Get(location.TargetType) as AuthController;
+            var controller = ObjectStore.Instance.Get(location.TargetType) as IAuthController;
             var resourceId = controller.OperateResource;
             var operation = attribute.Operation;
 
@@ -127,14 +140,14 @@ namespace WebManApplication
             if (account == null) return EmptyTableAction.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
-            if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+            if (!location.TargetType.GetInterfaces().Contains(typeof(IAuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
 
-            var attribute = location.Method.GetCustomAttribute<AuthAttribute>();
+            var attribute = GetAuthAttribute(location.Method);
             if (attribute == null)
             {
                 return source.AddActionTable(location);
             }
-            var controller = ObjectStore.Instance.Get(location.TargetType) as AuthController;
+            var controller = ObjectStore.Instance.Get(location.TargetType) as IAuthController;
             var resourceId = controller.OperateResource;
             var operation = attribute.Operation;
 
@@ -160,14 +173,14 @@ namespace WebManApplication
             if (account == null) return EmptyTableAction<TModel>.Instance;
             if (location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
             if (location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
-            if (!location.TargetType.IsSubclassOf(typeof(AuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+            if (!location.TargetType.GetInterfaces().Contains(typeof(IAuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
 
-            var attribute = location.Method.GetCustomAttribute<AuthAttribute>();
+            var attribute = GetAuthAttribute(location.Method);
             if (attribute == null)
             {
                 return source.AddActionItem(location);
             }
-            var controller = ObjectStore.Instance.Get(location.TargetType) as AuthController;
+            var controller = ObjectStore.Instance.Get(location.TargetType) as IAuthController;
             var resourceId = controller.OperateResource;
             var operation = attribute.Operation;
 

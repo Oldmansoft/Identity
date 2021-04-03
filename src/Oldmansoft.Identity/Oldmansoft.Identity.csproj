@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Domain.Net" Version="5.1.0" />
+    <PackageReference Include="Domain.Net" Version="5.2.1" />
   </ItemGroup>
 
 </Project>

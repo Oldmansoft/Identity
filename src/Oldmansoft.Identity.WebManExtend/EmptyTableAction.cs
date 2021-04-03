@@ -1,7 +1,7 @@
 ﻿using Oldmansoft.Html.WebMan;
 using System;
 
-namespace WebManApplication
+namespace Oldmansoft.Identity
 {
     class EmptyTableAction : ITableAction
     {

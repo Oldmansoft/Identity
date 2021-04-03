@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oldmansoft.ClassicDomain.Driver.Mongo" Version="5.1.0" />
+    <PackageReference Include="Oldmansoft.ClassicDomain.Driver.Mongo" Version="5.2.1" />
   </ItemGroup>
 
   <ItemGroup>

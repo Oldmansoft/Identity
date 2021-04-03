@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Linq;
 using System.Security.Claims;
 
 namespace Oldmansoft.Identity
 {
-    /// <summary>
-    /// 提供用于响应对 ASP.NET MVC 网站所进行的 HTTP 请求的方法。
-    /// </summary>
-    public abstract class AuthController : System.Web.Mvc.Controller, Mvc.IAuthController
+    [Microsoft.AspNetCore.Authorization.Authorize]
+    public abstract class AuthController : Controller, Mvc.IAuthController
     {
         private const string AccountCacheKey = "IdentityAccount";
 
@@ -82,14 +83,15 @@ namespace Oldmansoft.Identity
         /// 在调用操作方法前调用
         /// </summary>
         /// <param name="filterContext"></param>
-        protected override void OnActionExecuting(System.Web.Mvc.ActionExecutingContext filterContext)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var action = filterContext.ActionDescriptor;
-            if (action.GetCustomAttributes(typeof(System.Web.Mvc.HttpPostAttribute), false).Length > 0 && action.GetCustomAttributes(typeof(CrossSiteRequestAttribute), false).Length == 0)
+            var action = context.ActionDescriptor;
+
+            if (action.EndpointMetadata.FirstOrDefault(o => o.GetType() == typeof(HttpPostAttribute)) != null && action.EndpointMetadata.FirstOrDefault(o => o.GetType() == typeof(CrossSiteRequestAttribute)) == null)
             {
-                new CsrfDefendAttribute().OnActionExecuting(filterContext);
+                new CsrfDefendAttribute().OnActionExecuting(context);
             }
-            base.OnActionExecuting(filterContext);
+            base.OnActionExecuting(context);
         }
 
         /// <summary>
@@ -99,16 +101,17 @@ namespace Oldmansoft.Identity
         {
             get
             {
-                if (System.Web.HttpContext.Current.Items.Contains(AccountCacheKey))
+                
+                if (HttpContext.Items.ContainsKey(AccountCacheKey))
                 {
-                    return System.Web.HttpContext.Current.Items[AccountCacheKey] as Data.AccountData;
+                    return HttpContext.Items[AccountCacheKey] as Data.AccountData;
                 }
                 var result = new IdentityManager(Factory).GetAccount(AccountId);
-                System.Web.HttpContext.Current.Items.Add(AccountCacheKey, result);
+                HttpContext.Items.Add(AccountCacheKey, result);
                 return result;
             }
         }
-        
+
         /// <summary>
         /// 是否有权限
         /// </summary>

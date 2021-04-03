@@ -1,5 +1,7 @@
-﻿using System;
-using System.Runtime.Caching;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Oldmansoft.Identity
 {
@@ -13,7 +15,7 @@ namespace Oldmansoft.Identity
         /// </summary>
         public static readonly PasswordGuard Instance = new PasswordGuard();
 
-        private readonly MemoryCache Memory = new MemoryCache("Identity");
+        private readonly MemoryCache Memory = new MemoryCache(new MemoryCacheOptions());
 
         /// <summary>
         /// 重试次数
@@ -38,10 +40,9 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool IsLockedOut(string name)
         {
-            var cacheItem = Memory.GetCacheItem(name);
-            if (cacheItem != null)
+            if (Memory.TryGetValue(name, out int cache))
             {
-                var tryWrongCount = (int)cacheItem.Value;
+                var tryWrongCount = cache;
                 if (tryWrongCount >= CanTryCount)
                 {
                     return true;
@@ -56,11 +57,13 @@ namespace Oldmansoft.Identity
         /// <param name="name"></param>
         public void SetCount(string name)
         {
-            var oldValue = Memory.AddOrGetExisting(name, 1, DateTime.Now.AddSeconds(LockSecond));
-            if (oldValue != null)
+            var oldValue = Memory.GetOrCreate(name, entry =>
             {
-                Memory.Set(name, (int)oldValue + 1, DateTime.Now.AddSeconds(LockSecond));
-            }
+                entry.SetAbsoluteExpiration(DateTime.Now.AddSeconds(LockSecond));
+                return 1;
+            });
+
+            Memory.Set(name, oldValue + 1, DateTime.Now.AddSeconds(LockSecond));
         }
     }
 }

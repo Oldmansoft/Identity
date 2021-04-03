@@ -85,20 +85,20 @@
     <Reference Include="MongoDB.Libmongocrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Libmongocrypt.1.0.0\lib\net452\MongoDB.Libmongocrypt.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.ClassicDomain, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Domain.Net.5.1.0\lib\netstandard2.0\Oldmansoft.ClassicDomain.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain, Version=5.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Domain.Net.5.2.1\lib\netstandard2.0\Oldmansoft.ClassicDomain.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.ClassicDomain.Driver.Mongo, Version=5.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.ClassicDomain.Driver.Mongo.5.1.0\lib\netstandard2.0\Oldmansoft.ClassicDomain.Driver.Mongo.dll</HintPath>
+    <Reference Include="Oldmansoft.ClassicDomain.Driver.Mongo, Version=5.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.ClassicDomain.Driver.Mongo.5.2.1\lib\netstandard2.0\Oldmansoft.ClassicDomain.Driver.Mongo.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.1.0.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
+    <Reference Include="Oldmansoft.Html, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.1.1.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.0.0.2\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.1.0\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.1.0.0.1\lib\net461\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.1.1.0\lib\net461\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -250,9 +250,7 @@
     <Content Include="Content\oldmansoft-webapp.css" />
     <Content Include="Content\oldmansoft-webapp.min.css" />
     <Content Include="Content\oldmansoft-webman.css" />
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Areas\BusinessManage\Views\web.config" />
     <Content Include="Areas\SystemManage\Views\web.config" />
     <Content Include="Scripts\oldmansoft-plugin-fix.js" />
@@ -274,14 +272,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\BusinessManage\Views\BusinessAccountManage\" />
-    <Folder Include="Areas\BusinessManage\Views\BusinessRoleAccount\" />
-    <Folder Include="Areas\BusinessManage\Views\BusinessRoleManage\" />
     <Folder Include="Areas\BusinessManage\Views\Shared\" />
     <Folder Include="Areas\SystemManage\Views\Shared\" />
-    <Folder Include="Areas\SystemManage\Views\SystemAccountManage\" />
-    <Folder Include="Areas\SystemManage\Views\SystemRoleAccount\" />
-    <Folder Include="Areas\SystemManage\Views\SystemRoleManage\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -295,6 +287,10 @@
     <ProjectReference Include="..\Oldmansoft.Identity.Mvc\Oldmansoft.Identity.Mvc.csproj">
       <Project>{82ce7e88-a0f2-4330-8ae1-94a149d0ca25}</Project>
       <Name>Oldmansoft.Identity.Mvc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Oldmansoft.Identity.WebManExtend\Oldmansoft.Identity.WebManExtend.csproj">
+      <Project>{6f90bb44-1410-4be9-b64d-ba2e6f664a81}</Project>
+      <Name>Oldmansoft.Identity.WebManExtend</Name>
     </ProjectReference>
     <ProjectReference Include="..\Oldmansoft.Identity\Oldmansoft.Identity.csproj">
       <Project>{d1be05b4-b499-48f7-9686-a94a94a5f9bd}</Project>

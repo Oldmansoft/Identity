@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace WebManApplication
+namespace Oldmansoft.Identity
 {
     class ObjectStore
     {
@@ -16,8 +16,7 @@ namespace WebManApplication
 
         public object Get(Type type)
         {
-            object result;
-            if (Store.TryGetValue(type, out result)) return result;
+            if (Store.TryGetValue(type, out object result)) return result;
 
             result = Activator.CreateInstance(type);
             Store.TryAdd(type, result);

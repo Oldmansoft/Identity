@@ -1,20 +1,20 @@
-﻿using Oldmansoft.ClassicDomain;
+﻿using Microsoft.AspNetCore.Mvc;
+using Oldmansoft.ClassicDomain;
 using Oldmansoft.Html;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
-namespace WebManApplication.Areas.SystemManage.Controllers
+namespace WebManApplicationCore.Areas.BusinessManage.Controllers
 {
-    public class SystemRoleManageController : AuthController
+    public class BusinessRoleManageController : AuthController
     {
         public override Guid OperateResource
         {
             get
             {
-                return ResourceProvider.Get<Resource.System>().Role;
+                return ResourceProvider.Get<Resource.Business>().Role;
             }
         }
 
@@ -22,19 +22,18 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         {
             var result = new List<Oldmansoft.Identity.Data.ResourceData>
             {
-                CreateIdentity().GetResource<Resource.System>(),
                 CreateIdentity().GetResource<Resource.Business>()
             };
             return result;
         }
 
         [Auth(Operation.List)]
-        [Location("系统角色", Icon = FontAwesome.User)]
+        [Location("业务角色", Icon = FontAwesome.User)]
         public ActionResult Index(string key)
         {
             var table = DataTable.Define<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
-            table.AddActionItem(Url.Location<SystemRoleAccountController>(o => o.Index), Account);
+            table.AddActionItem(Url.Location<BusinessRoleAccountController>(o => o.Index));
             table.AddActionItem(Url.Location(Edit), Account);
             table.AddActionItem(Url.Location(Delete), Account).Confirm("是否删除角色").OnClientCondition(ItemActionClient.Disable, "data.HasAccount == '是'");
 
@@ -51,7 +50,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         public JsonResult IndexDataSource(string key, DataTable.Request request)
         {
             var identityManager = CreateIdentity();
-            var source = identityManager.GetRoles<Resource.System>(request.PageIndex, request.PageSize, out int totalCount, key);
+            var source = identityManager.GetRoles<Resource.Business>(request.PageIndex, request.PageSize, out int totalCount, key);
             var list = new List<Models.RoleManageListMoreModel>();
             foreach (var item in source)
             {
@@ -126,18 +125,17 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         {
             foreach (var child in resource.Children)
             {
-                string[] operators = Request.Form.GetValues("Operation" + child.Id.ToString());
-                if (operators != null)
+                string[] operators = Request.Form["Operation" + child.Id.ToString()];
+                if (operators == null) continue;
+
+                foreach (var item in operators)
                 {
-                    foreach (var item in operators)
+                    var permission = new Oldmansoft.Identity.Data.PermissionData
                     {
-                        var permission = new Oldmansoft.Identity.Data.PermissionData
-                        {
-                            ResourceId = child.Id,
-                            Operator = (Operation)int.Parse(item)
-                        };
-                        result.Add(permission);
-                    }
+                        ResourceId = child.Id,
+                        Operator = (Operation)int.Parse(item)
+                    };
+                    result.Add(permission);
                 }
             }
         }
@@ -176,7 +174,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
-            if (CreateIdentity().CreateRole<Resource.System>(model.Name, model.Description, GetPermissions()))
+            if (CreateIdentity().CreateRole<Resource.Business>(model.Name, model.Description, GetPermissions()))
             {
                 return Json(DealResult.Refresh());
             }
@@ -190,8 +188,8 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         [Location("修改", Behave = LinkBehave.Open)]
         public ActionResult Edit(Guid selectedId)
         {
-            var data = CreateIdentity().GetRole<Resource.System>(selectedId);
-            if (data == null) return HttpNotFound();
+            var data = CreateIdentity().GetRole<Resource.Business>(selectedId);
+            if (data == null) return NotFound();
 
             var permissions = new Dictionary<Guid, List<string>>();
             foreach (var item in data.Permissions)
@@ -219,10 +217,10 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             {
                 return Json(DealResult.Wrong(ModelState.ValidateMessage()));
             }
-            var data = CreateIdentity().GetRole<Resource.System>(model.Id);
+            var data = CreateIdentity().GetRole<Resource.Business>(model.Id);
             if (data == null) return Json(DealResult.WrongRefresh("内容不存在"));
 
-            CreateIdentity().ReplaceRole<Resource.System>(model.Id, model.Name, model.Description, GetPermissions());
+            CreateIdentity().ReplaceRole<Resource.Business>(model.Id, model.Name, model.Description, GetPermissions());
             return Json(DealResult.Refresh());
         }
 
@@ -235,7 +233,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
             var identity = CreateIdentity();
             foreach (var id in selectedId)
             {
-                if (!identity.RemoveRole<Resource.System>(id))
+                if (!identity.RemoveRole<Resource.Business>(id))
                 {
                     return Json(DealResult.WrongRefresh("不允许删除"));
                 }

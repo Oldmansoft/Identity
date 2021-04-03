@@ -1,14 +1,13 @@
-﻿using Oldmansoft.Html;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Oldmansoft.Html;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Web;
-using System.Web.Mvc;
 
-namespace WebManApplication.Controllers
+namespace WebManApplicationCore.Controllers
 {
     public class HomeController : AuthController
     {
@@ -26,8 +25,13 @@ namespace WebManApplication.Controllers
 
             var document = new ManageDocument(Url.Location(Welcome));
             document.Resources.Select2.Enabled = true;
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/js/oldmansoft-webman.cn.js")));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap-validator/0.5.3/js/language/zh_CN.min.js"));
+            document.Resources.WebApp.Link.Href = Url.Content("~/css/oldmansoft-webapp.css");
+            document.Resources.WebMan.Link.Href = Url.Content("~/css/oldmansoft-webman.css");
+            document.Resources.WebApp.Script.Src = Url.Content("~/js/oldmansoft-webapp.js");
+            document.Resources.WebMan.Script.Src = Url.Content("~/js/oldmansoft-webman.js");
+            document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
 
             document.Resources.AddLink(new Oldmansoft.Html.Element.Link("//cdn.bootcss.com/lity/2.3.0/lity.min.css"));
             document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/lity/2.3.0/lity.min.js"));
@@ -63,7 +67,7 @@ namespace WebManApplication.Controllers
         [Location("退出", Icon = FontAwesome.Sign_Out, Behave = LinkBehave.Self)]
         public ActionResult Logoff()
         {
-            HttpContext.GetOwinContext().Authentication.SignOut();
+            HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Home");
         }
 
@@ -79,8 +83,12 @@ namespace WebManApplication.Controllers
         public ActionResult Login()
         {
             var document = new LoginDocument(Url.Location(Seed), Url.Location(new Func<string, string, JsonResult>(Login)));
-            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/Scripts/oldmansoft-webman.cn.js")));
-
+            document.Resources.AddScript(new Oldmansoft.Html.Element.ScriptResource(Url.Content("~/js/oldmansoft-webman.cn.js")));
+            document.Resources.WebApp.Link.Href = Url.Content("~/css/oldmansoft-webapp.css");
+            document.Resources.WebMan.Link.Href = Url.Content("~/css/oldmansoft-webman.css");
+            document.Resources.WebApp.Script.Src = Url.Content("~/js/oldmansoft-webapp.js");
+            document.Resources.WebMan.Script.Src = Url.Content("~/js/oldmansoft-webman.js");
+            document.Resources.PluginFix.Script.Src = Url.Content("~/js/oldmansoft-plugin-fix.js");
             document.Resources.Bootstrap.Link = new Oldmansoft.Html.Element.Link("//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css");
             document.Resources.Bootstrap.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js");
             document.Resources.JQuery.Script = new Oldmansoft.Html.Element.ScriptResource("//cdn.bootcss.com/jquery/1.12.4/jquery.min.js");
@@ -105,13 +113,14 @@ namespace WebManApplication.Controllers
             var data = CreateIdentity().GetAccount(account, hash, hashSeed);
             if (data != null)
             {
-                var identity = new ClaimsIdentity(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
-                identity.AddClaim(new Claim(ClaimTypes.Name, data.Name));
-                identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, data.Id.ToString("N")));
-                identity.AddClaim(new Claim(ClaimTypes.Role, "Admin"));
-
-                HttpContext.GetOwinContext().Authentication.SignOut(Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ExternalCookie);
-                HttpContext.GetOwinContext().Authentication.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { IsPersistent = false }, identity);
+                var claims = new List<System.Security.Claims.Claim>()
+                {
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, data.Name),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.NameIdentifier, data.Id.ToString("N")),
+                    new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Role, "Admin"),
+                };
+                var identity = new System.Security.Claims.ClaimsIdentity(claims, "ApplicationCookie");
+                HttpContext.SignInAsync(new System.Security.Claims.ClaimsPrincipal(new[] { identity }));
                 return Json(DealResult.Location(Url.Location<HomeController>(o => o.Index)));
             }
             else
@@ -129,7 +138,7 @@ namespace WebManApplication.Controllers
         public ActionResult Init()
         {
             var identity = CreateIdentity();
-            if (identity.GetRoles<Resource.System>().Count > 0) return HttpNotFound();
+            if (identity.GetRoles<Resource.System>().Count > 0) return NotFound();
 
             var document = new Oldmansoft.Html.Element.Document();
 
@@ -173,7 +182,7 @@ namespace WebManApplication.Controllers
             }
             else
             {
-                return HttpNotFound();
+                return NotFound();
             }
         }
     }

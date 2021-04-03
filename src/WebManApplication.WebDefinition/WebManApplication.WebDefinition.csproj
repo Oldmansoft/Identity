@@ -35,14 +35,14 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.1.0.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
+    <Reference Include="Oldmansoft.Html, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.1.1.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.0.0.2\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.1.0\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.1.0.0.1\lib\net461\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.1.1.0\lib\net461\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Annotations, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -77,10 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthController.cs" />
-    <Compile Include="EmptyItemAction.cs" />
-    <Compile Include="EmptyTableAction.cs" />
-    <Compile Include="Extends.cs" />
-    <Compile Include="ObjectStore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resource.cs" />
   </ItemGroup>

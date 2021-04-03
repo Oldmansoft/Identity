@@ -6,7 +6,7 @@ namespace Oldmansoft.Identity
     /// <summary>
     /// 支持资源和操作的访问特性
     /// </summary>
-    public class AuthAttribute : System.Web.Mvc.AuthorizeAttribute
+    public class AuthAttribute : System.Web.Mvc.AuthorizeAttribute, Mvc.IAuthAttribute
     {
         /// <summary>
         /// 当前检测控制器

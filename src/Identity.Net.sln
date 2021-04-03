@@ -15,6 +15,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebManApplication.WebDefini
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebManApplication", "WebManApplication\WebManApplication.csproj", "{6DC72257-6B29-4FF1-9D86-078981D98534}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oldmansoft.Identity.MvcCore", "Oldmansoft.Identity.MvcCore\Oldmansoft.Identity.MvcCore.csproj", "{8DB5E345-4176-4F2B-81B1-7933E0D0E711}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Oldmansoft.Identity.WebManExtend", "Oldmansoft.Identity.WebManExtend\Oldmansoft.Identity.WebManExtend.csproj", "{6F90BB44-1410-4BE9-B64D-BA2E6F664A81}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebManApplicationCore.WebDefinition", "WebManApplicationCore.WebDefinition\WebManApplicationCore.WebDefinition.csproj", "{82F3D760-4E70-4E61-BD43-41EF1664FA7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebManApplicationCore", "WebManApplicationCore\WebManApplicationCore.csproj", "{183B8EC1-C884-4BCC-9F09-83C8E4D815CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +49,22 @@ Global
 		{6DC72257-6B29-4FF1-9D86-078981D98534}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6DC72257-6B29-4FF1-9D86-078981D98534}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6DC72257-6B29-4FF1-9D86-078981D98534}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DB5E345-4176-4F2B-81B1-7933E0D0E711}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB5E345-4176-4F2B-81B1-7933E0D0E711}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB5E345-4176-4F2B-81B1-7933E0D0E711}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB5E345-4176-4F2B-81B1-7933E0D0E711}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F90BB44-1410-4BE9-B64D-BA2E6F664A81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F90BB44-1410-4BE9-B64D-BA2E6F664A81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F90BB44-1410-4BE9-B64D-BA2E6F664A81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F90BB44-1410-4BE9-B64D-BA2E6F664A81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82F3D760-4E70-4E61-BD43-41EF1664FA7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82F3D760-4E70-4E61-BD43-41EF1664FA7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82F3D760-4E70-4E61-BD43-41EF1664FA7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82F3D760-4E70-4E61-BD43-41EF1664FA7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{183B8EC1-C884-4BCC-9F09-83C8E4D815CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{183B8EC1-C884-4BCC-9F09-83C8E4D815CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{183B8EC1-C884-4BCC-9F09-83C8E4D815CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{183B8EC1-C884-4BCC-9F09-83C8E4D815CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +72,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{573B67E8-F995-45A3-9C1D-CC2630EEF79C} = {9A45DE4C-CBC4-4C20-BAD2-D39ADBC70342}
 		{6DC72257-6B29-4FF1-9D86-078981D98534} = {9A45DE4C-CBC4-4C20-BAD2-D39ADBC70342}
+		{82F3D760-4E70-4E61-BD43-41EF1664FA7D} = {9A45DE4C-CBC4-4C20-BAD2-D39ADBC70342}
+		{183B8EC1-C884-4BCC-9F09-83C8E4D815CB} = {9A45DE4C-CBC4-4C20-BAD2-D39ADBC70342}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D0EB3BEA-1CD8-422A-8679-E35ADC3D38E5}

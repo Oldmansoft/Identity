@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>WebManApplicationCore</RootNamespace>
+    <Authors>Oldman</Authors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Debug\WebManApplicationCore.WebDefinition.xml</DocumentationFile>
+    <OutputPath>bin\Debug\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Oldmansoft.Html.WebMan.MvcCore" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Oldmansoft.Identity.Driver.Mongo\Oldmansoft.Identity.Driver.Mongo.csproj" />
+    <ProjectReference Include="..\Oldmansoft.Identity.MvcCore\Oldmansoft.Identity.MvcCore.csproj" />
+  </ItemGroup>
+
+</Project>

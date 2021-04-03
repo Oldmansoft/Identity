@@ -1,12 +1,12 @@
-﻿using Oldmansoft.ClassicDomain;
+﻿using Microsoft.AspNetCore.Mvc;
+using Oldmansoft.ClassicDomain;
 using Oldmansoft.Html;
 using Oldmansoft.Html.WebMan;
 using Oldmansoft.Identity;
 using System;
 using System.Collections.Generic;
-using System.Web.Mvc;
 
-namespace WebManApplication.Areas.SystemManage.Controllers
+namespace WebManApplicationCore.Areas.SystemManage.Controllers
 {
     public class SystemRoleManageController : AuthController
     {
@@ -30,7 +30,7 @@ namespace WebManApplication.Areas.SystemManage.Controllers
 
         [Auth(Operation.List)]
         [Location("系统角色", Icon = FontAwesome.User)]
-        public ActionResult Index(string key)
+        public IActionResult Index(string key)
         {
             var table = DataTable.Define<Models.RoleManageListModel>(o => o.Id).Create(Url.Location(IndexDataSource).Set("key", key));
             table.AddActionTable(Url.Location(Create), Account);
@@ -126,18 +126,17 @@ namespace WebManApplication.Areas.SystemManage.Controllers
         {
             foreach (var child in resource.Children)
             {
-                string[] operators = Request.Form.GetValues("Operation" + child.Id.ToString());
-                if (operators != null)
+                string[] operators = Request.Form["Operation" + child.Id.ToString()];
+                if (operators == null) continue;
+
+                foreach (var item in operators)
                 {
-                    foreach (var item in operators)
+                    var permission = new Oldmansoft.Identity.Data.PermissionData
                     {
-                        var permission = new Oldmansoft.Identity.Data.PermissionData
-                        {
-                            ResourceId = child.Id,
-                            Operator = (Operation)int.Parse(item)
-                        };
-                        result.Add(permission);
-                    }
+                        ResourceId = child.Id,
+                        Operator = (Operation)int.Parse(item)
+                    };
+                    result.Add(permission);
                 }
             }
         }
@@ -188,10 +187,10 @@ namespace WebManApplication.Areas.SystemManage.Controllers
 
         [Auth(Operation.Modify)]
         [Location("修改", Behave = LinkBehave.Open)]
-        public ActionResult Edit(Guid selectedId)
+        public IActionResult Edit(Guid selectedId)
         {
             var data = CreateIdentity().GetRole<Resource.System>(selectedId);
-            if (data == null) return HttpNotFound();
+            if (data == null) return NotFound();
 
             var permissions = new Dictionary<Guid, List<string>>();
             foreach (var item in data.Permissions)

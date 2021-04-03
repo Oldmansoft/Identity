@@ -1,0 +1,147 @@
+﻿.layout-vertical {
+    height: 100%;
+}
+.layout-horizontal,.layout-vertical {
+    display: inline-block;
+    vertical-align: middle;
+}
+.layout-horizontal {
+    position: relative;
+    left: 50%;
+}
+.layout-horizontal>div:first-child {
+    position: relative;
+    right: 50%;
+}
+
+.layout-center {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.layout-center>.layout-center-content {
+    display: initial;
+}
+.box-background>.layout-center>.layout-center-content {
+    max-width: -webkit-calc(100% - 20px); 
+    max-width: -moz-calc(100% - 20px); 
+    max-width: calc(100% - 20px); 
+}
+.layout-expanded {
+    overflow: hidden;
+}
+
+.webapp-close {
+    cursor: pointer;
+}
+
+.box-background {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+    display: none;
+}
+.box-panel {
+    background: #f5f5f5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+.box-background>.layout-horizontal {
+    max-width: -webkit-calc(100% - 20px); 
+    max-width: -moz-calc(100% - 20px); 
+    max-width: calc(100% - 20px); 
+}
+.window-background {
+    z-index: 2000;
+}
+.modal-background {
+    z-index: 2001;
+}
+.loading-background {
+    z-index: 2002;
+}
+.dialog-background {
+    z-index: 2003;
+}
+.dialog-box {
+    text-align: center;
+}
+.dialog-header {
+    padding-top:15px;
+}
+.dialog-header h4 {
+    margin: 0;
+}
+.dialog-body {
+    padding: 15px;
+}
+.dialog-footer {
+    padding: 15px;
+    border-top: 1px solid #e5e5e5;
+}
+.dialog-footer button {
+    margin: 0px 15px;
+    padding: 1px 20px;
+    font-size: 14px;
+}
+
+.loading-box {
+    padding: 30px;
+}
+.loading-box span {
+    display: block;
+}
+
+.open-view {
+    background: #f5f5f5;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    overflow: auto;
+}
+
+.modal-view {
+    padding: 10px;
+}
+
+.scrollbar-container {
+    position: absolute;
+}
+.scrollbar-track {
+    position: relative;
+    width: 12px;
+    background-color: darkgray;
+    opacity: 0.1;
+    z-index: 1;
+    transition: 0.3s;
+    cursor: default;
+}
+body>.scrollbar-container>.scrollbar-track {
+    position: fixed;
+}
+.scrollbar-track:hover,.scrollbar-track.focus {
+    opacity: 0.9 !important;
+}
+html:hover .scrollbar-track {
+    opacity: 0.5;
+}
+.scrollbar-arrow {
+    position: relative;
+    width: 12px;
+    height: 80px;
+    background-color: gray;
+}

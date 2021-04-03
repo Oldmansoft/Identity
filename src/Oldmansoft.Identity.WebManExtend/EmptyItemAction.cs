@@ -1,6 +1,6 @@
 ﻿using Oldmansoft.Html.WebMan;
 
-namespace WebManApplication
+namespace Oldmansoft.Identity
 {
     class EmptyItemAction : IDynamicTableItemAction
     {
