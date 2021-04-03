@@ -8,14 +8,8 @@ namespace Oldmansoft.Identity.Infrastructure
     /// <summary>
     /// 仓储工厂
     /// </summary>
-    public interface IRepositoryFactory
+    public interface IRepositoryFactory : ClassicDomain.IRepositoryFactory
     {
-        /// <summary>
-        /// 获取工作单元
-        /// </summary>
-        /// <returns></returns>
-        IUnitOfWork GetUnitOfWork();
-
         /// <summary>
         /// 创建帐号对象
         /// </summary>
@@ -34,17 +28,5 @@ namespace Oldmansoft.Identity.Infrastructure
         /// <param name="permissions">许可列表</param>
         /// <returns></returns>
         Role CreateRoleObject(Guid partitionResourceId, string name, string description, List<Permission> permissions);
-
-        /// <summary>
-        /// 创建帐号仓储
-        /// </summary>
-        /// <returns></returns>
-        IAccountRepository CreateAccountRepository();
-
-        /// <summary>
-        /// 创建角色仓储
-        /// </summary>
-        /// <returns></returns>
-        IRoleRepository CreateRoleRepository();
     }
 }

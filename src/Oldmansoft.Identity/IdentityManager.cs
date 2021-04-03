@@ -26,7 +26,7 @@ namespace Oldmansoft.Identity
         private bool CreateAccount<TOperateResource>(string name, string passwordSHA256Hash, Guid? memberId, int memberType, out Guid accountId)
             where TOperateResource : class, IOperateResource, new()
         {
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
             accountId = Guid.Empty;
 
             if (repository.GetByName(name) != null) return false;
@@ -55,7 +55,7 @@ namespace Oldmansoft.Identity
             var roleIds = domain.GetRoleIds();
             if (roleIds.Count > 0)
             {
-                var roles = Factory.CreateRoleRepository();
+                var roles = Factory.GetRepository<IRoleRepository>();
                 foreach (var roleId in roleIds)
                 {
                     var role = roles.Get(roleId);
@@ -213,7 +213,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool AccountBindMember(Guid accountId, Guid memberId, uint memberType)
         {
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
             var domain = repository.Get(accountId);
             if (domain == null) return false;
 
@@ -231,7 +231,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool AccountRemoveMember(Guid memberId)
         {
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
             var domain = repository.GetByMemberId(memberId);
             if (domain == null) return false;
 
@@ -249,7 +249,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public Data.AccountData GetAccount(Guid accountId)
         {
-            var domain = Factory.CreateAccountRepository().Get(accountId);
+            var domain = Factory.GetRepository<IAccountRepository>().Get(accountId);
             if (domain == null) return null;
 
             return FillRoles(domain);
@@ -262,7 +262,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public Data.AccountData GetAccountByName(string name)
         {
-            var domain = Factory.CreateAccountRepository().GetByName(name);
+            var domain = Factory.GetRepository<IAccountRepository>().GetByName(name);
             if (domain == null) return null;
 
             return FillRoles(domain);
@@ -275,7 +275,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public Data.AccountData GetAccountByMemberId(Guid memberId)
         {
-            var domain = Factory.CreateAccountRepository().GetByMemberId(memberId);
+            var domain = Factory.GetRepository<IAccountRepository>().GetByMemberId(memberId);
             if (domain == null) return null;
 
             return FillRoles(domain);
@@ -288,7 +288,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public IList<Data.AccountData> GetAccountsByMemberId(Guid memberId)
         {
-            var list = Factory.CreateAccountRepository().ListByMemberId(memberId);
+            var list = Factory.GetRepository<IAccountRepository>().ListByMemberId(memberId);
 
             var result = new List<Data.AccountData>();
             foreach (var item in list)
@@ -306,7 +306,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public Data.AccountData GetAccount(string name, string passwordSHA256Hash)
         {
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
             var domain = repository.GetByName(name);
             if (domain == null) return null;
             if (!domain.CheckPasswordHash(passwordSHA256Hash)) return null;
@@ -323,7 +323,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public Data.AccountData GetAccount(string name, string doubleSHA256Hash, string seed)
         {
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
             var domain = repository.GetByName(name);
             if (domain == null) return null;
             if (!domain.CheckPassword(doubleSHA256Hash, seed)) return null;
@@ -341,7 +341,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount, string key = null)
         {
-            var list = Factory.CreateAccountRepository()
+            var list = Factory.GetRepository<IAccountRepository>()
                 .Paging(key)
                 .Size(size)
                 .ToList(index, out totalCount);
@@ -366,7 +366,7 @@ namespace Oldmansoft.Identity
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
-            var list = Factory.CreateAccountRepository()
+            var list = Factory.GetRepository<IAccountRepository>()
                 .Paging(partitionResourceId, key)
                 .Size(size)
                 .ToList(index, out totalCount);
@@ -389,7 +389,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public IList<Data.AccountData> GetAccounts(int index, int size, out int totalCount, Guid roleId, string key = null)
         {
-            var list = Factory.CreateAccountRepository()
+            var list = Factory.GetRepository<IAccountRepository>()
                 .Paging(index, size, out totalCount, roleId, key);
 
             var result = new List<Data.AccountData>();
@@ -410,7 +410,7 @@ namespace Oldmansoft.Identity
         {
             if (string.IsNullOrEmpty(passwordSHA256Hash)) throw new ArgumentNullException("passwordHash");
 
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
 
             var domain = repository.Get(accountId);
             if (domain == null) return false;
@@ -432,7 +432,7 @@ namespace Oldmansoft.Identity
         {
             if (string.IsNullOrEmpty(passwordSHA256Hash)) throw new ArgumentNullException("passwordHash");
 
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
 
             var domain = repository.Get(accountId);
             if (domain == null) return false;
@@ -451,7 +451,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool RemoveAccount(Guid accountId)
         {
-            var repository = Factory.CreateAccountRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
             var domain = repository.Get(accountId);
             if (domain == null) return false;
             if (domain.IsBound()) return false;
@@ -472,8 +472,8 @@ namespace Oldmansoft.Identity
         public bool AccountSetRole<TOperateResource>(Guid accountId, Guid[] roleIds)
             where TOperateResource : class, IOperateResource, new()
         {
-            var repository = Factory.CreateAccountRepository();
-            var roleRepository = Factory.CreateRoleRepository();
+            var repository = Factory.GetRepository<IAccountRepository>();
+            var roleRepository = Factory.GetRepository<IRoleRepository>();
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
 
             var domain = repository.Get(accountId);
@@ -500,7 +500,7 @@ namespace Oldmansoft.Identity
         public Data.RoleData GetRole<TOperateResource>(Guid id)
             where TOperateResource : class, IOperateResource, new()
         {
-            var domain = Factory.CreateRoleRepository().Get(id);
+            var domain = Factory.GetRepository<IRoleRepository>().Get(id);
             if (domain == null) return null;
             if (!domain.SamePartition(ResourceProvider.GetResource<TOperateResource>().Id)) return null;
             return domain.MapTo(new Data.RoleData());
@@ -515,7 +515,7 @@ namespace Oldmansoft.Identity
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
-            var list = Factory.CreateRoleRepository().ListByPartitionResourceId(partitionResourceId);
+            var list = Factory.GetRepository<IRoleRepository>().ListByPartitionResourceId(partitionResourceId);
             return list.MapTo(new List<Data.RoleData>());
         }
 
@@ -532,7 +532,7 @@ namespace Oldmansoft.Identity
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
-            var repository = Factory.CreateRoleRepository();
+            var repository = Factory.GetRepository<IRoleRepository>();
             var list = repository.PagingByPartitionResourceId(partitionResourceId, key)
                 .Size(size)
                 .ToList(index, out totalCount);
@@ -566,7 +566,7 @@ namespace Oldmansoft.Identity
             where TOperateResource : class, IOperateResource, new()
         {
             var partitionResourceId = ResourceProvider.GetResource<TOperateResource>().Id;
-            var repository = Factory.CreateRoleRepository();
+            var repository = Factory.GetRepository<IRoleRepository>();
             var domain = Factory.CreateRoleObject(partitionResourceId, name, description, permissions.MapTo(new List<Domain.Permission>()));
             repository.Add(domain);
             try
@@ -594,7 +594,7 @@ namespace Oldmansoft.Identity
         public bool ReplaceRole<TOperateResource>(Guid id, string name, string description, IList<Data.PermissionData> permissions)
             where TOperateResource : class, IOperateResource, new()
         {
-            var repository = Factory.CreateRoleRepository();
+            var repository = Factory.GetRepository<IRoleRepository>();
 
             var domain = repository.Get(id);
             if (domain == null) return false;
@@ -615,11 +615,11 @@ namespace Oldmansoft.Identity
         public bool RemoveRole<TOperateResource>(Guid roleId)
             where TOperateResource : class, IOperateResource, new()
         {
-            var repository = Factory.CreateRoleRepository();
+            var repository = Factory.GetRepository<IRoleRepository>();
             
             var domain = repository.Get(roleId);
             if (domain == null) return false;
-            if (domain.HasAccountSetIt(Factory.CreateAccountRepository())) return false;
+            if (domain.HasAccountSetIt(Factory.GetRepository<IAccountRepository>())) return false;
             if (!domain.SamePartition(ResourceProvider.GetResource<TOperateResource>().Id)) return false;
 
             repository.Remove(domain);
@@ -634,7 +634,7 @@ namespace Oldmansoft.Identity
         /// <returns></returns>
         public bool RoleHasAccount(Guid roleId)
         {
-            return Factory.CreateAccountRepository().ContainsRoleId(roleId);
+            return Factory.GetRepository<IAccountRepository>().ContainsRoleId(roleId);
         }
         #endregion
     }

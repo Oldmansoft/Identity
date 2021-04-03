@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Oldmansoft.Identity</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>Oldman</Authors>
+    <Version>4.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

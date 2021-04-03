@@ -21,4 +21,4 @@ using System.Runtime.InteropServices;
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
 [assembly: Guid("82ce7e88-a0f2-4330-8ae1-94a149d0ca25")]
-[assembly: AssemblyVersion("4.0.0.0")]
+[assembly: AssemblyVersion("4.1.0.0")]

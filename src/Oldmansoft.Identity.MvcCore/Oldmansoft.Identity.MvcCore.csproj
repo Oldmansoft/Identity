@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Oldmansoft.Identity</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>4.1.0</Version>
+    <Authors>Oldman</Authors>
   </PropertyGroup>
 
   <ItemGroup>

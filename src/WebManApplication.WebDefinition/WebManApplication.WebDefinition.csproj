@@ -35,6 +35,9 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Oldmansoft.ClassicDomain, Version=5.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Domain.Net.5.2.1\lib\netstandard2.0\Oldmansoft.ClassicDomain.dll</HintPath>
+    </Reference>
     <Reference Include="Oldmansoft.Html, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Oldmansoft.Html.1.1.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
     </Reference>

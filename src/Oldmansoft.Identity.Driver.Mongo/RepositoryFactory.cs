@@ -8,8 +8,14 @@ namespace Oldmansoft.Identity.Driver.Mongo
     /// <summary>
     /// 仓储工厂
     /// </summary>
-    public class RepositoryFactory : Infrastructure.IRepositoryFactory
+    public class RepositoryFactory : ClassicDomain.RepositoryFactory, Infrastructure.IRepositoryFactory
     {
+        static RepositoryFactory()
+        {
+            Add<IAccountRepository, AccountRepository>();
+            Add<IRoleRepository, RoleRepository>();
+        }
+
         /// <summary>
         /// 设置连接字符串
         /// </summary>
@@ -17,25 +23,6 @@ namespace Oldmansoft.Identity.Driver.Mongo
         public static void SetConnectionString(string connectionString)
         {
             ConnectionString.Set<Mapping>(connectionString);
-        }
-
-        private UnitOfWork Uow { get; set; }
-
-        /// <summary>
-        /// 仓储仓储工厂
-        /// </summary>
-        public RepositoryFactory()
-        {
-            Uow = new UnitOfWork();
-        }
-
-        /// <summary>
-        /// 获取工作单元
-        /// </summary>
-        /// <returns></returns>
-        public IUnitOfWork GetUnitOfWork()
-        {
-            return Uow;
         }
 
         /// <summary>
@@ -61,28 +48,6 @@ namespace Oldmansoft.Identity.Driver.Mongo
         public Domain.Role CreateRoleObject(Guid partitionResourceId, string name, string description, List<Domain.Permission> permissions)
         {
             return Role.Create(partitionResourceId, name, description, permissions);
-        }
-
-        /// <summary>
-        /// 创建帐号仓储
-        /// </summary>
-        /// <returns></returns>
-        public IAccountRepository CreateAccountRepository()
-        {
-            var result = new AccountRepository();
-            result.SetUnitOfWork(Uow);
-            return result;
-        }
-
-        /// <summary>
-        /// 创建角色仓储
-        /// </summary>
-        /// <returns></returns>
-        public IRoleRepository CreateRoleRepository()
-        {
-            var result = new RoleRepository();
-            result.SetUnitOfWork(Uow);
-            return result;
         }
     }
 }

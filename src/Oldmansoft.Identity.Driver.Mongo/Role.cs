@@ -13,10 +13,12 @@ namespace Oldmansoft.Identity.Driver.Mongo
             if (description == null) throw new ArgumentNullException("description");
             if (permissions == null) throw new ArgumentNullException("permissions");
 
-            var result = new Role();
-            result.PartitionResourceId = partitionResourceId;
-            result.Name = name.Trim();
-            result.Description = description.Trim();
+            var result = new Role
+            {
+                PartitionResourceId = partitionResourceId,
+                Name = name.Trim(),
+                Description = description.Trim()
+            };
             result.Permissions.AddRange(permissions);
             return result;
         }
