@@ -8,6 +8,11 @@
     <Version>4.1.0</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>bin\Oldmansoft.Identity.WebManExtend.xml</DocumentationFile>
+    <OutputPath>bin\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Oldmansoft.Html.WebMan" Version="1.1.0" />
   </ItemGroup>
