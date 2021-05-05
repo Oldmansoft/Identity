@@ -5,7 +5,7 @@
     <RootNamespace>Oldmansoft.Identity</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Oldman</Authors>
-    <Version>4.1.0</Version>
+    <Version>4.1.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oldmansoft.Html.WebMan" Version="1.1.0" />
+    <PackageReference Include="Oldmansoft.Html.WebMan" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>

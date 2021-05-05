@@ -41,8 +41,8 @@
     <Reference Include="Oldmansoft.Html, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Oldmansoft.Html.1.1.0\lib\netstandard2.0\Oldmansoft.Html.dll</HintPath>
     </Reference>
-    <Reference Include="Oldmansoft.Html.WebMan, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.1.0\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
+    <Reference Include="Oldmansoft.Html.WebMan, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oldmansoft.Html.WebMan.1.1.1\lib\netstandard2.0\Oldmansoft.Html.WebMan.dll</HintPath>
     </Reference>
     <Reference Include="Oldmansoft.Html.WebMan.Mvc, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Oldmansoft.Html.WebMan.Mvc.1.1.0\lib\net461\Oldmansoft.Html.WebMan.Mvc.dll</HintPath>

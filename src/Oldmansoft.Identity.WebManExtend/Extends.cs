@@ -33,6 +33,39 @@ namespace Oldmansoft.Identity
         /// <param name="item"></param>
         /// <param name="account"></param>
         /// <returns></returns>
+        public static TreeList Add(this TreeList source, TreeListItem item, AccountData account)
+        {
+            if (source == null) throw new ArgumentNullException("source");
+            if (item == null) return source;
+            if (account == null) return source;
+            if (item.Location.Method == null) throw new ArgumentNullException("location", "Method 不能为空");
+            if (item.Location.TargetType == null) throw new ArgumentNullException("location", "TargetType 不能为空");
+            if (!item.Location.TargetType.GetInterfaces().Contains(typeof(IAuthController))) throw new ArgumentNullException("location", "必须来自 AuthController");
+
+            var attribute = GetAuthAttribute(item.Location.Method);
+            if (attribute == null)
+            {
+                source.Add(item);
+                return source;
+            }
+            var controller = ObjectStore.Instance.Get(item.Location.TargetType) as IAuthController;
+            var resourceId = controller.OperateResource;
+            var operation = attribute.Operation;
+
+            if (account.HasPower(resourceId, operation))
+            {
+                source.Add(item);
+            }
+            return source;
+        }
+
+        /// <summary>
+        /// 根据权限添加菜单
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="item"></param>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public static TreeListItem Add(this TreeListItem source, TreeListItem item, AccountData account)
         {
             if (source == null) throw new ArgumentNullException("source");

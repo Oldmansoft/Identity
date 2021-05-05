@@ -6,6 +6,9 @@ using System.Security.Claims;
 
 namespace Oldmansoft.Identity
 {
+    /// <summary>
+    /// 提供帐号认证
+    /// </summary>
     [Microsoft.AspNetCore.Authorization.Authorize]
     public abstract class AuthController : Controller, Mvc.IAuthController
     {
@@ -82,7 +85,7 @@ namespace Oldmansoft.Identity
         /// <summary>
         /// 在调用操作方法前调用
         /// </summary>
-        /// <param name="filterContext"></param>
+        /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var action = context.ActionDescriptor;
