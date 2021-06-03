@@ -13,15 +13,15 @@ namespace Oldmansoft.Identity
         /// <param name="filterContext"></param>
         public void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            var referrer = filterContext.HttpContext.Request.UrlReferrer;
+            var referer = filterContext.HttpContext.Request.UrlReferrer;
             var url = filterContext.HttpContext.Request.Url;
-            if (referrer == null)
+            if (referer == null)
             {
                 SetDefendContent(filterContext);
                 return;
             }
 
-            if (referrer.Host != url.Host || referrer.Port != url.Port)
+            if (referer.Host != url.Host || referer.Port != url.Port)
             {
                 SetDefendContent(filterContext);
                 return;

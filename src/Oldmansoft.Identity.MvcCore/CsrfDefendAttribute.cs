@@ -16,15 +16,15 @@ namespace Oldmansoft.Identity
         /// <param name="context"></param>
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            var referrer = context.HttpContext.Request.GetTypedHeaders().Referer;
             var request = context.HttpContext.Request;
-            if (referrer == null)
+            var referer = request.GetTypedHeaders().Referer;
+            if (referer == null)
             {
                 SetDefendContent(context);
                 return;
             }
 
-            if (referrer.Host != request.Host.Host || referrer.Port != request.Host.Port)
+            if (referer.Host != request.Host.Host || referer.Port != (request.Host.Port ?? 80))
             {
                 SetDefendContent(context);
                 return;
