@@ -24,7 +24,12 @@ namespace Oldmansoft.Identity
                 return;
             }
 
-            if (referer.Host != request.Host.Host || referer.Port != (request.Host.Port ?? 80))
+            if (referer.Host != request.Host.Host)
+            {
+                SetDefendContent(context);
+                return;
+            }
+            if (request.Host.Port.HasValue && referer.Port != request.Host.Port)
             {
                 SetDefendContent(context);
                 return;
