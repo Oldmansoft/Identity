@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Oldmansoft.Identity
@@ -85,17 +87,13 @@ namespace Oldmansoft.Identity
             if (DomainStore.TryGetValue(type, out Domain.Resource value)) return value;
 
             var summary = Util.AssemblyXml.SummaryReader.GetTypeInfo(type);
-            var name = summary.GetSummary(type.GetFullName());
-            if (string.IsNullOrWhiteSpace(name)) name = type.Name;
-            var result = Domain.Resource.Create(CreateGuid(type, string.Empty), name);
+            var result = Domain.Resource.Create(CreateGuid(type, string.Empty), GetName(type, summary, type.GetFullName(), type.Name));
 
             foreach (var property in type.GetProperties())
             {
                 if (property.CanWrite && property.PropertyType == typeof(Guid))
                 {
-                    name = summary.GetSummary(property.Name);
-                    if (string.IsNullOrWhiteSpace(name)) name = property.Name;
-                    result.Add(Domain.ResourceItem.CreateItem(CreateGuid(property.DeclaringType, property.Name), name));
+                    result.Add(Domain.ResourceItem.CreateItem(CreateGuid(property.DeclaringType, property.Name), GetName(property, summary, property.Name, property.Name)));
                 }
             }
 
@@ -103,22 +101,34 @@ namespace Oldmansoft.Identity
             {
                 if (field.IsPublic && field.FieldType == typeof(Guid))
                 {
-                    name = summary.GetSummary(field.Name);
-                    if (name == null) name = field.Name;
-                    result.Add(Domain.ResourceItem.CreateItem(CreateGuid(field.DeclaringType, field.Name), name));
+                    result.Add(Domain.ResourceItem.CreateItem(CreateGuid(field.DeclaringType, field.Name), GetName(field, summary, field.Name, field.Name)));
                 }
             }
 
             DomainStore.TryAdd(type, result);
             return result;
         }
-        
+
+        private static string GetName(MemberInfo info, Util.AssemblyXml.SummaryTypeInfo summary, string member, string name)
+        {
+            if (info.GetCustomAttribute(typeof(DescriptionAttribute), false) is DescriptionAttribute attribute)
+            {
+                return attribute.Description;
+            }
+            var summaryName = summary.GetSummary(member);
+            if (!string.IsNullOrWhiteSpace(summaryName))
+            {
+                return summaryName;
+            }
+            return name;
+        }
+
         private static IList<Domain.Resource> GetResourceFromAssembly(Type typeOfResource)
         {
             if (ListStore.TryGetValue(typeOfResource, out List<Domain.Resource> value)) return value;
 
             var result = new List<Domain.Resource>();
-            var types = System.Reflection.Assembly.GetAssembly(typeOfResource).GetTypes();
+            var types = Assembly.GetAssembly(typeOfResource).GetTypes();
             foreach(var type in types)
             {
                 if (!type.GetInterfaces().Contains(typeof(IOperateResource))) continue;

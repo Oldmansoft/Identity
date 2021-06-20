@@ -1,5 +1,6 @@
 ﻿using Oldmansoft.Identity;
 using System;
+using System.ComponentModel;
 
 namespace WebManApplicationCore
 {
@@ -27,11 +28,13 @@ namespace WebManApplicationCore
         /// <summary>
         /// 业务
         /// </summary>
+        [Description("业务管理")]
         public class Business : IOperateResource
         {
             /// <summary>
             /// 帐号管理
             /// </summary>
+            [Description("帐号")]
             public Guid Account { get; set; }
 
             /// <summary>
